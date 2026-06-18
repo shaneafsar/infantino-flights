@@ -72,6 +72,7 @@
   .foot{color:#666688;font-size:.45rem;margin-top:16px;text-align:center;max-width:920px;line-height:2.4;padding:0 8px}
   .foot a{color:#66aaff;text-decoration:underline}
   .foot a:hover{color:#ffcc00}
+  .note{margin-top:10px;color:#8888bb;font-style:italic}
   .src{margin-top:12px}
   .src .lbl{color:#8888bb;text-transform:uppercase;letter-spacing:.08em}
   .src ul{list-style:none;margin:8px 0 0;padding:0}
@@ -127,6 +128,7 @@
 
   <footer class="foot">
     Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle approximations (~12,300 mi total). CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~37 tonnes). Country outlines are real (Natural Earth 1:110m data).
+    <div class="note">*Final Mexico City stop (Jun 17, Colombia&ndash;Uzbekistan) is an unconfirmed sighting, pending a source.</div>
     <div class="src">
       <span class="lbl">Sources</span>
       <ul>
@@ -190,7 +192,7 @@ const stops=[
   {n:"Seattle",lon:-122.3321,lat:47.6062,date:"Jun 15",match:"Belgium 1\u20131 Egypt",f1:"\ud83c\udde7\ud83c\uddea",f2:"\ud83c\uddea\ud83c\uddec"},
   {n:"Los Angeles",lon:-118.2437,lat:34.0522,date:"Jun 15",match:"Iran 2\u20132 New Zealand",f1:"\ud83c\uddee\ud83c\uddf7",f2:"\ud83c\uddf3\ud83c\uddff"},
   {n:"Kansas City",lon:-94.5786,lat:39.0997,date:"Jun 16",match:"Argentina 3\u20130 Algeria",f1:"\ud83c\udde6\ud83c\uddf7",f2:"\ud83c\udde9\ud83c\uddff"},
-  {n:"Mexico City",lon:-99.1332,lat:19.4326,date:"Jun 17",match:"Colombia 3\u20131 Uzbekistan",f1:"\ud83c\udde8\ud83c\uddf4",f2:"\ud83c\uddfa\ud83c\uddff"}
+  {n:"Mexico City",lon:-99.1332,lat:19.4326,date:"Jun 17",match:"Colombia 3\u20131 Uzbekistan*",f1:"\ud83c\udde8\ud83c\uddf4",f2:"\ud83c\uddfa\ud83c\uddff"}
 ];
 const legMiles=[286,1298,347,796,2803,2732,960,1360,1700];
 const totalMiles=legMiles.reduce((a,b)=>a+b,0);
