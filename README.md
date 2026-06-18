@@ -7,7 +7,7 @@ A self-contained, pixel-art visualization of Gianni Infantino's World Cup flight
 ```
 public/
   index.html      # the entire app
-wrangler.jsonc    # Cloudflare Workers static-assets config
+wrangler.jsonc    # Cloudflare Pages config
 ```
 
 ## Local preview
@@ -26,10 +26,10 @@ npx wrangler dev
 
 ## Deploy to Cloudflare
 
-Deployed as a [Cloudflare Workers static-assets](https://developers.cloudflare.com/workers/static-assets/) site — `public/` is uploaded and served from the edge, no Worker script required.
+Deployed to the [Cloudflare Pages](https://developers.cloudflare.com/pages/) project `infantino-flights` — `public/` is uploaded and served from the edge, no build step required.
 
 ```sh
-npx wrangler deploy
+npx wrangler pages deploy
 ```
 
-The Worker is named `infantino-flights` (see `wrangler.jsonc`). First deploy will prompt for Cloudflare auth if you aren't already logged in (`npx wrangler login`).
+The project name and asset directory come from `wrangler.jsonc`. First deploy will prompt for Cloudflare auth if you aren't already logged in (`npx wrangler login`).

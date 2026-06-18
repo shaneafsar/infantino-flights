@@ -1,11 +1,8 @@
 {
-  // Cloudflare Workers static-assets config.
-  // Docs: https://developers.cloudflare.com/workers/static-assets/
+  // Cloudflare Pages config.
+  // Docs: https://developers.cloudflare.com/pages/functions/wrangler-configuration/
   "name": "infantino-flights",
   "compatibility_date": "2026-06-18",
-  "assets": {
-    "directory": "./public",
-    // Serve index.html for "/" and fall back to it for unknown paths (single page).
-    "not_found_handling": "single-page-application"
-  }
+  // Directory of static assets uploaded to Pages (no build step — files served as-is).
+  "pages_build_output_dir": "./public"
 }
