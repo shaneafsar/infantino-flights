@@ -1,0 +1,11 @@
+{
+  // Cloudflare Workers static-assets config.
+  // Docs: https://developers.cloudflare.com/workers/static-assets/
+  "name": "infantino-flights",
+  "compatibility_date": "2026-06-18",
+  "assets": {
+    "directory": "./public",
+    // Serve index.html for "/" and fall back to it for unknown paths (single page).
+    "not_found_handling": "single-page-application"
+  }
+}
