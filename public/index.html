@@ -121,12 +121,12 @@
     </div>
     <div class="controls">
       <button id="pp">&#9208; Pause</button>
-      <input type="range" id="slider" min="0" max="8" value="0" step="0.001">
+      <input type="range" id="slider" min="0" max="9" value="0" step="0.001">
     </div>
   </div>
 
   <footer class="foot">
-    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle approximations (~10,800 mi total). CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~32 tonnes). Country outlines are real (Natural Earth 1:110m data).
+    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle approximations (~12,300 mi total). CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~37 tonnes). Country outlines are real (Natural Earth 1:110m data).
     <div class="src">
       <span class="lbl">Sources</span>
       <ul>
@@ -187,11 +187,12 @@ const stops=[
   {n:"San Francisco",lon:-122.4194,lat:37.7749,date:"Jun 13",match:"Qatar 1\u20131 Switzerland",f1:"\ud83c\uddf6\ud83c\udde6",f2:"\ud83c\udde8\ud83c\udded"},
   {n:"Vancouver",lon:-123.1207,lat:49.2827,date:"Jun 13",match:"Australia 2\u20130 T\u00fcrkiye",f1:"\ud83c\udde6\ud83c\uddfa",f2:"\ud83c\uddf9\ud83c\uddf7"},
   {n:"Miami",lon:-80.1918,lat:25.7617,date:"Jun 14",match:"FIFA summit"},
+  {n:"Seattle",lon:-122.3321,lat:47.6062,date:"Jun 15",match:"Belgium 1\u20131 Egypt",f1:"\ud83c\udde7\ud83c\uddea",f2:"\ud83c\uddea\ud83c\uddec"},
   {n:"Los Angeles",lon:-118.2437,lat:34.0522,date:"Jun 15",match:"Iran 2\u20132 New Zealand",f1:"\ud83c\uddee\ud83c\uddf7",f2:"\ud83c\uddf3\ud83c\uddff"},
   {n:"Kansas City",lon:-94.5786,lat:39.0997,date:"Jun 16",match:"Argentina 3\u20130 Algeria",f1:"\ud83c\udde6\ud83c\uddf7",f2:"\ud83c\udde9\ud83c\uddff"},
   {n:"Mexico City",lon:-99.1332,lat:19.4326,date:"Jun 17",match:"Colombia 3\u20131 Uzbekistan",f1:"\ud83c\udde8\ud83c\uddf4",f2:"\ud83c\uddfa\ud83c\uddff"}
 ];
-const legMiles=[286,1298,347,796,2803,2336,1360,1700];
+const legMiles=[286,1298,347,796,2803,2732,960,1360,1700];
 const totalMiles=legMiles.reduce((a,b)=>a+b,0);
 const CO2_PER_MILE=3/1000;
 
