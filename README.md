@@ -26,10 +26,23 @@ npx wrangler dev
 
 ## Deploy to Cloudflare
 
-Deployed to the [Cloudflare Pages](https://developers.cloudflare.com/pages/) project `infantino-flights` — `public/` is uploaded and served from the edge, no build step required.
+Hosted on the [Cloudflare Pages](https://developers.cloudflare.com/pages/) project `infantino-flights` — `public/` is uploaded and served from the edge, no build step required.
+
+### Automatic (CI)
+
+Every push to `main` triggers `.github/workflows/deploy.yml`, which runs `wrangler pages deploy` via [`cloudflare/wrangler-action`](https://github.com/cloudflare/wrangler-action). No manual step needed.
+
+Requires two repo secrets:
+
+| Secret | Value |
+| --- | --- |
+| `CLOUDFLARE_ACCOUNT_ID` | the Cloudflare account ID |
+| `CLOUDFLARE_API_TOKEN` | API token with **Account → Cloudflare Pages → Edit** |
+
+### Manual (fallback)
 
 ```sh
 npx wrangler pages deploy
 ```
 
-The project name and asset directory come from `wrangler.jsonc`. First deploy will prompt for Cloudflare auth if you aren't already logged in (`npx wrangler login`).
+The project name and asset directory come from `wrangler.jsonc`. Prompts for auth if you aren't logged in (`npx wrangler login`).
