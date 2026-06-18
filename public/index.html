@@ -213,16 +213,25 @@ svg.appendChild(pulse);
 
 const dots=[],labels=[];
 const labelOffsets={1:{anchor:"end",dx:-9,dy:-9}}; // Guadalajara: push left
+const seen={}; // cities visited more than once share one dot + label
 stops.forEach((s,i)=>{
   const[x,y]=pts[i];
-  dots.push(svg.appendChild(el("circle",{cx:x,cy:y,r:5,class:"city"})));
+  const key=x.toFixed(1)+","+y.toFixed(1);
+  if(seen[key]){ // repeat visit: reuse the existing marker so labels don't double up
+    dots.push(seen[key].dot);
+    labels.push(seen[key].lab);
+    return;
+  }
+  const dot=svg.appendChild(el("circle",{cx:x,cy:y,r:5,class:"city"}));
   const ov=labelOffsets[i];
   const anchor = ov?ov.anchor:(s.lon < -110 ? "end" : "start");
   const dx = ov?ov.dx:(anchor==="end" ? -9 : 9);
   const dy = ov?ov.dy:(i%2?14:-9);
   const lab=el("text",{x:x+dx,y:y+dy,class:"clabel","text-anchor":anchor});
   lab.textContent=s.n;
-  labels.push(svg.appendChild(lab));
+  svg.appendChild(lab);
+  dots.push(dot);labels.push(lab);
+  seen[key]={dot,lab};
 });
 
 const plane=el("text",{class:"plane","text-anchor":"middle","dominant-baseline":"central"});
