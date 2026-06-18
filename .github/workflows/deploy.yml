@@ -20,5 +20,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # Project name + ./public output dir come from wrangler.jsonc
-          command: pages deploy
+          wranglerVersion: "4.69.0"
+          # Pass dir + project explicitly so it doesn't depend on config-file parsing.
+          command: pages deploy public --project-name=infantino-flights
