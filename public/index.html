@@ -116,13 +116,14 @@
     <svg id="map" viewBox="0 0 920 600"></svg>
     <div class="leg" id="leg"></div>
     <div class="panel">
-      <div class="stat"><div class="v" id="miles">0</div><div class="l">Miles flown</div></div>
+      <div class="stat"><div class="v" id="miles">0</div><div class="l" id="milesLabel">Miles flown</div></div>
       <div class="stat"><div class="v co2" id="co2">0</div><div class="l">Tonnes CO&#8322; (est.)</div></div>
       <div class="stat"><div class="v" id="games">0</div><div class="l">Games attended</div></div>
     </div>
     <div class="controls">
       <button id="pp">&#9208; Pause</button>
       <input type="range" id="slider" min="0" max="11" value="0" step="0.001">
+      <button id="unit" title="Toggle miles / kilometers">MI</button>
     </div>
   </div>
 
@@ -199,6 +200,9 @@ const stops=[
 const legMiles=[286,1298,347,796,2803,2732,960,1360,647,752,2453];
 const totalMiles=legMiles.reduce((a,b)=>a+b,0);
 const CO2_PER_MILE=3/1000;
+const KM_PER_MILE=1.60934;
+let unit="mi";
+const toDisp=mi=>unit==="km"?mi*KM_PER_MILE:mi;
 
 const pts=stops.map(s=>proj(s.lon,s.lat));
 
@@ -242,7 +246,8 @@ svg.appendChild(plane);
 
 // ---- animation ----
 const slider=document.getElementById("slider"),pp=document.getElementById("pp");
-const milesEl=document.getElementById("miles"),co2El=document.getElementById("co2"),gamesEl=document.getElementById("games"),legEl=document.getElementById("leg");
+const milesEl=document.getElementById("miles"),co2El=document.getElementById("co2"),gamesEl=document.getElementById("games"),legEl=document.getElementById("leg"),milesLabelEl=document.getElementById("milesLabel"),unitBtn=document.getElementById("unit");
+unitBtn.addEventListener("click",()=>{unit=unit==="mi"?"km":"mi";unitBtn.textContent=unit.toUpperCase();render();});
 const N=stops.length-1; // legs
 let t=0,playing=true;
 const SPEED=0.012;
@@ -272,7 +277,8 @@ function render(){
 
   let miles=0;for(let i=0;i<seg;i++)miles+=legMiles[i];
   miles = end?totalMiles:miles+legMiles[seg]*f;
-  milesEl.textContent=Math.round(miles).toLocaleString();
+  milesEl.textContent=Math.round(toDisp(miles)).toLocaleString();
+  milesLabelEl.textContent=unit==="km"?"Km flown":"Miles flown";
   co2El.textContent=(miles*CO2_PER_MILE).toFixed(1);
 
   // games attended = number of stops reached that are real matches (exclude Miami summit)
@@ -294,7 +300,7 @@ function render(){
   // caption
   if(end){
     const s=stops[N];
-    legEl.innerHTML=vsHtml(s)+'<span class="dt">'+s.date+' &middot; '+s.n+' &middot; '+totalMiles.toLocaleString()+' mi total</span>';
+    legEl.innerHTML=vsHtml(s)+'<span class="dt">'+s.date+' &middot; '+s.n+' &middot; '+Math.round(toDisp(totalMiles)).toLocaleString()+' '+unit+' total</span>';
   }else if(pauseTimer>0 || f<0.06){
     const s=stops[seg];
     legEl.innerHTML=vsHtml(s)+'<span class="dt">'+s.date+' &middot; '+s.n+'</span>';
