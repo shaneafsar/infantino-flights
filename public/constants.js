@@ -1,11 +1,12 @@
 // Numeric constants — projection, emissions, conversion, and animation tuning.
 
 // Equirectangular projection, tuned to the North America view.
-// Bounds hug the actual route (Vancouver / Mexico City / Miami) with padding for
-// labels — cropping Alaska, the open Pacific, and northern Canada. The lon:lat
-// range ratio (~1.53) matches W:H so the continent isn't stretched.
+// West edge hugs the route (Vancouver); east edge reaches past New York / Boston
+// so the US East Coast stays in frame for future stops (NY/NJ hosts the final).
+// Crops Alaska, the open Pacific, and northern Canada. Vertical crop kept tight,
+// trading a slight (~7%) horizontal stretch for less empty space.
 export const W = 920, H = 600;
-export const lonMin = -131, lonMax = -72, latMin = 14, latMax = 52.5;
+export const lonMin = -131, lonMax = -68, latMin = 14, latMax = 52.5;
 
 // Emissions + unit conversion.
 export const CO2_PER_MILE = 3 / 1000;   // tonnes CO2 per mile (~3 kg)
