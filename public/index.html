@@ -73,8 +73,11 @@
   .foot a{color:#66aaff;text-decoration:underline}
   .foot a:hover{color:#ffcc00}
   .note{margin-top:10px;color:#8888bb;font-style:italic}
-  .miles-stat .l{display:flex;align-items:center;gap:8px}
-  #unit{padding:5px 7px;font-size:.45rem;box-shadow:2px 2px 0 #804000;line-height:1}
+  .miles-stat .l{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .unit-toggle{display:inline-flex;flex:none;cursor:pointer;border:2px solid #ffcc00;box-shadow:2px 2px 0 #804000;line-height:1}
+  .unit-toggle span{padding:4px 6px;font-size:.45rem;color:#8888bb;background:#0a0a1a;text-transform:none}
+  .unit-toggle span:first-child{border-right:2px solid #ffcc00}
+  .unit-toggle span.on{background:#ffcc00;color:#0a0a1a}
   .src{margin-top:12px}
   .src .lbl{color:#8888bb;text-transform:uppercase;letter-spacing:.08em}
   .src ul{list-style:none;margin:8px 0 0;padding:0}
@@ -118,7 +121,7 @@
     <svg id="map" viewBox="0 0 920 600"></svg>
     <div class="leg" id="leg"></div>
     <div class="panel">
-      <div class="stat miles-stat"><div class="v" id="miles">0</div><div class="l"><span id="milesLabel">Miles flown</span> <button id="unit" title="Toggle miles / kilometers">MI</button></div></div>
+      <div class="stat miles-stat"><div class="v" id="miles">0</div><div class="l"><span id="milesLabel">Miles flown</span><div class="unit-toggle" id="unit" title="Show miles or kilometers"><span class="u-mi on">mi</span><span class="u-km">km</span></div></div></div>
       <div class="stat"><div class="v co2" id="co2">0</div><div class="l">Tonnes CO&#8322; (est.)</div></div>
       <div class="stat"><div class="v" id="games">0</div><div class="l">Games attended</div></div>
     </div>
@@ -247,8 +250,10 @@ svg.appendChild(plane);
 
 // ---- animation ----
 const slider=document.getElementById("slider"),pp=document.getElementById("pp");
-const milesEl=document.getElementById("miles"),co2El=document.getElementById("co2"),gamesEl=document.getElementById("games"),legEl=document.getElementById("leg"),milesLabelEl=document.getElementById("milesLabel"),unitBtn=document.getElementById("unit");
-unitBtn.addEventListener("click",()=>{unit=unit==="mi"?"km":"mi";unitBtn.textContent=unit.toUpperCase();render();});
+const milesEl=document.getElementById("miles"),co2El=document.getElementById("co2"),gamesEl=document.getElementById("games"),legEl=document.getElementById("leg"),milesLabelEl=document.getElementById("milesLabel");
+const uMi=document.querySelector("#unit .u-mi"),uKm=document.querySelector("#unit .u-km");
+function setUnit(u){unit=u;uMi.classList.toggle("on",u==="mi");uKm.classList.toggle("on",u==="km");render();}
+uMi.addEventListener("click",()=>setUnit("mi"));uKm.addEventListener("click",()=>setUnit("km"));
 const N=stops.length-1; // legs
 let t=0,playing=true;
 const SPEED=0.012;
