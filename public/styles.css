@@ -23,7 +23,7 @@
   .stat .v{font-size:1.1rem;color:#ffcc00;line-height:1.3;text-shadow:1px 1px 0 #804000}
   .stat .v.co2{color:#ff4444;text-shadow:1px 1px 0 #800000}
   .stat .l{font-size:.5rem;color:#8888bb;text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
-  .leg{font-size:.6rem;margin-top:14px;height:100px;text-align:center;line-height:2.2;display:flex;flex-direction:column;justify-content:center;align-items:center}
+  .leg{font-size:.6rem;margin-top:14px;min-height:100px;text-align:center;line-height:2.2;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:4px 0}
   .leg .dt{display:block;color:#8888bb;font-size:.5rem;margin-top:4px}
   .leg .match{color:#ffcc00}
   .vs-display{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:4px}
@@ -64,7 +64,7 @@
     .stat .l{font-size:.42rem}
     .miles-stat .l{flex-direction:column;align-items:flex-start;gap:5px}
     .unit-toggle span{padding:3px 6px}
-    .leg{font-size:.5rem;height:90px;line-height:2.4}
+    .leg{font-size:.5rem;min-height:90px;line-height:2.4}
     .leg .dt{font-size:.42rem}
     button{padding:8px 12px;font-size:.45rem}
     .controls{gap:8px}

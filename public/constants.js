@@ -1,8 +1,11 @@
 // Numeric constants — projection, emissions, conversion, and animation tuning.
 
 // Equirectangular projection, tuned to the North America view.
+// Bounds hug the actual route (Vancouver / Mexico City / Miami) with padding for
+// labels — cropping Alaska, the open Pacific, and northern Canada. The lon:lat
+// range ratio (~1.53) matches W:H so the continent isn't stretched.
 export const W = 920, H = 600;
-export const lonMin = -168, lonMax = -52, latMin = 6, latMax = 64;
+export const lonMin = -131, lonMax = -72, latMin = 14, latMax = 52.5;
 
 // Emissions + unit conversion.
 export const CO2_PER_MILE = 3 / 1000;   // tonnes CO2 per mile (~3 kg)

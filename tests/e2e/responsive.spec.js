@@ -17,6 +17,23 @@ test("iPhone 15: mi/km toggle stays inside the Miles box, no page overflow", asy
   expect(await noHorizontalOverflow(page)).toBe(true);
 });
 
+test("iPhone 15: Miami summit caption does not overflow its box", async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("/");
+  await expect(page.locator("circle.city")).toHaveCount(9);
+
+  // Jump to the Miami summit (index 5) — the tallest caption: icon + title + note + date.
+  await page.$eval("#slider", (el) => { el.value = "5"; el.dispatchEvent(new Event("input")); });
+  await expect(page.locator("#leg")).toContainText("Ritz-Carlton South Beach");
+
+  // Content must fit inside the caption box (no vertical overflow -> no overlap).
+  const overflow = await page.evaluate(() => {
+    const leg = document.getElementById("leg");
+    return leg.scrollHeight - leg.clientHeight;
+  });
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
 test("desktop: no horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/");

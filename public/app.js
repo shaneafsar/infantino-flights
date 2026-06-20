@@ -16,12 +16,12 @@ function el(t, a) { const e = document.createElementNS(NS, t); for (const k in a
 // ocean
 svg.appendChild(el("rect", { x: 0, y: 0, width: W, height: H, class: "ocean" }));
 
-// graticule
-for (let lon = -160; lon <= -50; lon += 10) {
+// graticule (within the visible bounds)
+for (let lon = -130; lon <= -70; lon += 10) {
   const [x1, y1] = proj(lon, latMin), [x2, y2] = proj(lon, latMax);
   svg.appendChild(el("line", { x1, y1, x2, y2, class: "graticule" }));
 }
-for (let lat = 10; lat <= 60; lat += 10) {
+for (let lat = 20; lat <= 50; lat += 10) {
   const [x1, y1] = proj(lonMin, lat), [x2, y2] = proj(lonMax, lat);
   svg.appendChild(el("line", { x1, y1, x2, y2, class: "graticule" }));
 }
