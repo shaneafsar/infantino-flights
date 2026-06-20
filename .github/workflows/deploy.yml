@@ -1,12 +1,42 @@
-name: Deploy to Cloudflare Pages
+name: CI & Deploy
 
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Unit tests (Jest)
+        run: npm test
+
+      - name: E2E tests (Playwright)
+        run: |
+          python3 -m http.server 5173 --bind 127.0.0.1 --directory public &
+          for i in $(seq 1 20); do curl -sf http://127.0.0.1:5173/ >/dev/null && break; sleep 0.5; done
+          npx playwright test
+
   deploy:
+    needs: test
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
