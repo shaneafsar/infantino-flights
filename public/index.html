@@ -73,6 +73,8 @@
   .foot a{color:#66aaff;text-decoration:underline}
   .foot a:hover{color:#ffcc00}
   .note{margin-top:10px;color:#8888bb;font-style:italic}
+  .miles-stat .l{display:flex;align-items:center;gap:8px}
+  #unit{padding:5px 7px;font-size:.45rem;box-shadow:2px 2px 0 #804000;line-height:1}
   .src{margin-top:12px}
   .src .lbl{color:#8888bb;text-transform:uppercase;letter-spacing:.08em}
   .src ul{list-style:none;margin:8px 0 0;padding:0}
@@ -116,19 +118,19 @@
     <svg id="map" viewBox="0 0 920 600"></svg>
     <div class="leg" id="leg"></div>
     <div class="panel">
-      <div class="stat"><div class="v" id="miles">0</div><div class="l" id="milesLabel">Miles flown</div></div>
+      <div class="stat miles-stat"><div class="v" id="miles">0</div><div class="l"><span id="milesLabel">Miles flown</span> <button id="unit" title="Toggle miles / kilometers">MI</button></div></div>
       <div class="stat"><div class="v co2" id="co2">0</div><div class="l">Tonnes CO&#8322; (est.)</div></div>
       <div class="stat"><div class="v" id="games">0</div><div class="l">Games attended</div></div>
     </div>
     <div class="controls">
       <button id="pp">&#9208; Pause</button>
       <input type="range" id="slider" min="0" max="11" value="0" step="0.001">
-      <button id="unit" title="Toggle miles / kilometers">MI</button>
     </div>
   </div>
 
   <footer class="foot">
-    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle (as-the-crow-flies) approximations measured stadium-to-stadium &mdash; the same method ESPN uses &mdash; totalling ~14,450 mi. CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~43 tonnes). Country outlines are real (Natural Earth 1:110m data).
+    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle (as-the-crow-flies) approximations measured stadium-to-stadium &mdash; the same method ESPN uses. CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~43 tonnes). Country outlines are real (Natural Earth 1:110m data).
+    <div class="note">*&ldquo;Games attended&rdquo; includes the FIFA Executive Football Summit in Miami (Jun 14) &mdash; the one stop that wasn&rsquo;t a match.</div>
     <div class="src">
       <span class="lbl">Sources</span>
       <ul>
@@ -184,18 +186,18 @@ for(const name in NA_OUTLINES){
 
 // ---- itinerary with dated games ----
 const stops=[
-  {n:"Mexico City",lon:-99.1504,lat:19.3030,date:"Jun 11",match:"Mexico 2\u20130 South Africa",f1:"\ud83c\uddf2\ud83c\uddfd",f2:"\ud83c\uddff\ud83c\udde6",note:"opener"},
-  {n:"Guadalajara",lon:-103.4625,lat:20.6819,date:"Jun 11",match:"South Korea 2\u20131 Czechia",f1:"\ud83c\uddf0\ud83c\uddf7",f2:"\ud83c\udde8\ud83c\uddff"},
-  {n:"Los Angeles",lon:-118.3392,lat:33.9535,date:"Jun 12",match:"USA 4\u20131 Paraguay",f1:"\ud83c\uddfa\ud83c\uddf8",f2:"\ud83c\uddf5\ud83c\uddfe"},
-  {n:"San Francisco",lon:-121.9694,lat:37.4033,date:"Jun 13",match:"Qatar 1\u20131 Switzerland",f1:"\ud83c\uddf6\ud83c\udde6",f2:"\ud83c\udde8\ud83c\udded"},
-  {n:"Vancouver",lon:-123.1119,lat:49.2767,date:"Jun 13",match:"Australia 2\u20130 T\u00fcrkiye",f1:"\ud83c\udde6\ud83c\uddfa",f2:"\ud83c\uddf9\ud83c\uddf7"},
+  {n:"Mexico City",lon:-99.1504,lat:19.3030,v:"Estadio Azteca",date:"Jun 11",match:"Mexico 2\u20130 South Africa",f1:"\ud83c\uddf2\ud83c\uddfd",f2:"\ud83c\uddff\ud83c\udde6",note:"opener"},
+  {n:"Guadalajara",lon:-103.4625,lat:20.6819,v:"Estadio Akron",date:"Jun 11",match:"South Korea 2\u20131 Czechia",f1:"\ud83c\uddf0\ud83c\uddf7",f2:"\ud83c\udde8\ud83c\uddff"},
+  {n:"Los Angeles",lon:-118.3392,lat:33.9535,v:"SoFi Stadium",date:"Jun 12",match:"USA 4\u20131 Paraguay",f1:"\ud83c\uddfa\ud83c\uddf8",f2:"\ud83c\uddf5\ud83c\uddfe"},
+  {n:"San Francisco",lon:-121.9694,lat:37.4033,v:"Levi's Stadium",date:"Jun 13",match:"Qatar 1\u20131 Switzerland",f1:"\ud83c\uddf6\ud83c\udde6",f2:"\ud83c\udde8\ud83c\udded"},
+  {n:"Vancouver",lon:-123.1119,lat:49.2767,v:"BC Place",date:"Jun 13",match:"Australia 2\u20130 T\u00fcrkiye",f1:"\ud83c\udde6\ud83c\uddfa",f2:"\ud83c\uddf9\ud83c\uddf7"},
   {n:"Miami",lon:-80.1300,lat:25.7906,date:"Jun 14",match:"FIFA Executive Football Summit",note:"Ritz-Carlton South Beach — no match"},
-  {n:"Seattle",lon:-122.3316,lat:47.5952,date:"Jun 15",match:"Belgium 1\u20131 Egypt",f1:"\ud83c\udde7\ud83c\uddea",f2:"\ud83c\uddea\ud83c\uddec"},
-  {n:"Los Angeles",lon:-118.3392,lat:33.9535,date:"Jun 15",match:"Iran 2\u20132 New Zealand",f1:"\ud83c\uddee\ud83c\uddf7",f2:"\ud83c\uddf3\ud83c\uddff"},
-  {n:"Kansas City",lon:-94.4839,lat:39.0489,date:"Jun 16",match:"Argentina 3\u20130 Algeria",f1:"\ud83c\udde6\ud83c\uddf7",f2:"\ud83c\udde9\ud83c\uddff"},
-  {n:"Houston",lon:-95.4107,lat:29.6847,date:"Jun 17",match:"Portugal 1\u20131 Congo DR",f1:"\ud83c\uddf5\ud83c\uddf9",f2:"\ud83c\udde8\ud83c\udde9"},
-  {n:"Mexico City",lon:-99.1504,lat:19.3030,date:"Jun 17",match:"Colombia 3\u20131 Uzbekistan",f1:"\ud83c\udde8\ud83c\uddf4",f2:"\ud83c\uddfa\ud83c\uddff"},
-  {n:"Vancouver",lon:-123.1119,lat:49.2767,date:"Jun 18",match:"Canada 6\u20130 Qatar",f1:"\ud83c\udde8\ud83c\udde6",f2:"\ud83c\uddf6\ud83c\udde6"}
+  {n:"Seattle",lon:-122.3316,lat:47.5952,v:"Lumen Field",date:"Jun 15",match:"Belgium 1\u20131 Egypt",f1:"\ud83c\udde7\ud83c\uddea",f2:"\ud83c\uddea\ud83c\uddec"},
+  {n:"Los Angeles",lon:-118.3392,lat:33.9535,v:"SoFi Stadium",date:"Jun 15",match:"Iran 2\u20132 New Zealand",f1:"\ud83c\uddee\ud83c\uddf7",f2:"\ud83c\uddf3\ud83c\uddff"},
+  {n:"Kansas City",lon:-94.4839,lat:39.0489,v:"Arrowhead Stadium",date:"Jun 16",match:"Argentina 3\u20130 Algeria",f1:"\ud83c\udde6\ud83c\uddf7",f2:"\ud83c\udde9\ud83c\uddff"},
+  {n:"Houston",lon:-95.4107,lat:29.6847,v:"NRG Stadium",date:"Jun 17",match:"Portugal 1\u20131 Congo DR",f1:"\ud83c\uddf5\ud83c\uddf9",f2:"\ud83c\udde8\ud83c\udde9"},
+  {n:"Mexico City",lon:-99.1504,lat:19.3030,v:"Estadio Azteca",date:"Jun 17",match:"Colombia 3\u20131 Uzbekistan",f1:"\ud83c\udde8\ud83c\uddf4",f2:"\ud83c\uddfa\ud83c\uddff"},
+  {n:"Vancouver",lon:-123.1119,lat:49.2767,v:"BC Place",date:"Jun 18",match:"Canada 6\u20130 Qatar",f1:"\ud83c\udde8\ud83c\udde6",f2:"\ud83c\uddf6\ud83c\udde6"}
 ];
 const legMiles=[296,1291,313,822,2804,2732,966,1367,649,755,2459];
 const totalMiles=legMiles.reduce((a,b)=>a+b,0);
@@ -281,11 +283,10 @@ function render(){
   milesLabelEl.textContent=unit==="km"?"Km flown":"Miles flown";
   co2El.textContent=(miles*CO2_PER_MILE).toFixed(1);
 
-  // games attended = number of stops reached that are real matches (exclude Miami summit)
+  // stops attended; the Miami summit (no team flags) counts too and is marked with *
   let reached=end?N:seg+(f>=1?1:0);
-  let count=0;for(let i=0;i<=Math.min(reached,N);i++){if(i<stops.length&&stops[i].f1)count++;}
-  // only count a stop once arrived
-  gamesEl.textContent=count;
+  let count=0,hasSummit=false;for(let i=0;i<=Math.min(reached,N);i++){if(i<stops.length){count++;if(!stops[i].f1)hasSummit=true;}}
+  gamesEl.textContent=count+(hasSummit?"*":"");
 
   const atStop = end || f<0.06 || f>0.94;
   const stopIdx = end?N:(f>0.94?seg+1:seg);
@@ -300,10 +301,10 @@ function render(){
   // caption
   if(end){
     const s=stops[N];
-    legEl.innerHTML=vsHtml(s)+'<span class="dt">'+s.date+' &middot; '+s.n+' &middot; '+Math.round(toDisp(totalMiles)).toLocaleString()+' '+unit+' total</span>';
+    legEl.innerHTML=vsHtml(s)+'<span class="dt">'+s.date+' &middot; '+s.n+(s.v?' &middot; '+s.v:'')+' &middot; '+Math.round(toDisp(totalMiles)).toLocaleString()+' '+unit+' total</span>';
   }else if(pauseTimer>0 || f<0.06){
     const s=stops[seg];
-    legEl.innerHTML=vsHtml(s)+'<span class="dt">'+s.date+' &middot; '+s.n+'</span>';
+    legEl.innerHTML=vsHtml(s)+'<span class="dt">'+s.date+' &middot; '+s.n+(s.v?' &middot; '+s.v:'')+'</span>';
   }else{
     const ns=stops[seg+1];
     legEl.innerHTML='Flying to <b>'+ns.n+'</b><span class="dt">next: '+ns.match+' ('+ns.date+')</span>';
