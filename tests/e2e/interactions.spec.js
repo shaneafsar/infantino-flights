@@ -61,6 +61,24 @@ test("captions show stadium name; Miami summit is not counted as a game", async 
   await expect(page.locator("#games")).toHaveText("5"); // summit does not bump the counter
 });
 
+test("plane nose points toward the next city", async ({ page }) => {
+  await ready(page);
+  // mid first leg: Mexico City (dot 0) -> Guadalajara (dot 1)
+  await page.$eval("#slider", (el) => { el.value = "0.5"; el.dispatchEvent(new Event("input")); });
+  const d = await page.evaluate(() => {
+    const c = document.querySelectorAll("circle.city");
+    const a = { x: +c[0].getAttribute("cx"), y: +c[0].getAttribute("cy") };
+    const b = { x: +c[1].getAttribute("cx"), y: +c[1].getAttribute("cy") };
+    const tr = document.querySelector("text.plane").getAttribute("transform");
+    const m = /rotate\(([-\d.]+)/.exec(tr || "");
+    return { a, b, angle: m ? parseFloat(m[1]) : null };
+  });
+  // travel angle + 45deg offset for the emoji's default up-right nose
+  const expected = Math.atan2(d.b.y - d.a.y, d.b.x - d.a.x) * 180 / Math.PI + 45;
+  expect(d.angle).not.toBeNull();
+  expect(Math.abs(d.angle - expected)).toBeLessThan(0.5);
+});
+
 test("play / pause / replay button labels", async ({ page }) => {
   await ready(page);
   const pp = page.locator("#pp");
