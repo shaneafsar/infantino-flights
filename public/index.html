@@ -128,7 +128,7 @@
   </div>
 
   <footer class="foot">
-    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle approximations (~14,400 mi total). CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~43 tonnes). Country outlines are real (Natural Earth 1:110m data).
+    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle (as-the-crow-flies) approximations measured stadium-to-stadium &mdash; the same method ESPN uses &mdash; totalling ~14,450 mi. CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~43 tonnes). Country outlines are real (Natural Earth 1:110m data).
     <div class="src">
       <span class="lbl">Sources</span>
       <ul>
@@ -184,20 +184,20 @@ for(const name in NA_OUTLINES){
 
 // ---- itinerary with dated games ----
 const stops=[
-  {n:"Mexico City",lon:-99.1332,lat:19.4326,date:"Jun 11",match:"Mexico 2\u20130 South Africa",f1:"\ud83c\uddf2\ud83c\uddfd",f2:"\ud83c\uddff\ud83c\udde6",note:"opener"},
-  {n:"Guadalajara",lon:-103.3496,lat:20.6597,date:"Jun 11",match:"South Korea 2\u20131 Czechia",f1:"\ud83c\uddf0\ud83c\uddf7",f2:"\ud83c\udde8\ud83c\uddff"},
-  {n:"Los Angeles",lon:-118.2437,lat:34.0522,date:"Jun 12",match:"USA 4\u20131 Paraguay",f1:"\ud83c\uddfa\ud83c\uddf8",f2:"\ud83c\uddf5\ud83c\uddfe"},
-  {n:"San Francisco",lon:-122.4194,lat:37.7749,date:"Jun 13",match:"Qatar 1\u20131 Switzerland",f1:"\ud83c\uddf6\ud83c\udde6",f2:"\ud83c\udde8\ud83c\udded"},
-  {n:"Vancouver",lon:-123.1207,lat:49.2827,date:"Jun 13",match:"Australia 2\u20130 T\u00fcrkiye",f1:"\ud83c\udde6\ud83c\uddfa",f2:"\ud83c\uddf9\ud83c\uddf7"},
-  {n:"Miami",lon:-80.1918,lat:25.7617,date:"Jun 14",match:"FIFA Executive Football Summit",note:"Ritz-Carlton South Beach — no match"},
-  {n:"Seattle",lon:-122.3321,lat:47.6062,date:"Jun 15",match:"Belgium 1\u20131 Egypt",f1:"\ud83c\udde7\ud83c\uddea",f2:"\ud83c\uddea\ud83c\uddec"},
-  {n:"Los Angeles",lon:-118.2437,lat:34.0522,date:"Jun 15",match:"Iran 2\u20132 New Zealand",f1:"\ud83c\uddee\ud83c\uddf7",f2:"\ud83c\uddf3\ud83c\uddff"},
-  {n:"Kansas City",lon:-94.5786,lat:39.0997,date:"Jun 16",match:"Argentina 3\u20130 Algeria",f1:"\ud83c\udde6\ud83c\uddf7",f2:"\ud83c\udde9\ud83c\uddff"},
-  {n:"Houston",lon:-95.3698,lat:29.7604,date:"Jun 17",match:"Portugal 1\u20131 Congo DR",f1:"\ud83c\uddf5\ud83c\uddf9",f2:"\ud83c\udde8\ud83c\udde9"},
-  {n:"Mexico City",lon:-99.1332,lat:19.4326,date:"Jun 17",match:"Colombia 3\u20131 Uzbekistan",f1:"\ud83c\udde8\ud83c\uddf4",f2:"\ud83c\uddfa\ud83c\uddff"},
-  {n:"Vancouver",lon:-123.1207,lat:49.2827,date:"Jun 18",match:"Canada 6\u20130 Qatar",f1:"\ud83c\udde8\ud83c\udde6",f2:"\ud83c\uddf6\ud83c\udde6"}
+  {n:"Mexico City",lon:-99.1504,lat:19.3030,date:"Jun 11",match:"Mexico 2\u20130 South Africa",f1:"\ud83c\uddf2\ud83c\uddfd",f2:"\ud83c\uddff\ud83c\udde6",note:"opener"},
+  {n:"Guadalajara",lon:-103.4625,lat:20.6819,date:"Jun 11",match:"South Korea 2\u20131 Czechia",f1:"\ud83c\uddf0\ud83c\uddf7",f2:"\ud83c\udde8\ud83c\uddff"},
+  {n:"Los Angeles",lon:-118.3392,lat:33.9535,date:"Jun 12",match:"USA 4\u20131 Paraguay",f1:"\ud83c\uddfa\ud83c\uddf8",f2:"\ud83c\uddf5\ud83c\uddfe"},
+  {n:"San Francisco",lon:-121.9694,lat:37.4033,date:"Jun 13",match:"Qatar 1\u20131 Switzerland",f1:"\ud83c\uddf6\ud83c\udde6",f2:"\ud83c\udde8\ud83c\udded"},
+  {n:"Vancouver",lon:-123.1119,lat:49.2767,date:"Jun 13",match:"Australia 2\u20130 T\u00fcrkiye",f1:"\ud83c\udde6\ud83c\uddfa",f2:"\ud83c\uddf9\ud83c\uddf7"},
+  {n:"Miami",lon:-80.1300,lat:25.7906,date:"Jun 14",match:"FIFA Executive Football Summit",note:"Ritz-Carlton South Beach — no match"},
+  {n:"Seattle",lon:-122.3316,lat:47.5952,date:"Jun 15",match:"Belgium 1\u20131 Egypt",f1:"\ud83c\udde7\ud83c\uddea",f2:"\ud83c\uddea\ud83c\uddec"},
+  {n:"Los Angeles",lon:-118.3392,lat:33.9535,date:"Jun 15",match:"Iran 2\u20132 New Zealand",f1:"\ud83c\uddee\ud83c\uddf7",f2:"\ud83c\uddf3\ud83c\uddff"},
+  {n:"Kansas City",lon:-94.4839,lat:39.0489,date:"Jun 16",match:"Argentina 3\u20130 Algeria",f1:"\ud83c\udde6\ud83c\uddf7",f2:"\ud83c\udde9\ud83c\uddff"},
+  {n:"Houston",lon:-95.4107,lat:29.6847,date:"Jun 17",match:"Portugal 1\u20131 Congo DR",f1:"\ud83c\uddf5\ud83c\uddf9",f2:"\ud83c\udde8\ud83c\udde9"},
+  {n:"Mexico City",lon:-99.1504,lat:19.3030,date:"Jun 17",match:"Colombia 3\u20131 Uzbekistan",f1:"\ud83c\udde8\ud83c\uddf4",f2:"\ud83c\uddfa\ud83c\uddff"},
+  {n:"Vancouver",lon:-123.1119,lat:49.2767,date:"Jun 18",match:"Canada 6\u20130 Qatar",f1:"\ud83c\udde8\ud83c\udde6",f2:"\ud83c\uddf6\ud83c\udde6"}
 ];
-const legMiles=[286,1298,347,796,2803,2732,960,1360,647,752,2453];
+const legMiles=[296,1291,313,822,2804,2732,966,1367,649,755,2459];
 const totalMiles=legMiles.reduce((a,b)=>a+b,0);
 const CO2_PER_MILE=3/1000;
 const KM_PER_MILE=1.60934;
