@@ -130,7 +130,7 @@
 
   <footer class="foot">
     Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle (as-the-crow-flies) approximations measured stadium-to-stadium &mdash; the same method ESPN uses. CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~43 tonnes). Country outlines are real (Natural Earth 1:110m data).
-    <div class="note">*&ldquo;Games attended&rdquo; includes the FIFA Executive Football Summit in Miami (Jun 14) &mdash; the one stop that wasn&rsquo;t a match.</div>
+    <div class="note">*He also flew to Miami (Jun 14) for the FIFA Executive Football Summit &mdash; a non-match stop, not counted among games attended.</div>
     <div class="src">
       <span class="lbl">Sources</span>
       <ul>
@@ -283,9 +283,9 @@ function render(){
   milesLabelEl.textContent=unit==="km"?"Km flown":"Miles flown";
   co2El.textContent=(miles*CO2_PER_MILE).toFixed(1);
 
-  // stops attended; the Miami summit (no team flags) counts too and is marked with *
+  // games attended (stops with team flags); the Miami summit adds a * (non-game flight)
   let reached=end?N:seg+(f>=1?1:0);
-  let count=0,hasSummit=false;for(let i=0;i<=Math.min(reached,N);i++){if(i<stops.length){count++;if(!stops[i].f1)hasSummit=true;}}
+  let count=0,hasSummit=false;for(let i=0;i<=Math.min(reached,N);i++){if(i<stops.length){if(stops[i].f1)count++;else hasSummit=true;}}
   gamesEl.textContent=count+(hasSummit?"*":"");
 
   const atStop = end || f<0.06 || f>0.94;
