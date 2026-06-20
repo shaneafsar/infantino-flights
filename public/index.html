@@ -78,6 +78,9 @@
   .unit-toggle span{padding:4px 6px;font-size:.45rem;color:#8888bb;background:#0a0a1a;text-transform:none}
   .unit-toggle span:first-child{border-right:2px solid #ffcc00}
   .unit-toggle span.on{background:#ffcc00;color:#0a0a1a}
+  .co2-milestone{min-height:1.3em;margin-top:10px;text-align:center;font-size:.5rem;line-height:1.7;color:#ff8888;padding:0 8px}
+  .co2-milestone.flash{animation:co2flash .7s ease-out}
+  @keyframes co2flash{0%{color:#ffee66;text-shadow:0 0 12px rgba(255,238,102,.9)}100%{color:#ff8888;text-shadow:none}}
   .src{margin-top:12px}
   .src .lbl{color:#8888bb;text-transform:uppercase;letter-spacing:.08em}
   .src ul{list-style:none;margin:8px 0 0;padding:0}
@@ -125,6 +128,7 @@
       <div class="stat"><div class="v co2" id="co2">0</div><div class="l">Tonnes CO&#8322; (est.)</div></div>
       <div class="stat"><div class="v" id="games">0</div><div class="l">Games attended</div></div>
     </div>
+    <div class="co2-milestone" id="co2note"></div>
     <div class="controls">
       <button id="pp">&#9208; Pause</button>
       <input type="range" id="slider" min="0" max="11" value="0" step="0.001">
@@ -207,6 +211,17 @@ const CO2_PER_MILE=3/1000;
 const KM_PER_MILE=1.60934;
 let unit="mi";
 const toDisp=mi=>unit==="km"?mi*KM_PER_MILE:mi;
+// CO2 milestones (cumulative tonnes -> relatable comparison)
+const co2Steps=[
+  {t:1,m:"That&rsquo;s enough to charge 100,000 smartphones"},
+  {t:4.7,m:"That&rsquo;s more than one person&rsquo;s yearly carbon footprint (global avg)"},
+  {t:8,m:"That&rsquo;s what a gas car emits in ~2 years"},
+  {t:15,m:"That&rsquo;s more than the average American emits in a year"},
+  {t:25,m:"That&rsquo;s what ~1,100 trees absorb in a year"},
+  {t:32,m:"That&rsquo;s enough to power a home for ~4 years"},
+  {t:43,m:"That&rsquo;s ~3 Americans&rsquo; yearly footprint &mdash; or ~2,000 trees for a year"}
+];
+let co2Idx=-1;
 
 const pts=stops.map(s=>proj(s.lon,s.lat));
 
@@ -250,10 +265,10 @@ svg.appendChild(plane);
 
 // ---- animation ----
 const slider=document.getElementById("slider"),pp=document.getElementById("pp");
-const milesEl=document.getElementById("miles"),co2El=document.getElementById("co2"),gamesEl=document.getElementById("games"),legEl=document.getElementById("leg"),milesLabelEl=document.getElementById("milesLabel");
-const uMi=document.querySelector("#unit .u-mi"),uKm=document.querySelector("#unit .u-km");
+const milesEl=document.getElementById("miles"),co2El=document.getElementById("co2"),gamesEl=document.getElementById("games"),legEl=document.getElementById("leg"),milesLabelEl=document.getElementById("milesLabel"),co2NoteEl=document.getElementById("co2note");
+const unitToggle=document.getElementById("unit"),uMi=unitToggle.querySelector(".u-mi"),uKm=unitToggle.querySelector(".u-km");
 function setUnit(u){unit=u;uMi.classList.toggle("on",u==="mi");uKm.classList.toggle("on",u==="km");render();}
-uMi.addEventListener("click",()=>setUnit("mi"));uKm.addEventListener("click",()=>setUnit("km"));
+unitToggle.addEventListener("click",()=>setUnit(unit==="mi"?"km":"mi"));
 const N=stops.length-1; // legs
 let t=0,playing=true;
 const SPEED=0.012;
@@ -286,6 +301,9 @@ function render(){
   milesEl.textContent=Math.round(toDisp(miles)).toLocaleString();
   milesLabelEl.textContent=unit==="km"?"Km flown":"Miles flown";
   co2El.textContent=(miles*CO2_PER_MILE).toFixed(1);
+  const co2t=miles*CO2_PER_MILE;
+  let cs=-1;for(let i=0;i<co2Steps.length;i++){if(co2t>=co2Steps[i].t)cs=i;}
+  if(cs!==co2Idx){const up=cs>co2Idx;co2Idx=cs;co2NoteEl.innerHTML=cs>=0?co2Steps[cs].m:"";if(up&&cs>=0){co2NoteEl.classList.remove("flash");void co2NoteEl.offsetWidth;co2NoteEl.classList.add("flash");}}
 
   // games attended = stops reached that were actual matches (Miami summit excluded)
   let reached=end?N:seg+(f>=1?1:0);
