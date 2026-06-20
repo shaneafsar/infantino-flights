@@ -122,20 +122,20 @@
     </div>
     <div class="controls">
       <button id="pp">&#9208; Pause</button>
-      <input type="range" id="slider" min="0" max="9" value="0" step="0.001">
+      <input type="range" id="slider" min="0" max="11" value="0" step="0.001">
     </div>
   </div>
 
   <footer class="foot">
-    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle approximations (~12,300 mi total). CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~37 tonnes). Country outlines are real (Natural Earth 1:110m data).
-    <div class="note">*Final Mexico City stop (Jun 17, Colombia&ndash;Uzbekistan) is an unconfirmed sighting, pending a source.</div>
+    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle approximations (~14,400 mi total). CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~43 tonnes). Country outlines are real (Natural Earth 1:110m data).
     <div class="src">
       <span class="lbl">Sources</span>
       <ul>
+        <li><a href="https://www.espn.com/soccer/story/_/id/49116383/infantino-fifa-presidents-epic-world-cup-tour" target="_blank" rel="noopener">ESPN &mdash; Where has Infantino been? The FIFA president's epic World Cup tour (stop-by-stop itinerary)</a></li>
         <li><a href="https://www.nytimes.com/athletic/7363938/2026/06/16/gianni-infantino-world-cup-travel-games/" target="_blank" rel="noopener">The Athletic (The New York Times) &mdash; Infantino's World Cup travel: the Qatar Airways private jet &amp; two-games-a-day itinerary</a></li>
-        <li><a href="https://www.espn.com/soccer/story/_/id/48939282/2026-fifa-world-cup-fixtures-results-match-schedule-group-stage-knockout-rounds-bracket" target="_blank" rel="noopener">ESPN &mdash; 2026 World Cup fixtures &amp; results (scorelines for each stop)</a></li>
-        <li><a href="https://www.kcur.org/sports/2026-06-16/argentina-algeria-match-world-cup-results-kansas-city" target="_blank" rel="noopener">KCUR (NPR) &mdash; Infantino in Kansas City: Argentina 3&ndash;0 Algeria (Jun 16)</a></li>
-        <li><a href="https://www.nbcnews.com/sports/soccer/live-blog/fifa-world-cup-games-2026-live-updates-rcna350496" target="_blank" rel="noopener">NBC News &mdash; Colombia 3&ndash;1 Uzbekistan, Mexico City (Jun 17)</a></li>
+        <li><a href="https://www.espn.com/soccer/match/_/gameId/760435/congo-dr-portugal" target="_blank" rel="noopener">ESPN &mdash; Portugal 1&ndash;1 Congo DR, Houston (Jun 17)</a></li>
+        <li><a href="https://www.espn.com/soccer/match/_/gameId/760436/colombia-uzbekistan" target="_blank" rel="noopener">ESPN &mdash; Colombia 3&ndash;1 Uzbekistan, Mexico City (Jun 17)</a></li>
+        <li><a href="https://www.espn.com/soccer/match/_/gameId/760440/qatar-canada" target="_blank" rel="noopener">ESPN &mdash; Canada 6&ndash;0 Qatar, Vancouver (Jun 18)</a></li>
       </ul>
     </div>
   </footer>
@@ -192,9 +192,11 @@ const stops=[
   {n:"Seattle",lon:-122.3321,lat:47.6062,date:"Jun 15",match:"Belgium 1\u20131 Egypt",f1:"\ud83c\udde7\ud83c\uddea",f2:"\ud83c\uddea\ud83c\uddec"},
   {n:"Los Angeles",lon:-118.2437,lat:34.0522,date:"Jun 15",match:"Iran 2\u20132 New Zealand",f1:"\ud83c\uddee\ud83c\uddf7",f2:"\ud83c\uddf3\ud83c\uddff"},
   {n:"Kansas City",lon:-94.5786,lat:39.0997,date:"Jun 16",match:"Argentina 3\u20130 Algeria",f1:"\ud83c\udde6\ud83c\uddf7",f2:"\ud83c\udde9\ud83c\uddff"},
-  {n:"Mexico City",lon:-99.1332,lat:19.4326,date:"Jun 17",match:"Colombia 3\u20131 Uzbekistan*",f1:"\ud83c\udde8\ud83c\uddf4",f2:"\ud83c\uddfa\ud83c\uddff"}
+  {n:"Houston",lon:-95.3698,lat:29.7604,date:"Jun 17",match:"Portugal 1\u20131 Congo DR",f1:"\ud83c\uddf5\ud83c\uddf9",f2:"\ud83c\udde8\ud83c\udde9"},
+  {n:"Mexico City",lon:-99.1332,lat:19.4326,date:"Jun 17",match:"Colombia 3\u20131 Uzbekistan",f1:"\ud83c\udde8\ud83c\uddf4",f2:"\ud83c\uddfa\ud83c\uddff"},
+  {n:"Vancouver",lon:-123.1207,lat:49.2827,date:"Jun 18",match:"Canada 6\u20130 Qatar",f1:"\ud83c\udde8\ud83c\udde6",f2:"\ud83c\uddf6\ud83c\udde6"}
 ];
-const legMiles=[286,1298,347,796,2803,2732,960,1360,1700];
+const legMiles=[286,1298,347,796,2803,2732,960,1360,647,752,2453];
 const totalMiles=legMiles.reduce((a,b)=>a+b,0);
 const CO2_PER_MILE=3/1000;
 
