@@ -1,12 +1,14 @@
 # Infantino's World Cup Flight Tour
 
-A self-contained, pixel-art visualization of Gianni Infantino's World Cup flight tour — an animated SVG world map tracing the route city by city. Everything (markup, styles, JS) lives in a single static HTML file with no build step.
+A self-contained, pixel-art visualization of Gianni Infantino's World Cup flight tour — an animated SVG world map tracing the route city by city. Static files only, no build step.
 
 ## Project layout
 
 ```
 public/
-  index.html      # the entire app
+  index.html      # markup
+  styles.css      # styles
+  app.js          # itinerary data + map animation
 wrangler.jsonc    # Cloudflare Pages config
 ```
 
