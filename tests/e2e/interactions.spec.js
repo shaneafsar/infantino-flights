@@ -47,8 +47,8 @@ test("CO2 milestone text steps up across the tour", async ({ page }) => {
   await expect(page.locator("#co2note")).toContainText("yearly carbon footprint");
   await setT(page, 5); // ~16.6 t (Miami)
   await expect(page.locator("#co2note")).toContainText("American");
-  await scrubToEnd(page); // ~43 t
-  await expect(page.locator("#co2note")).toContainText("Americans");
+  await scrubToEnd(page); // ~60 t
+  await expect(page.locator("#co2note")).toContainText("150,000 miles");
 });
 
 test("captions show stadium name; Miami summit is not counted as a game", async ({ page }) => {
