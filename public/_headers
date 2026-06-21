@@ -1,0 +1,6 @@
+# Always revalidate against the server so a new deploy is picked up immediately.
+# The app is split into ES modules (app.js imports data.js, core.js, …), so we
+# can't rely on query-string versioning — no-cache busts every file uniformly.
+# ETags still make unchanged files return a fast 304.
+/*
+  Cache-Control: no-cache
