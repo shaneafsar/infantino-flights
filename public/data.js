@@ -20,7 +20,7 @@ export const stops = [
   {n:"Houston",lon:-95.4107,lat:29.6847,v:"NRG Stadium",date:"Jun 20",match:"Netherlands 5–1 Sweden",f1:"🇳🇱",f2:"🇸🇪"},
   {n:"Monterrey",lon:-100.2447,lat:25.6692,v:"Estadio BBVA",date:"Jun 20",match:"Japan 4–0 Tunisia",f1:"🇯🇵",f2:"🇹🇳"},
   {n:"Atlanta",lon:-84.4008,lat:33.7554,v:"Mercedes-Benz Stadium",date:"Jun 21",match:"Spain 4–0 Saudi Arabia",f1:"🇪🇸",f2:"🇸🇦"},
-  {n:"Miami",lon:-80.1300,lat:25.7906,v:"Hard Rock Stadium",date:"Jun 21",match:"Uruguay vs Cape Verde",note:"in progress",f1:"🇺🇾",f2:"🇨🇻"}
+  {n:"Miami",lon:-80.1300,lat:25.7906,v:"Hard Rock Stadium",date:"Jun 21",match:"Uruguay vs Cape Verde",note:"spotted live on the broadcast",f1:"🇺🇾",f2:"🇨🇻"}
 ];
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
