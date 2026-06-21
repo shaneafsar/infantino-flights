@@ -51,6 +51,20 @@ test("CO2 milestone box keeps a constant height while scrubbing (no jump)", asyn
   expect(heights).toHaveLength(1); // one distinct height across all milestones
 });
 
+test("Boston label stays within the map bounds on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("/");
+  await expect(page.locator("circle.city")).toHaveCount(12);
+  const within = await page.evaluate(() => {
+    const map = document.getElementById("map").getBoundingClientRect();
+    const boston = [...document.querySelectorAll("text.clabel")].find(l => l.textContent === "Boston");
+    if (!boston) return null;
+    const r = boston.getBoundingClientRect();
+    return r.right <= map.right + 0.5 && r.left >= map.left - 0.5;
+  });
+  expect(within).toBe(true);
+});
+
 test("desktop: no horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/");
