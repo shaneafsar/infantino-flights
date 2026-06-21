@@ -14,28 +14,28 @@ async function ready(page) {
 test("end-of-tour stats", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("20,053");
-  await expect(page.locator("#games")).toHaveText("15");
-  await expect(page.locator("#co2")).toHaveText("60.2");
-  await expect(page.locator("#leg")).toContainText("Atlanta");
-  await expect(page.locator("#leg")).toContainText("Mercedes-Benz Stadium");
+  await expect(page.locator("#miles")).toHaveText("20,660");
+  await expect(page.locator("#games")).toHaveText("16");
+  await expect(page.locator("#co2")).toHaveText("62.0");
+  await expect(page.locator("#leg")).toContainText("Miami");
+  await expect(page.locator("#leg")).toContainText("Hard Rock Stadium");
   await expect(page.locator("#leg")).toContainText("mi total");
 });
 
 test("mi/km toggle flips value, label, active segment, and caption total", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("20,053");
+  await expect(page.locator("#miles")).toHaveText("20,660");
   await expect(page.locator("#unit .u-mi")).toHaveClass(/on/);
 
   await page.locator("#unit").click(); // whole control is the target
-  await expect(page.locator("#miles")).toHaveText("32,272");
+  await expect(page.locator("#miles")).toHaveText("33,249");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
   await expect(page.locator("#unit .u-km")).toHaveClass(/on/);
   await expect(page.locator("#leg")).toContainText("km total");
 
   await page.locator("#unit").click();
-  await expect(page.locator("#miles")).toHaveText("20,053");
+  await expect(page.locator("#miles")).toHaveText("20,660");
   await expect(page.locator("#unit .u-mi")).toHaveClass(/on/);
 });
 
