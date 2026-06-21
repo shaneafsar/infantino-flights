@@ -34,6 +34,23 @@ test("iPhone 15: Miami summit caption does not overflow its box", async ({ page 
   expect(overflow).toBeLessThanOrEqual(1);
 });
 
+test("CO2 milestone box keeps a constant height while scrubbing (no jump)", async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("/");
+  await expect(page.locator("circle.city")).toHaveCount(12);
+  const heights = await page.evaluate(() => {
+    const note = document.getElementById("co2note");
+    const s = document.getElementById("slider");
+    const hs = new Set();
+    for (let v = 0; v <= parseFloat(s.max); v += 0.5) {
+      s.value = String(v); s.dispatchEvent(new Event("input"));
+      hs.add(note.offsetHeight);
+    }
+    return [...hs];
+  });
+  expect(heights).toHaveLength(1); // one distinct height across all milestones
+});
+
 test("desktop: no horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/");

@@ -46,7 +46,7 @@
   .unit-toggle span{padding:4px 6px;font-size:.45rem;color:#8888bb;background:#0a0a1a;text-transform:none}
   .unit-toggle span:first-child{border-right:2px solid #ffcc00}
   .unit-toggle span.on{background:#ffcc00;color:#0a0a1a}
-  .co2-milestone{min-height:1.3em;margin-top:10px;text-align:center;font-size:.5rem;line-height:1.7;color:#ff8888;padding:0 8px}
+  .co2-milestone{min-height:3.4em;margin-top:10px;text-align:center;font-size:.5rem;line-height:1.7;color:#ff8888;padding:0 8px;display:flex;flex-direction:column;justify-content:center}
   .co2-milestone.flash{animation:co2flash .7s ease-out}
   @keyframes co2flash{0%{color:#ffee66;text-shadow:0 0 12px rgba(255,238,102,.9)}100%{color:#ff8888;text-shadow:none}}
   .src{margin-top:12px}
