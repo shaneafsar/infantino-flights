@@ -45,6 +45,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Cache-bust asset URLs (?v=<sha>)
+        run: bash scripts/cachebust.sh "${GITHUB_SHA::8}"
+
       - name: Deploy to Pages
         uses: cloudflare/wrangler-action@v3
         with:
