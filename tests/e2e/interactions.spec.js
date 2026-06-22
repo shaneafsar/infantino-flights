@@ -79,6 +79,26 @@ test("plane nose points toward the next city", async ({ page }) => {
   expect(Math.abs(d.angle - expected)).toBeLessThan(0.5);
 });
 
+test("paused animation stops its rAF loop (guards the double-speed-on-resume bug)", async ({ page }) => {
+  // Count every requestAnimationFrame call (the app's only rAF user is the tick loop).
+  await page.addInitScript(() => {
+    window.__raf = 0;
+    const orig = window.requestAnimationFrame.bind(window);
+    window.requestAnimationFrame = (cb) => { window.__raf++; return orig(cb); };
+  });
+  await page.goto("/");
+  await expect(page.locator("circle.city")).toHaveCount(12);
+
+  await page.locator("#pp").click();        // pause
+  await expect(page.locator("#pp")).toContainText("Play");
+  await page.waitForTimeout(100);           // let the in-flight frame settle
+  await page.evaluate(() => { window.__raf = 0; });
+  await page.waitForTimeout(500);           // ~30 frames at 60fps if a loop were still running
+
+  // With the bug, tick() kept rescheduling while paused (~30); fixed, it stops (~0).
+  expect(await page.evaluate(() => window.__raf)).toBeLessThan(5);
+});
+
 test("play / pause / replay button labels", async ({ page }) => {
   await ready(page);
   const pp = page.locator("#pp");
