@@ -1,5 +1,6 @@
 import {
   proj, haversineMiles, milesToUnit, co2MilestoneIndex, gamesAttended,
+  stopSlug, stopIndexFromParam,
 } from "../../public/core.js";
 import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from "../../public/constants.js";
 import { stops, legMiles, totalMiles, co2Steps } from "../../public/data.js";
@@ -105,6 +106,34 @@ describe("CO2 model", () => {
     expect(co2MilestoneIndex(co2Steps[1].t)).toBe(1);
     expect(co2MilestoneIndex(co2Steps[co2Steps.length - 1].t)).toBe(co2Steps.length - 1);
     expect(co2MilestoneIndex(1000)).toBe(co2Steps.length - 1);
+  });
+});
+
+describe("share links", () => {
+  test("every stop has a unique slug", () => {
+    const slugs = stops.map(stopSlug);
+    expect(new Set(slugs).size).toBe(stops.length);
+    expect(slugs).toContain("jun-21-miami");
+    expect(slugs).toContain("jun-19-boston");
+  });
+
+  test("resolves a slug to its stop index", () => {
+    const i = stops.findIndex(s => s.n === "Boston");
+    expect(stopIndexFromParam("jun-19-boston")).toBe(i);
+    expect(stopIndexFromParam("JUN-19-BOSTON")).toBe(i); // case-insensitive
+  });
+
+  test("resolves a 1-based stop number", () => {
+    expect(stopIndexFromParam("1")).toBe(0);
+    expect(stopIndexFromParam(String(stops.length))).toBe(stops.length - 1);
+  });
+
+  test("rejects out-of-range numbers and unknown slugs", () => {
+    expect(stopIndexFromParam("0")).toBe(-1);
+    expect(stopIndexFromParam("999")).toBe(-1);
+    expect(stopIndexFromParam("nope")).toBe(-1);
+    expect(stopIndexFromParam("")).toBe(-1);
+    expect(stopIndexFromParam(null)).toBe(-1);
   });
 });
 

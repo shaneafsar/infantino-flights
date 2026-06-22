@@ -22,6 +22,15 @@ wrangler.jsonc    # Cloudflare Pages config
 The browser code is split into ES modules (`app.js` imports the rest), so it must be
 served over HTTP — opening `index.html` via `file://` won't load the modules.
 
+## Share links
+
+Link directly to a stop with `?stop=`:
+
+- `?stop=jun-21-miami` — date-city slug (stable; survives inserting/reordering stops)
+- `?stop=17` — 1-based stop number
+
+The page opens paused on that stop. The **🔗 Share** button copies a slug link to whatever stop is on screen.
+
 ## Local preview
 
 ```sh

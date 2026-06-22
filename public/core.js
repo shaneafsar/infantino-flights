@@ -35,3 +35,22 @@ export function gamesAttended(reachedIdx) {
   for (let i = 0; i <= reachedIdx; i++) if (stops[i] && stops[i].f1) count++;
   return count;
 }
+
+// Stable, shareable slug for a stop, derived from its date + city (e.g. "jun-21-miami").
+// Unique across the itinerary because repeat cities differ by date.
+export function stopSlug(stop) {
+  return (stop.date + " " + stop.n).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+// Resolve a ?stop= value to a 0-based stop index, or -1 if unrecognized.
+// Accepts a 1-based stop number ("1".."17") or a date-city slug ("jun-21-miami").
+export function stopIndexFromParam(param) {
+  if (param == null) return -1;
+  const p = String(param).trim().toLowerCase();
+  if (!p) return -1;
+  if (/^\d+$/.test(p)) {
+    const i = parseInt(p, 10) - 1; // 1-based for humans
+    return i >= 0 && i < stops.length ? i : -1;
+  }
+  return stops.findIndex(s => stopSlug(s) === p);
+}

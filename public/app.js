@@ -3,7 +3,7 @@
 import { W, H, lonMin, lonMax, latMin, latMax, CO2_PER_MILE, SPEED, PAUSE_FRAMES } from "./constants.js";
 import { stops, legMiles, totalMiles, co2Steps } from "./data.js";
 import { NA_OUTLINES } from "./geo.js";
-import { proj, milesToUnit, co2MilestoneIndex, gamesAttended } from "./core.js";
+import { proj, milesToUnit, co2MilestoneIndex, gamesAttended, stopSlug, stopIndexFromParam } from "./core.js";
 
 // ---- UI state ----
 let unit = "mi";   // active display unit
@@ -160,15 +160,14 @@ function render() {
 }
 
 function tick() {
-  if (playing) {
-    if (pauseTimer > 0) { pauseTimer--; render(); requestAnimationFrame(tick); return; }
-    const prev = Math.floor(t);
-    t += SPEED;
-    const cur = Math.floor(t);
-    if (cur > prev && t < N) { t = cur; pauseTimer = PAUSE_FRAMES; }
-    if (t >= N) { t = N; render(); playing = false; pp.innerHTML = "&#8635; Replay"; return; }
-    render();
-  }
+  if (!playing) return; // stop the loop when paused so resume starts exactly one loop
+  if (pauseTimer > 0) { pauseTimer--; render(); requestAnimationFrame(tick); return; }
+  const prev = Math.floor(t);
+  t += SPEED;
+  const cur = Math.floor(t);
+  if (cur > prev && t < N) { t = cur; pauseTimer = PAUSE_FRAMES; }
+  if (t >= N) { t = N; render(); playing = false; pp.innerHTML = "&#8635; Replay"; return; }
+  render();
   requestAnimationFrame(tick);
 }
 pp.addEventListener("click", () => {
@@ -178,5 +177,20 @@ pp.addEventListener("click", () => {
 });
 slider.addEventListener("input", () => { t = parseFloat(slider.value); pauseTimer = 0; playing = false; pp.innerHTML = t >= N ? "&#8635; Replay" : "&#9654; Play"; render(); });
 
+// Deep link: ?stop=<1-based number | date-city slug> opens paused at that stop.
+const sharedIdx = stopIndexFromParam(new URLSearchParams(location.search).get("stop"));
+if (sharedIdx >= 0) { t = sharedIdx; playing = false; pp.innerHTML = sharedIdx >= N ? "&#8635; Replay" : "&#9654; Play"; }
+
+// Share button: copy a link to the stop currently on screen.
+const shareBtn = document.getElementById("share");
+shareBtn.addEventListener("click", async () => {
+  const idx = Math.max(0, Math.min(N, Math.round(t)));
+  const url = location.origin + location.pathname + "?stop=" + stopSlug(stops[idx]);
+  try { await navigator.clipboard.writeText(url); } catch (e) { /* clipboard may be blocked */ }
+  const orig = shareBtn.innerHTML;
+  shareBtn.innerHTML = "&#10003; Copied";
+  setTimeout(() => { shareBtn.innerHTML = orig; }, 1500);
+});
+
 render();
-requestAnimationFrame(tick);
+requestAnimationFrame(tick); // returns immediately if a deep link paused us
