@@ -38,5 +38,6 @@ export const co2Steps = [
   {t:32,m:"That&rsquo;s enough to power a home for ~4 years"},
   {t:43,m:"That&rsquo;s ~3 Americans&rsquo; yearly footprint &mdash; or ~2,000 trees for a year"},
   {t:50,m:"That&rsquo;s a year of carbon for ~11 people worldwide"},
-  {t:58,m:"That&rsquo;s the carbon a gas car makes over ~150,000 miles &mdash; for 20,000 of flying"}
+  {t:58,m:"That&rsquo;s a gas car driven ~150,000 miles &mdash; and flying emits ~7&times; more per mile"},
+  {t:64,m:"That&rsquo;s ~4 Americans&rsquo; entire yearly carbon footprint"}
 ];
