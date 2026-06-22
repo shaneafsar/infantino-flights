@@ -6,7 +6,7 @@ const noHorizontalOverflow = (page) =>
 test("iPhone 15: mi/km toggle stays inside the Miles box, no page overflow", async ({ page }) => {
   await page.setViewportSize({ width: 393, height: 852 });
   await page.goto("/");
-  await expect(page.locator("circle.city")).toHaveCount(13);
+  await expect(page.locator("circle.city")).toHaveCount(14);
 
   const within = await page.evaluate(() => {
     const box = document.querySelector(".miles-stat").getBoundingClientRect();
@@ -20,7 +20,7 @@ test("iPhone 15: mi/km toggle stays inside the Miles box, no page overflow", asy
 test("iPhone 15: Miami summit caption does not overflow its box", async ({ page }) => {
   await page.setViewportSize({ width: 393, height: 852 });
   await page.goto("/");
-  await expect(page.locator("circle.city")).toHaveCount(13);
+  await expect(page.locator("circle.city")).toHaveCount(14);
 
   // Jump to the Miami summit (index 5) — the tallest caption: icon + title + note + date.
   await page.$eval("#slider", (el) => { el.value = "5"; el.dispatchEvent(new Event("input")); });
@@ -37,7 +37,7 @@ test("iPhone 15: Miami summit caption does not overflow its box", async ({ page 
 test("CO2 milestone box keeps a constant height while scrubbing (no jump)", async ({ page }) => {
   await page.setViewportSize({ width: 393, height: 852 });
   await page.goto("/");
-  await expect(page.locator("circle.city")).toHaveCount(13);
+  await expect(page.locator("circle.city")).toHaveCount(14);
   const heights = await page.evaluate(() => {
     const note = document.getElementById("co2note");
     const s = document.getElementById("slider");
@@ -54,7 +54,7 @@ test("CO2 milestone box keeps a constant height while scrubbing (no jump)", asyn
 test("Boston label stays within the map bounds on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 393, height: 852 });
   await page.goto("/");
-  await expect(page.locator("circle.city")).toHaveCount(13);
+  await expect(page.locator("circle.city")).toHaveCount(14);
   const within = await page.evaluate(() => {
     const map = document.getElementById("map").getBoundingClientRect();
     const boston = [...document.querySelectorAll("text.clabel")].find(l => l.textContent === "Boston");
@@ -68,6 +68,6 @@ test("Boston label stays within the map bounds on mobile", async ({ page }) => {
 test("desktop: no horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/");
-  await expect(page.locator("circle.city")).toHaveCount(13);
+  await expect(page.locator("circle.city")).toHaveCount(14);
   expect(await noHorizontalOverflow(page)).toBe(true);
 });
