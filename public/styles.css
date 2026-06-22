@@ -53,6 +53,13 @@
   .src .lbl{color:#8888bb;text-transform:uppercase;letter-spacing:.08em}
   .src ul{list-style:none;margin:8px 0 0;padding:0}
   .src li{margin-top:5px}
+  .all-stops{margin-top:16px}
+  .all-stops>summary{cursor:pointer;color:#8888bb;text-transform:uppercase;letter-spacing:.08em}
+  .all-stops>summary:hover{color:#ffcc00}
+  .all-stops ol{text-align:left;max-width:560px;margin:12px auto 0;padding-left:1.8em}
+  .all-stops li{margin:9px 0}
+  .sl-game{display:block;color:#ffcc00}
+  .sl-meta{display:block;color:#8888bb;margin-top:2px}
   @media(max-width:600px){
     body{padding:12px 8px}
     h1{font-size:.75rem}

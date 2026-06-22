@@ -192,5 +192,14 @@ shareBtn.addEventListener("click", async () => {
   setTimeout(() => { shareBtn.innerHTML = orig; }, 1500);
 });
 
+// Full itinerary in the footer accordion (kept in sync with the data).
+document.getElementById("stoplist").innerHTML = stops.map(s => {
+  const game = s.f1 ? s.f1 + " " + s.match + " " + s.f2 : "🏢 " + s.match;
+  const where = s.v || s.note || "";
+  return "<li><span class='sl-game'>" + game + "</span>" +
+    "<span class='sl-meta'>" + s.date + " &middot; " + s.n + (where ? " &middot; " + where : "") + "</span></li>";
+}).join("");
+document.getElementById("stopcount").textContent = stops.length;
+
 render();
 requestAnimationFrame(tick); // returns immediately if a deep link paused us
