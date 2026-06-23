@@ -6,8 +6,8 @@ import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from 
 import { stops, legMiles, totalMiles, co2Steps } from "../../public/data.js";
 
 describe("itinerary data integrity", () => {
-  test("19 stops, 18 legs", () => {
-    expect(stops.length).toBe(19);
+  test("20 stops, 19 legs", () => {
+    expect(stops.length).toBe(20);
     expect(legMiles.length).toBe(stops.length - 1);
   });
 
@@ -66,7 +66,7 @@ describe("distances", () => {
     }
   });
 
-  test("totalMiles is the sum of legs (~23,101)", () => {
+  test("totalMiles is the sum of legs (~23,186)", () => {
     expect(totalMiles).toBe(legMiles.reduce((x, y) => x + y, 0));
     expect(totalMiles).toBeGreaterThan(22000);
     expect(totalMiles).toBeLessThan(24000);
@@ -89,8 +89,8 @@ describe("projection", () => {
 });
 
 describe("CO2 model", () => {
-  test("full tour is ~69 tonnes", () => {
-    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(69.3, 1);
+  test("full tour is ~70 tonnes", () => {
+    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(69.6, 1);
   });
 
   test("milestone thresholds are strictly increasing", () => {
@@ -141,7 +141,7 @@ describe("games attended", () => {
   test("counts only matches; excludes the Miami summit", () => {
     const matchCount = stops.filter(s => s.f1).length;
     expect(gamesAttended(stops.length - 1)).toBe(matchCount);
-    expect(matchCount).toBe(18);
+    expect(matchCount).toBe(19);
   });
 
   test("accumulates as stops are reached", () => {

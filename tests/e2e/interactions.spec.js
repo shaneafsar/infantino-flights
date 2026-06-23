@@ -8,34 +8,34 @@ const scrubToEnd = (page) =>
 
 async function ready(page) {
   await page.goto("/");
-  await expect(page.locator("circle.city")).toHaveCount(14);
+  await expect(page.locator("circle.city")).toHaveCount(15);
 }
 
 test("end-of-tour stats", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("23,101");
-  await expect(page.locator("#games")).toHaveText("18");
-  await expect(page.locator("#co2")).toHaveText("69.3");
-  await expect(page.locator("#leg")).toContainText("Philadelphia");
-  await expect(page.locator("#leg")).toContainText("Lincoln Financial Field");
+  await expect(page.locator("#miles")).toHaveText("23,186");
+  await expect(page.locator("#games")).toHaveText("19");
+  await expect(page.locator("#co2")).toHaveText("69.6");
+  await expect(page.locator("#leg")).toContainText("New York");
+  await expect(page.locator("#leg")).toContainText("MetLife Stadium");
   await expect(page.locator("#leg")).toContainText("mi total");
 });
 
 test("mi/km toggle flips value, label, active segment, and caption total", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("23,101");
+  await expect(page.locator("#miles")).toHaveText("23,186");
   await expect(page.locator("#unit .u-mi")).toHaveClass(/on/);
 
   await page.locator("#unit").click(); // whole control is the target
-  await expect(page.locator("#miles")).toHaveText("37,177");
+  await expect(page.locator("#miles")).toHaveText("37,314");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
   await expect(page.locator("#unit .u-km")).toHaveClass(/on/);
   await expect(page.locator("#leg")).toContainText("km total");
 
   await page.locator("#unit").click();
-  await expect(page.locator("#miles")).toHaveText("23,101");
+  await expect(page.locator("#miles")).toHaveText("23,186");
   await expect(page.locator("#unit .u-mi")).toHaveClass(/on/);
 });
 
@@ -87,7 +87,7 @@ test("paused animation stops its rAF loop (guards the double-speed-on-resume bug
     window.requestAnimationFrame = (cb) => { window.__raf++; return orig(cb); };
   });
   await page.goto("/");
-  await expect(page.locator("circle.city")).toHaveCount(14);
+  await expect(page.locator("circle.city")).toHaveCount(15);
 
   await page.locator("#pp").click();        // pause
   await expect(page.locator("#pp")).toContainText("Play");
