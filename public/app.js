@@ -54,7 +54,12 @@ const pulse = el("circle", { r: 5, class: "ring" });
 svg.appendChild(pulse);
 
 const dots = [], labels = [];
-const labelOffsets = { 1: { anchor: "end", dx: -9, dy: -9 }, 12: { anchor: "end", dx: -9, dy: -9 } }; // Guadalajara & Boston: push label left (they sit near the edges)
+const labelOffsets = {
+  1: { anchor: "end", dx: -9, dy: -9 },   // Guadalajara: push left
+  12: { anchor: "end", dx: -9, dy: -9 },  // Boston: push left (near edge)
+  18: { anchor: "end", dx: -9, dy: 15 },  // Philadelphia: left + below (it's right next to NYC)
+  19: { anchor: "end", dx: -9, dy: -9 },  // New York: left + above (separate from PHL)
+};
 const seen = {}; // cities visited more than once share one dot + label
 stops.forEach((s, i) => {
   const [x, y] = pts[i];

@@ -65,6 +65,25 @@ test("Boston label stays within the map bounds on mobile", async ({ page }) => {
   expect(within).toBe(true);
 });
 
+test("Philadelphia & New York labels fit and don't overlap on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("/");
+  await expect(page.locator("circle.city")).toHaveCount(15);
+  const r = await page.evaluate(() => {
+    const map = document.getElementById("map").getBoundingClientRect();
+    const box = name => {
+      const el = [...document.querySelectorAll("text.clabel")].find(l => l.textContent === name);
+      return el.getBoundingClientRect();
+    };
+    const phl = box("Philadelphia"), nyc = box("New York");
+    const within = b => b.right <= map.right + 0.5 && b.left >= map.left - 0.5;
+    const overlap = !(phl.right <= nyc.left || nyc.right <= phl.left || phl.bottom <= nyc.top || nyc.bottom <= phl.top);
+    return { within: within(phl) && within(nyc), overlap };
+  });
+  expect(r.within).toBe(true);   // neither label is cut off at the map edge
+  expect(r.overlap).toBe(false); // the close PHL/NYC pair doesn't collide
+});
+
 test("desktop: no horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/");
