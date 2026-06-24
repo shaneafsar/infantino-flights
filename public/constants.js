@@ -9,9 +9,16 @@ export const W = 920, H = 600;
 export const lonMin = -131, lonMax = -68, latMin = 14, latMax = 52.5;
 
 // Emissions + unit conversion.
-export const CO2_PER_MILE = 3 / 1000;   // tonnes CO2 per mile (~3 kg)
+// Gulfstream G650ER (the Qatar-flown jet): ~490 gal/hr × 9.57 kg CO2/gal ÷ ~540 mph.
+export const CO2_PER_MILE = 8.7 / 1000;  // tonnes CO2 per mile
 export const KM_PER_MILE = 1.60934;
 export const EARTH_RADIUS_MI = 3958.8;  // mean Earth radius, for great-circle distance
+
+// Private-jet cost (G650ER-class). Per-mile from the charter "wet" hourly (~$13k/hr,
+// which already includes crew + fuel) ÷ ~540 mph; per-leg = landing + FBO/handling +
+// customs (charter rates exclude these).
+export const COST_PER_MILE = 24;
+export const LANDING_FEE = 4000;
 
 // Animation tuning.
 export const SPEED = 0.012;             // legs advanced per animation frame

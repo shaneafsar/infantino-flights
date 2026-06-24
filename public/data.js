@@ -35,13 +35,15 @@ export const totalMiles = legMiles.reduce((a, b) => a + b, 0);
 // CO2 milestones: cumulative tonnes -> relatable comparison shown as the plane flies.
 export const co2Steps = [
   {t:1,m:"That&rsquo;s enough to charge 100,000 smartphones"},
-  {t:4.7,m:"That&rsquo;s more than one person&rsquo;s yearly carbon footprint (global avg)"},
-  {t:8,m:"That&rsquo;s what a gas car emits in ~2 years"},
+  {t:5,m:"That&rsquo;s more than one person&rsquo;s yearly carbon footprint (global avg)"},
   {t:15,m:"That&rsquo;s more than the average American emits in a year"},
   {t:25,m:"That&rsquo;s what ~1,100 trees absorb in a year"},
-  {t:32,m:"That&rsquo;s enough to power a home for ~4 years"},
-  {t:43,m:"That&rsquo;s ~3 Americans&rsquo; yearly footprint &mdash; or ~2,000 trees for a year"},
-  {t:50,m:"That&rsquo;s a year of carbon for ~11 people worldwide"},
-  {t:58,m:"That&rsquo;s a gas car driven ~150,000 miles &mdash; and flying emits ~7&times; more per mile"},
-  {t:64,m:"That&rsquo;s ~4 Americans&rsquo; entire yearly carbon footprint"}
+  {t:40,m:"That&rsquo;s ~3 Americans&rsquo; yearly carbon footprint"},
+  {t:60,m:"That&rsquo;s a year of carbon for ~13 people worldwide"},
+  {t:80,m:"That&rsquo;s enough to power ~11 homes for a year"},
+  {t:100,m:"That&rsquo;s ~7 Americans&rsquo; entire yearly footprint"},
+  {t:130,m:"That&rsquo;s what ~5,900 trees absorb in a year"},
+  {t:160,m:"That&rsquo;s a year of carbon for ~34 people worldwide"},
+  {t:190,m:"That&rsquo;s ~13 Americans&rsquo; yearly footprint"},
+  {t:205,m:"That&rsquo;s a gas car driven ~500,000 miles &mdash; flying emits ~20&times; more per mile"}
 ];

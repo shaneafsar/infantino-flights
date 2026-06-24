@@ -1,6 +1,6 @@
 // Pure logic — no DOM. Unit-tested with Jest.
 
-import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, EARTH_RADIUS_MI } from "./constants.js";
+import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, EARTH_RADIUS_MI, COST_PER_MILE, LANDING_FEE } from "./constants.js";
 import { stops, co2Steps } from "./data.js";
 
 // Project lon/lat to SVG x/y (equirectangular).
@@ -20,6 +20,12 @@ export function haversineMiles(lon1, lat1, lon2, lat2) {
 // Convert miles to the active display unit.
 export function milesToUnit(mi, unit) {
   return unit === "km" ? mi * KM_PER_MILE : mi;
+}
+
+// Estimated private-jet cost: per-mile air time (crew + fuel included) + a landing
+// fee for each leg flown (legs = number of stops landed at so far).
+export function tripCost(miles, legs) {
+  return miles * COST_PER_MILE + legs * LANDING_FEE;
 }
 
 // Index of the highest CO2 milestone reached at `tonnes` (-1 if none yet).

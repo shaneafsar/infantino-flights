@@ -1,5 +1,5 @@
 import {
-  proj, haversineMiles, milesToUnit, co2MilestoneIndex, gamesAttended,
+  proj, haversineMiles, milesToUnit, co2MilestoneIndex, gamesAttended, tripCost,
   stopSlug, stopIndexFromParam,
 } from "../../public/core.js";
 import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from "../../public/constants.js";
@@ -81,6 +81,22 @@ describe("unit conversion", () => {
   });
 });
 
+describe("flight cost", () => {
+  test("two-part formula: $24/mile of air time + $4,000 per leg landed", () => {
+    expect(tripCost(0, 0)).toBe(0);
+    expect(tripCost(1000, 0)).toBe(24000);
+    expect(tripCost(0, 3)).toBe(12000);
+    expect(tripCost(1000, 2)).toBe(24000 + 8000);
+  });
+
+  test("full tour is ~$655k", () => {
+    const cost = tripCost(totalMiles, legMiles.length);
+    expect(cost).toBe(totalMiles * 24 + legMiles.length * 4000);
+    expect(cost).toBeGreaterThan(600000);
+    expect(cost).toBeLessThan(700000);
+  });
+});
+
 describe("projection", () => {
   test("maps the viewport corners to the SVG box", () => {
     expect(proj(lonMin, latMax)).toEqual([0, 0]);
@@ -89,8 +105,8 @@ describe("projection", () => {
 });
 
 describe("CO2 model", () => {
-  test("full tour is ~71 tonnes", () => {
-    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(71.3, 1);
+  test("full tour is ~207 tonnes", () => {
+    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(206.9, 1);
   });
 
   test("milestone thresholds are strictly increasing", () => {

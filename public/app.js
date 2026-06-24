@@ -3,7 +3,7 @@
 import { W, H, lonMin, lonMax, latMin, latMax, CO2_PER_MILE, SPEED, PAUSE_FRAMES } from "./constants.js";
 import { stops, legMiles, totalMiles, co2Steps } from "./data.js";
 import { NA_OUTLINES } from "./geo.js";
-import { proj, milesToUnit, co2MilestoneIndex, gamesAttended, stopSlug, stopIndexFromParam } from "./core.js";
+import { proj, milesToUnit, co2MilestoneIndex, gamesAttended, tripCost, stopSlug, stopIndexFromParam } from "./core.js";
 
 // ---- UI state ----
 let unit = "mi";   // active display unit
@@ -89,7 +89,7 @@ svg.appendChild(plane);
 const slider = document.getElementById("slider"), pp = document.getElementById("pp");
 const milesEl = document.getElementById("miles"), co2El = document.getElementById("co2"),
   gamesEl = document.getElementById("games"), legEl = document.getElementById("leg"),
-  milesLabelEl = document.getElementById("milesLabel"), co2NoteEl = document.getElementById("co2note");
+  milesLabelEl = document.getElementById("milesLabel"), co2NoteEl = document.getElementById("co2note"), costEl = document.getElementById("cost");
 const unitToggle = document.getElementById("unit"), uMi = unitToggle.querySelector(".u-mi"), uKm = unitToggle.querySelector(".u-km");
 function setUnit(u) { unit = u; uMi.classList.toggle("on", u === "mi"); uKm.classList.toggle("on", u === "km"); render(); }
 unitToggle.addEventListener("click", () => setUnit(unit === "mi" ? "km" : "mi"));
@@ -126,6 +126,7 @@ function render() {
   milesEl.textContent = Math.round(milesToUnit(miles, unit)).toLocaleString();
   milesLabelEl.textContent = unit === "km" ? "Km flown" : "Miles flown";
   co2El.textContent = (miles * CO2_PER_MILE).toFixed(1);
+  costEl.textContent = "$" + Math.round(tripCost(miles, Math.min(Math.floor(t), N))).toLocaleString();
 
   // CO2 milestone: update text, flash when a new (higher) tier is crossed
   const cs = co2MilestoneIndex(miles * CO2_PER_MILE);

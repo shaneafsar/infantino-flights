@@ -16,7 +16,8 @@ test("end-of-tour stats", async ({ page }) => {
   await scrubToEnd(page);
   await expect(page.locator("#miles")).toHaveText("23,782");
   await expect(page.locator("#games")).toHaveText("21");
-  await expect(page.locator("#co2")).toHaveText("71.3");
+  await expect(page.locator("#co2")).toHaveText("206.9");
+  await expect(page.locator("#cost")).toHaveText("$654,768");
   await expect(page.locator("#leg")).toContainText("Toronto");
   await expect(page.locator("#leg")).toContainText("BMO Field");
   await expect(page.locator("#leg")).toContainText("mi total");
@@ -43,12 +44,12 @@ test("CO2 milestone text steps up across the tour", async ({ page }) => {
   await ready(page);
   await setT(page, 0);
   await expect(page.locator("#co2note")).toHaveText("");
-  await setT(page, 3); // ~5.7 t
-  await expect(page.locator("#co2note")).toContainText("yearly carbon footprint");
-  await setT(page, 5); // ~16.6 t (Miami)
-  await expect(page.locator("#co2note")).toContainText("American");
-  await scrubToEnd(page); // ~65 t
-  await expect(page.locator("#co2note")).toContainText("4 Americans");
+  await setT(page, 3); // ~17 t (San Francisco)
+  await expect(page.locator("#co2note")).toContainText("average American");
+  await setT(page, 5); // ~48 t (Miami)
+  await expect(page.locator("#co2note")).toContainText("3 Americans");
+  await scrubToEnd(page); // ~207 t
+  await expect(page.locator("#co2note")).toContainText("500,000 miles");
 });
 
 test("captions show stadium name; Miami summit is not counted as a game", async ({ page }) => {
