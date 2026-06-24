@@ -46,26 +46,36 @@
     <div class="co2-milestone" id="co2note"></div>
     <div class="controls">
       <button id="pp">&#9208; Pause</button>
-      <input type="range" id="slider" min="0" max="20" value="0" step="0.001">
+      <input type="range" id="slider" min="0" max="21" value="0" step="0.001">
       <button id="share" title="Copy a link to this stop">&#128279; Share</button>
     </div>
   </div>
 
   <footer class="foot">
-    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle (as-the-crow-flies) approximations measured stadium-to-stadium &mdash; the same method ESPN uses. CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~70 tonnes). Country outlines are real (Natural Earth 1:110m data).
-    <div class="src">
-      <span class="lbl">Sources</span>
-      <ul>
-        <li><a href="https://www.espn.com/soccer/story/_/id/49116383/infantino-fifa-presidents-epic-world-cup-tour" target="_blank" rel="noopener">ESPN &mdash; Where has Infantino been? The FIFA president's epic World Cup tour (stop-by-stop itinerary)</a></li>
-        <li><a href="https://www.nytimes.com/athletic/7363938/2026/06/16/gianni-infantino-world-cup-travel-games/" target="_blank" rel="noopener">The Athletic (The New York Times) &mdash; Infantino's World Cup travel: the Qatar Airways private jet &amp; two-games-a-day itinerary</a></li>
-        <li><a href="https://www.espn.com/soccer/match/_/gameId/760435/congo-dr-portugal" target="_blank" rel="noopener">ESPN &mdash; Portugal 1&ndash;1 Congo DR, Houston (Jun 17)</a></li>
-        <li><a href="https://www.espn.com/soccer/match/_/gameId/760436/colombia-uzbekistan" target="_blank" rel="noopener">ESPN &mdash; Colombia 3&ndash;1 Uzbekistan, Mexico City (Jun 17)</a></li>
-        <li><a href="https://www.espn.com/soccer/match/_/gameId/760440/qatar-canada" target="_blank" rel="noopener">ESPN &mdash; Canada 6&ndash;0 Qatar, Vancouver (Jun 18)</a></li>
-      </ul>
-    </div>
+    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle (as-the-crow-flies) approximations measured stadium-to-stadium &mdash; the same method ESPN uses. CO&#8322; estimated at ~3 kg per mile for a midsize private jet (~71 tonnes). Country outlines are real (Natural Earth 1:110m data).
     <details class="all-stops">
-      <summary>All stops (<span id="stopcount"></span>)</summary>
+      <summary>All stops (<span id="stopcount"></span>) &amp; sources</summary>
       <ol id="stoplist"></ol>
+      <div class="src">
+        <span class="lbl">Sources</span>
+        <ul>
+          <li><a href="https://www.espn.com/soccer/story/_/id/49116383/infantino-fifa-presidents-epic-world-cup-tour" target="_blank" rel="noopener">ESPN &mdash; Where has Infantino been? The FIFA president's epic World Cup tour (stop-by-stop itinerary)</a></li>
+          <li><a href="https://www.nytimes.com/athletic/7363938/2026/06/16/gianni-infantino-world-cup-travel-games/" target="_blank" rel="noopener">The Athletic (NYT) &mdash; Infantino's World Cup travel: Qatar Airways private jet &amp; two-games-a-day itinerary</a></li>
+          <li><a href="https://www.rte.ie/news/2026/0621/1579521-world-cup-infantino/" target="_blank" rel="noopener">RT&Eacute; &mdash; Infantino's air miles: at Houston (Netherlands&ndash;Sweden, with the Dutch royals) &amp; Monterrey (Japan&ndash;Tunisia), Jun 20</a></li>
+          <li><a href="https://www.reutersconnect.com/item/fifa-world-cup-2026-group-c-scotland-v-morocco/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkoxUEZBNUE" target="_blank" rel="noopener">Reuters &mdash; Scotland v Morocco, Boston (Jun 19): Infantino in the stands with the Scottish &amp; Moroccan FA presidents</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760435/congo-dr-portugal" target="_blank" rel="noopener">ESPN &mdash; Portugal 1&ndash;1 Congo DR, Houston (Jun 17)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760436/colombia-uzbekistan" target="_blank" rel="noopener">ESPN &mdash; Colombia 3&ndash;1 Uzbekistan, Mexico City (Jun 17)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760440/qatar-canada" target="_blank" rel="noopener">ESPN &mdash; Canada 6&ndash;0 Qatar, Vancouver (Jun 18)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760445/morocco-scotland" target="_blank" rel="noopener">ESPN &mdash; Scotland 0&ndash;1 Morocco, Boston (Jun 19)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760453/saudi-arabia-spain" target="_blank" rel="noopener">ESPN &mdash; Spain 4&ndash;0 Saudi Arabia, Atlanta (Jun 21)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760450/cape-verde-uruguay" target="_blank" rel="noopener">ESPN &mdash; Uruguay 2&ndash;2 Cape Verde, Miami (Jun 21)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760456/austria-argentina" target="_blank" rel="noopener">ESPN &mdash; Argentina 2&ndash;0 Austria, Dallas (Jun 22)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760457/iraq-france" target="_blank" rel="noopener">ESPN &mdash; France 3&ndash;0 Iraq, Philadelphia (Jun 22)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760454/senegal-norway" target="_blank" rel="noopener">ESPN &mdash; Norway 3&ndash;2 Senegal, New York (Jun 22)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760458/ghana-england" target="_blank" rel="noopener">ESPN &mdash; England 0&ndash;0 Ghana, Boston (Jun 23)</a></li>
+          <li class="src-note">Most recent sightings (Jun 22&ndash;23) are confirmed by eyewitness &amp; press reports &mdash; incl. The Sun (England&ndash;Ghana) and Croatian outlets Ve&#269;ernji &amp; Index.hr (Croatia&ndash;Panama, Toronto) &mdash; where wire coverage hasn't caught up.</li>
+        </ul>
+      </div>
     </details>
   </footer>
 

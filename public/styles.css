@@ -60,6 +60,9 @@
   .all-stops li{margin:9px 0}
   .sl-game{display:block;color:#ffcc00}
   .sl-meta{display:block;color:#8888bb;margin-top:2px}
+  .all-stops .src{max-width:560px;margin:16px auto 0;border-top:1px solid #2a2a55;padding-top:12px}
+  .all-stops .src li{margin:6px 0}
+  .src-note{list-style:none;margin-left:-1.4em;color:#666688;font-style:italic}
   @media(max-width:600px){
     body{padding:12px 8px}
     h1{font-size:.75rem}
