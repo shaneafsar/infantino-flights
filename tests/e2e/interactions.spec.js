@@ -100,6 +100,22 @@ test("paused animation stops its rAF loop (guards the double-speed-on-resume bug
   expect(await page.evaluate(() => window.__raf)).toBeLessThan(5);
 });
 
+test("plane lands on the final stop regardless of path (no stale-transform fling)", async ({ page }) => {
+  await ready(page);
+  const center = () => page.evaluate(() => {
+    const r = document.querySelector("text.plane").getBoundingClientRect();
+    return [r.x + r.width / 2, r.y + r.height / 2];
+  });
+  const go = (v) => page.$eval("#slider", (el, val) => { el.value = String(val); el.dispatchEvent(new Event("input")); }, String(v));
+  const max = await page.$eval("#slider", (el) => el.max);
+
+  await go(parseFloat(max) - 0.01); await go(max); const fromNear = await center();
+  await go(2);                      await go(max); const fromFar = await center();
+
+  // end position must be path-independent (bug flung it ~775px off-screen)
+  expect(Math.hypot(fromNear[0] - fromFar[0], fromNear[1] - fromFar[1])).toBeLessThan(2);
+});
+
 test("play / pause / replay button labels", async ({ page }) => {
   await ready(page);
   const pp = page.locator("#pp");

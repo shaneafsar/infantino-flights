@@ -118,8 +118,12 @@ function render() {
   else { px = pts[N][0]; py = pts[N][1]; }
   fg.setAttribute("d", d);
   plane.setAttribute("x", px); plane.setAttribute("y", py);
-  // ✈️ renders pointing ~45° up-and-right, so offset the rotation by 45° to aim the nose along travel
-  if (!end) { const ang = Math.atan2(pts[seg + 1][1] - pts[seg][1], pts[seg + 1][0] - pts[seg][0]) * 180 / Math.PI; plane.setAttribute("transform", "rotate(" + (ang + 45) + " " + px + " " + py + ")"); }
+  // Aim the ✈️ nose along the current leg, always rotating around the plane's CURRENT
+  // center (+45° because the glyph points up-right). At the end, face along the final leg —
+  // and crucially update the rotation center to px,py so it doesn't fling off a stale center.
+  const faceLeg = end ? N - 1 : seg;
+  const ang = Math.atan2(pts[faceLeg + 1][1] - pts[faceLeg][1], pts[faceLeg + 1][0] - pts[faceLeg][0]) * 180 / Math.PI;
+  plane.setAttribute("transform", "rotate(" + (ang + 45) + " " + px + " " + py + ")");
 
   let miles = 0; for (let i = 0; i < seg; i++) miles += legMiles[i];
   miles = end ? totalMiles : miles + legMiles[seg] * f;
