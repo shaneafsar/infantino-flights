@@ -25,11 +25,12 @@ export const stops = [
   {n:"Philadelphia",lon:-75.1675,lat:39.9008,v:"Lincoln Financial Field",date:"Jun 22",match:"France 3–0 Iraq",f1:"🇫🇷",f2:"🇮🇶"},
   {n:"New York",lon:-74.0745,lat:40.8135,v:"MetLife Stadium",date:"Jun 22",match:"Norway 3–2 Senegal",f1:"🇳🇴",f2:"🇸🇳"},
   {n:"Boston",lon:-71.2643,lat:42.0909,v:"Gillette Stadium",date:"Jun 23",match:"England 0–0 Ghana",f1:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",f2:"🇬🇭"},
-  {n:"Toronto",lon:-79.4185,lat:43.6332,v:"BMO Field",date:"Jun 23",match:"Croatia 1–0 Panama",f1:"🇭🇷",f2:"🇵🇦"}
+  {n:"Toronto",lon:-79.4185,lat:43.6332,v:"BMO Field",date:"Jun 23",match:"Croatia 1–0 Panama",f1:"🇭🇷",f2:"🇵🇦"},
+  {n:"Miami",lon:-80.1300,lat:25.7906,v:"Hard Rock Stadium",date:"Jun 24",match:"Scotland 0–3 Brazil",f1:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",f2:"🇧🇷"}
 ];
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
-export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426];
+export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234];
 export const totalMiles = legMiles.reduce((a, b) => a + b, 0);
 
 // CO2 milestones: cumulative tonnes -> relatable comparison shown as the plane flies.
@@ -37,7 +38,7 @@ export const co2Steps = [
   {t:1,m:"That&rsquo;s enough to charge 100,000 smartphones"},
   {t:5,m:"That&rsquo;s more than one person&rsquo;s yearly carbon footprint (global avg)"},
   {t:15,m:"That&rsquo;s more than the average American emits in a year"},
-  {t:25,m:"That&rsquo;s what ~1,100 trees absorb in a year"},
+  {t:22,m:"That&rsquo;s what ~1,000 trees absorb in a year"},
   {t:40,m:"That&rsquo;s ~3 Americans&rsquo; yearly carbon footprint"},
   {t:60,m:"That&rsquo;s a year of carbon for ~13 people worldwide"},
   {t:80,m:"That&rsquo;s enough to power ~11 homes for a year"},
