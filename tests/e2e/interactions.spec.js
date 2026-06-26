@@ -20,10 +20,9 @@ test("end-of-tour stats", async ({ page }) => {
   await expect(page.locator("#cost")).toHaveText("$716,768");
   await expect(page.locator("#leg")).toContainText("Philadelphia");
   await expect(page.locator("#leg")).toContainText("Lincoln Financial Field");
-  await expect(page.locator("#leg")).toContainText("mi total");
 });
 
-test("mi/km toggle flips value, label, active segment, and caption total", async ({ page }) => {
+test("mi/km toggle flips value, label, and active segment", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
   await expect(page.locator("#miles")).toHaveText("26,032");
@@ -33,7 +32,6 @@ test("mi/km toggle flips value, label, active segment, and caption total", async
   await expect(page.locator("#miles")).toHaveText("41,894");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
   await expect(page.locator("#unit .u-km")).toHaveClass(/on/);
-  await expect(page.locator("#leg")).toContainText("km total");
 
   await page.locator("#unit").click();
   await expect(page.locator("#miles")).toHaveText("26,032");

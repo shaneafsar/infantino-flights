@@ -159,7 +159,7 @@ function render() {
   // caption
   if (end) {
     const s = stops[N];
-    legEl.innerHTML = vsHtml(s) + '<span class="dt">' + s.date + ' &middot; ' + s.n + (s.v ? ' &middot; ' + s.v : '') + ' &middot; ' + Math.round(milesToUnit(totalMiles, unit)).toLocaleString() + ' ' + unit + ' total</span>';
+    legEl.innerHTML = vsHtml(s) + '<span class="dt">' + s.date + ' &middot; ' + s.n + (s.v ? ' &middot; ' + s.v : '') + '</span>';
   } else if (pauseTimer > 0 || f < 0.06) {
     const s = stops[seg];
     legEl.innerHTML = vsHtml(s) + '<span class="dt">' + s.date + ' &middot; ' + s.n + (s.v ? ' &middot; ' + s.v : '') + '</span>';
