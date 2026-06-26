@@ -91,10 +91,15 @@ const slider = document.getElementById("slider"), pp = document.getElementById("
 const milesEl = document.getElementById("miles"), co2El = document.getElementById("co2"),
   gamesEl = document.getElementById("games"), legEl = document.getElementById("leg"),
   milesLabelEl = document.getElementById("milesLabel"), co2NoteEl = document.getElementById("co2note"), costEl = document.getElementById("cost");
-// mi/km is a native radio group; the checked state is reflected by CSS (:checked),
-// so we only react to changes and re-render.
+// mi/km is a native radio group (keyboard + screen-reader friendly), but for
+// pointers the WHOLE control toggles: a tap anywhere flips the unit instead of
+// requiring a precise hit on the off radio.
 const unitToggle = document.getElementById("unit");
-function setUnit(u) { unit = u; render(); }
+function setUnit(u) { unit = u; document.getElementById("unit-" + u).checked = true; render(); }
+// preventDefault stops the native label→radio selection so our flip is the single
+// source of truth (otherwise a tap on a label and our handler could fight).
+unitToggle.addEventListener("click", (e) => { e.preventDefault(); setUnit(unit === "mi" ? "km" : "mi"); });
+// Keyboard (arrow keys / space) still selects via the native radios.
 unitToggle.addEventListener("change", (e) => { if (e.target.name === "unit") setUnit(e.target.value); });
 
 // ---- animation ----

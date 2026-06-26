@@ -45,7 +45,7 @@
   .foot a:hover{color:#ffcc00}
   .note{margin-top:10px;color:#8888bb;font-style:italic}
   .miles-stat .l{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-  .unit-toggle{display:inline-flex;flex:none;border:2px solid #ffcc00;box-shadow:2px 2px 0 #804000;line-height:1}
+  .unit-toggle{display:inline-flex;flex:none;border:2px solid #ffcc00;box-shadow:2px 2px 0 #804000;line-height:1;cursor:pointer}
   .unit-toggle .u-input{appearance:none;-webkit-appearance:none;width:0;height:0;margin:0;border:0;opacity:0} /* radios drive state; styled via :checked */
   .unit-toggle label{padding:4px 6px;font-size:.45rem;color:#8888bb;background:#0a0a1a;text-transform:none;cursor:pointer}
   .unit-toggle label.u-mi{border-right:2px solid #ffcc00}

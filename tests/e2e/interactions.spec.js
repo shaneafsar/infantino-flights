@@ -22,20 +22,34 @@ test("end-of-tour stats", async ({ page }) => {
   await expect(page.locator("#leg")).toContainText("Lincoln Financial Field");
 });
 
-test("mi/km radio group flips value, label, and checked state", async ({ page }) => {
+test("mi/km flips on a tap anywhere in the control (not just the off radio)", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
   await expect(page.locator("#miles")).toHaveText("26,032");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 
-  await page.locator('label[for="unit-km"]').click(); // click the visible label
+  // tapping the whole control flips mi -> km
+  await page.locator("#unit").click();
   await expect(page.locator("#miles")).toHaveText("41,894");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
   await expect(page.getByRole("radio", { name: "km" })).toBeChecked();
 
-  await page.locator('label[for="unit-mi"]').click();
+  // tapping the *already-active* "km" label still flips back to mi (whole area toggles)
+  await page.locator('label[for="unit-km"]').click();
   await expect(page.locator("#miles")).toHaveText("26,032");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
+});
+
+test("mi/km still responds to the native radio change (keyboard / assistive tech path)", async ({ page }) => {
+  await ready(page);
+  // Selecting a radio via keyboard fires `change` (no pointer click); simulate that directly.
+  await page.evaluate(() => {
+    const km = document.getElementById("unit-km");
+    km.checked = true;
+    km.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  await expect(page.locator("#milesLabel")).toHaveText("Km flown");
+  await expect(page.getByRole("radio", { name: "km" })).toBeChecked();
 });
 
 test("CO2 milestone text steps up across the tour", async ({ page }) => {
