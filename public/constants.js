@@ -20,6 +20,8 @@ export const EARTH_RADIUS_MI = 3958.8;  // mean Earth radius, for great-circle d
 export const COST_PER_MILE = 24;
 export const LANDING_FEE = 4000;
 
-// Animation tuning.
-export const SPEED = 0.012;             // legs advanced per animation frame
-export const PAUSE_FRAMES = 240;        // ~4s hold at each stop (60fps)
+// Animation tuning. Time-based so the pace is identical at any refresh rate
+// (30/60/120 Hz) — frame-based timing ran ~2× slow on throttled mobile displays.
+export const SPEED_PER_SEC = 0.72;      // legs advanced per second (~1.4s per leg)
+export const PAUSE_MS = 4000;           // hold at each stop, in wall-clock ms
+export const MAX_FRAME_MS = 100;        // cap per-frame delta so a backgrounded tab doesn't jump

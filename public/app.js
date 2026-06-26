@@ -1,6 +1,6 @@
 // View layer — builds the SVG map, runs the animation, wires up the controls.
 
-import { W, H, lonMin, lonMax, latMin, latMax, CO2_PER_MILE, SPEED, PAUSE_FRAMES } from "./constants.js";
+import { W, H, lonMin, lonMax, latMin, latMax, CO2_PER_MILE, SPEED_PER_SEC, PAUSE_MS, MAX_FRAME_MS } from "./constants.js";
 import { stops, legMiles, totalMiles, co2Steps } from "./data.js";
 import { NA_OUTLINES } from "./geo.js";
 import { proj, milesToUnit, co2MilestoneIndex, gamesAttended, tripCost, stopSlug, stopIndexFromParam } from "./core.js";
@@ -97,7 +97,8 @@ unitToggle.addEventListener("click", () => setUnit(unit === "mi" ? "km" : "mi"))
 // ---- animation ----
 const N = stops.length - 1; // legs
 let t = 0, playing = true;
-let pauseTimer = PAUSE_FRAMES; // pause at first city
+let pauseTimer = PAUSE_MS; // ms left to hold at the current stop (starts at the first city)
+let lastTs = 0;            // timestamp of the previous frame; 0 = loop just (re)started
 const lerp = (a, b, f) => a + (b - a) * f;
 
 function vsHtml(s) {
@@ -169,21 +170,27 @@ function render() {
   slider.value = t;
 }
 
-function tick() {
+// Time-based loop: advance by real elapsed ms so the pace is the same at any
+// refresh rate. `ts` is the DOMHighResTimeStamp rAF passes in; lastTs===0 marks
+// a fresh (re)start so the first frame contributes no motion.
+function tick(ts) {
   if (!playing) return; // stop the loop when paused so resume starts exactly one loop
-  if (pauseTimer > 0) { pauseTimer--; render(); requestAnimationFrame(tick); return; }
+  if (!lastTs) lastTs = ts;
+  const dt = Math.min(ts - lastTs, MAX_FRAME_MS); // cap so a backgrounded tab doesn't jump on return
+  lastTs = ts;
+  if (pauseTimer > 0) { pauseTimer -= dt; render(); requestAnimationFrame(tick); return; }
   const prev = Math.floor(t);
-  t += SPEED;
+  t += SPEED_PER_SEC * dt / 1000;
   const cur = Math.floor(t);
-  if (cur > prev && t < N) { t = cur; pauseTimer = PAUSE_FRAMES; }
+  if (cur > prev && t < N) { t = cur; pauseTimer = PAUSE_MS; }
   if (t >= N) { t = N; render(); playing = false; pp.innerHTML = "&#8635; Replay"; return; }
   render();
   requestAnimationFrame(tick);
 }
 pp.addEventListener("click", () => {
-  if (t >= N) { t = 0; playing = true; pauseTimer = PAUSE_FRAMES; pp.innerHTML = "&#9208; Pause"; requestAnimationFrame(tick); return; }
+  if (t >= N) { t = 0; playing = true; pauseTimer = PAUSE_MS; lastTs = 0; pp.innerHTML = "&#9208; Pause"; requestAnimationFrame(tick); return; }
   playing = !playing; pp.innerHTML = playing ? "&#9208; Pause" : "&#9654; Play";
-  if (playing) requestAnimationFrame(tick);
+  if (playing) { lastTs = 0; requestAnimationFrame(tick); }
 });
 slider.addEventListener("input", () => { t = parseFloat(slider.value); pauseTimer = 0; playing = false; pp.innerHTML = t >= N ? "&#8635; Replay" : "&#9654; Play"; render(); });
 

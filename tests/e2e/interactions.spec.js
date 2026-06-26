@@ -100,6 +100,39 @@ test("paused animation stops its rAF loop (guards the double-speed-on-resume bug
   expect(await page.evaluate(() => window.__raf)).toBeLessThan(5);
 });
 
+test("animation pace is frame-rate independent (30fps vs 60fps reach the same point)", async ({ page }) => {
+  // Replace rAF with a manual queue so the test feeds the loop exact timestamps.
+  // Frame-based timing (the old bug) would advance 2x further per wall-clock ms at 60fps;
+  // time-based timing lands on the same t for the same elapsed time at any frame rate.
+  await page.addInitScript(() => {
+    window.__q = [];
+    window.requestAnimationFrame = (cb) => { window.__q.push(cb); return window.__q.length; };
+    // Run `totalMs` of simulated time in fixed `stepMs` ticks, then report t (= slider.value).
+    window.__simulate = (totalMs, stepMs) => {
+      let now = 0;
+      while (now < totalMs) {
+        now += stepMs;
+        const cbs = window.__q.splice(0);
+        for (const cb of cbs) cb(now);
+      }
+      return parseFloat(document.getElementById("slider").value);
+    };
+  });
+
+  // 10s covers: 4s pause + leg 0 (~1.4s) + 4s pause + partway into leg 1, so t lands
+  // mid-leg (a non-integer) — a real motion check, not just a snapped-to-stop integer.
+  await page.goto("/");
+  await expect(page.locator("circle.city")).toHaveCount(16);
+  const t30 = await page.evaluate(() => window.__simulate(10000, 1000 / 30)); // 10s at 30fps
+
+  await page.reload();
+  await expect(page.locator("circle.city")).toHaveCount(16);
+  const t60 = await page.evaluate(() => window.__simulate(10000, 1000 / 60)); // 10s at 60fps
+
+  expect(t30).toBeGreaterThan(1.2);               // cleared two pauses and flew into the second leg
+  expect(Math.abs(t30 - t60)).toBeLessThan(0.1);  // same wall-clock time -> same position (frame-rate independent)
+});
+
 test("plane lands on the final stop regardless of path (no stale-transform fling)", async ({ page }) => {
   await ready(page);
   const center = () => page.evaluate(() => {
