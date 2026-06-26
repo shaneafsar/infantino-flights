@@ -33,28 +33,34 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Infantino's World Cup Flight Tour</h1>
-  <div class="sub">The FIFA president's private-jet dash across North America to catch 2026 World Cup games</div>
+  <header>
+    <h1>Infantino's World Cup Flight Tour</h1>
+    <p class="sub">The FIFA president's private-jet dash across North America to catch 2026 World Cup games</p>
+  </header>
 
-  <div class="stage">
-    <svg id="map" viewBox="0 0 920 600"></svg>
+  <main class="stage">
+    <svg id="map" viewBox="0 0 920 600" role="img" aria-label="Pixel-art map of North America tracing Infantino's World Cup flight route between host-city stadiums"></svg>
     <div class="leg" id="leg"></div>
-    <div class="panel">
-      <div class="stat miles-stat"><div class="v" id="miles">0</div><div class="l"><span id="milesLabel">Miles flown</span><div class="unit-toggle" id="unit" title="Show miles or kilometers"><span class="u-mi on">mi</span><span class="u-km">km</span></div></div></div>
-      <div class="stat"><div class="v co2" id="co2">0</div><div class="l">Tonnes CO&#8322; (est.)</div></div>
-      <div class="stat"><div class="v cost" id="cost">$0</div><div class="l">Est. cost</div></div>
-      <div class="stat"><div class="v" id="games">0</div><div class="l">Games attended</div></div>
-    </div>
+    <dl class="panel">
+      <div class="stat miles-stat">
+        <dt class="l"><span id="milesLabel">Miles flown</span><span class="unit-toggle" id="unit" role="radiogroup" aria-label="Distance unit"><input class="u-input" type="radio" name="unit" id="unit-mi" value="mi" checked><label class="u-mi" for="unit-mi">mi</label><input class="u-input" type="radio" name="unit" id="unit-km" value="km"><label class="u-km" for="unit-km">km</label></span></dt>
+        <dd class="v" id="miles">0</dd>
+      </div>
+      <div class="stat"><dt class="l">Tonnes CO&#8322; (est.)</dt><dd class="v co2" id="co2">0</dd></div>
+      <div class="stat"><dt class="l">Est. cost</dt><dd class="v cost" id="cost">$0</dd></div>
+      <div class="stat"><dt class="l">Games attended</dt><dd class="v" id="games">0</dd></div>
+    </dl>
     <div class="co2-milestone" id="co2note"></div>
     <div class="controls">
       <button id="pp">&#9208; Pause</button>
-      <input type="range" id="slider" min="0" max="23" value="0" step="0.001">
+      <input type="range" id="slider" min="0" max="23" value="0" step="0.001" aria-label="Tour progress — scrub through the stops">
       <button id="share" title="Copy a link to this stop">&#128279; Share</button>
     </div>
-  </div>
+  </main>
 
   <footer class="foot">
-    Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle (as-the-crow-flies) approximations measured stadium-to-stadium &mdash; the same method ESPN uses. CO&#8322; estimated at ~8.7 kg per mile for a Gulfstream G650ER (the Qatar-flown private jet). Cost estimated at ~$24/mile (G650ER charter, crew &amp; fuel included) plus ~$4,000/leg landing &amp; handling. Country outlines are real (Natural Earth 1:110m data).
+    <p class="method">Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle (as-the-crow-flies) approximations measured stadium-to-stadium &mdash; the same method ESPN uses. CO&#8322; estimated at ~8.7 kg per mile for a Gulfstream G650ER (the Qatar-flown private jet). Cost estimated at ~$24/mile (G650ER charter, crew &amp; fuel included) plus ~$4,000/leg landing &amp; handling. Country outlines are real (Natural Earth 1:110m data).</p>
+    <p class="updated">Data last updated: <time id="updated"></time></p>
     <details class="all-stops">
       <summary>All stops (<span id="stopcount"></span>) &amp; sources</summary>
       <ol id="stoplist"></ol>

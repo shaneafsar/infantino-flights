@@ -18,3 +18,12 @@ test("footer 'All stops' accordion is collapsed and lists the itinerary in order
   await details.locator("summary").click();
   await expect(details).toHaveJSProperty("open", true);
 });
+
+test("'data last updated' stamp renders a formatted date with a timezone", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("circle.city")).toHaveCount(16);
+
+  const time = page.locator("#updated");
+  await expect(time).toHaveText(/2026.*(EDT|EST|GMT|UTC|[A-Z]{2,4})/); // formatted date + tz abbreviation
+  await expect(time).toHaveAttribute("datetime", /^2026-\d\d-\d\dT/);   // machine-readable ISO
+});

@@ -1,5 +1,9 @@
 // Itinerary + content data. No logic, no DOM.
 
+// When the itinerary above was last revised (ISO 8601 with offset). Bump this
+// whenever stops/scores change; it's surfaced in the footer as "data last updated".
+export const dataUpdated = "2026-06-26T13:42:00-04:00";
+
 // Each stop: city, stadium coords (lon/lat), stadium name (v), date, match, team
 // flags (f1/f2). The Miami summit has no flags (not a match). Repeat cities reuse
 // identical coords so the map dedupes their marker + label.

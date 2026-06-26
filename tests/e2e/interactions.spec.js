@@ -22,20 +22,20 @@ test("end-of-tour stats", async ({ page }) => {
   await expect(page.locator("#leg")).toContainText("Lincoln Financial Field");
 });
 
-test("mi/km toggle flips value, label, and active segment", async ({ page }) => {
+test("mi/km radio group flips value, label, and checked state", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
   await expect(page.locator("#miles")).toHaveText("26,032");
-  await expect(page.locator("#unit .u-mi")).toHaveClass(/on/);
+  await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 
-  await page.locator("#unit").click(); // whole control is the target
+  await page.locator('label[for="unit-km"]').click(); // click the visible label
   await expect(page.locator("#miles")).toHaveText("41,894");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
-  await expect(page.locator("#unit .u-km")).toHaveClass(/on/);
+  await expect(page.getByRole("radio", { name: "km" })).toBeChecked();
 
-  await page.locator("#unit").click();
+  await page.locator('label[for="unit-mi"]').click();
   await expect(page.locator("#miles")).toHaveText("26,032");
-  await expect(page.locator("#unit .u-mi")).toHaveClass(/on/);
+  await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 });
 
 test("CO2 milestone text steps up across the tour", async ({ page }) => {

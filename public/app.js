@@ -1,7 +1,7 @@
 // View layer — builds the SVG map, runs the animation, wires up the controls.
 
 import { W, H, lonMin, lonMax, latMin, latMax, CO2_PER_MILE, SPEED_PER_SEC, PAUSE_MS, MAX_FRAME_MS } from "./constants.js";
-import { stops, legMiles, totalMiles, co2Steps } from "./data.js";
+import { stops, legMiles, totalMiles, co2Steps, dataUpdated } from "./data.js";
 import { NA_OUTLINES } from "./geo.js";
 import { proj, milesToUnit, co2MilestoneIndex, gamesAttended, tripCost, stopSlug, stopIndexFromParam } from "./core.js";
 
@@ -59,6 +59,7 @@ const labelOffsets = {
   12: { anchor: "end", dx: -9, dy: -9 },  // Boston: push left (near edge)
   18: { anchor: "end", dx: -9, dy: 15 },  // Philadelphia: left + below (it's right next to NYC)
   19: { anchor: "end", dx: -9, dy: -9 },  // New York: left + above (separate from PHL)
+  21: { anchor: "end", dx: -9, dy: -9 },  // Toronto: left + above (clear of Boston/NY to the SE)
 };
 const seen = {}; // cities visited more than once share one dot + label
 stops.forEach((s, i) => {
@@ -90,9 +91,11 @@ const slider = document.getElementById("slider"), pp = document.getElementById("
 const milesEl = document.getElementById("miles"), co2El = document.getElementById("co2"),
   gamesEl = document.getElementById("games"), legEl = document.getElementById("leg"),
   milesLabelEl = document.getElementById("milesLabel"), co2NoteEl = document.getElementById("co2note"), costEl = document.getElementById("cost");
-const unitToggle = document.getElementById("unit"), uMi = unitToggle.querySelector(".u-mi"), uKm = unitToggle.querySelector(".u-km");
-function setUnit(u) { unit = u; uMi.classList.toggle("on", u === "mi"); uKm.classList.toggle("on", u === "km"); render(); }
-unitToggle.addEventListener("click", () => setUnit(unit === "mi" ? "km" : "mi"));
+// mi/km is a native radio group; the checked state is reflected by CSS (:checked),
+// so we only react to changes and re-render.
+const unitToggle = document.getElementById("unit");
+function setUnit(u) { unit = u; render(); }
+unitToggle.addEventListener("change", (e) => { if (e.target.name === "unit") setUnit(e.target.value); });
 
 // ---- animation ----
 const N = stops.length - 1; // legs
@@ -217,6 +220,17 @@ document.getElementById("stoplist").innerHTML = stops.map(s => {
     "<span class='sl-meta'>" + s.date + " &middot; " + s.n + (where ? " &middot; " + where : "") + "</span></li>";
 }).join("");
 document.getElementById("stopcount").textContent = stops.length;
+
+// "Data last updated" stamp — shown in a fixed zone (US Eastern) so every visitor
+// sees the same instant, with the tz abbreviation appended.
+const updatedEl = document.getElementById("updated");
+const updatedDate = new Date(dataUpdated);
+updatedEl.setAttribute("datetime", dataUpdated);
+updatedEl.textContent = new Intl.DateTimeFormat("en-US", {
+  year: "numeric", month: "short", day: "numeric",
+  hour: "numeric", minute: "2-digit",
+  timeZone: "America/New_York", timeZoneName: "short",
+}).format(updatedDate);
 
 render();
 requestAnimationFrame(tick); // returns immediately if a deep link paused us
