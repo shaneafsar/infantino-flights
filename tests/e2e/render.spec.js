@@ -8,7 +8,7 @@ test("loads with no console errors and a fully built map", async ({ page }) => {
   await page.goto("/");
 
   // app.js (ES module) has run once the deduped city dots exist
-  await expect(page.locator("circle.city")).toHaveCount(16); // 24 stops dedupe to 16 unique cities
+  await expect(page.locator("circle.city")).toHaveCount(16); // 25 stops dedupe to 16 unique cities
   await expect(page.locator("path.route-bg")).toHaveCount(1);
   await expect(page.locator("text.plane")).toHaveCount(1);
   await expect.poll(() => page.locator("path.land").count()).toBeGreaterThan(0);
