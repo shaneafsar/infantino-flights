@@ -34,7 +34,7 @@ export const stops = [
   {n:"Philadelphia",lon:-75.1675,lat:39.9008,v:"Lincoln Financial Field",date:"Jun 25",match:"Curaçao 0–2 Ivory Coast",f1:"🇨🇼",f2:"🇨🇮"},
   {n:"Seattle",lon:-122.3316,lat:47.5952,v:"Lumen Field",date:"Jun 26",match:"Egypt 1–1 Iran",f1:"🇪🇬",f2:"🇮🇷"},
   {n:"Miami",lon:-80.1300,lat:25.7906,v:"Hard Rock Stadium",date:"Jun 27",match:"Colombia 0–0 Portugal",f1:"🇨🇴",f2:"🇵🇹"},
-  {n:"Los Angeles",lon:-118.3392,lat:33.9535,v:"SoFi Stadium",date:"Jun 28",match:"South Africa 0–0 Canada",f1:"🇿🇦",f2:"🇨🇦",note:"Round of 32"}
+  {n:"Los Angeles",lon:-118.3392,lat:33.9535,v:"SoFi Stadium",date:"Jun 28",match:"South Africa 0–1 Canada",f1:"🇿🇦",f2:"🇨🇦",note:"Round of 32"}
 ];
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
@@ -49,10 +49,13 @@ export const co2Steps = [
   {t:22,m:"That&rsquo;s what ~1,000 trees absorb in a year"},
   {t:40,m:"That&rsquo;s ~3 Americans&rsquo; yearly carbon footprint"},
   {t:60,m:"That&rsquo;s a year of carbon for ~13 people worldwide"},
-  {t:80,m:"That&rsquo;s enough to power ~11 homes for a year"},
+  {t:80,m:"That&rsquo;s a year of energy use for ~11 US homes"},
   {t:100,m:"That&rsquo;s ~7 Americans&rsquo; entire yearly footprint"},
   {t:130,m:"That&rsquo;s what ~5,900 trees absorb in a year"},
   {t:160,m:"That&rsquo;s a year of carbon for ~34 people worldwide"},
   {t:190,m:"That&rsquo;s ~13 Americans&rsquo; yearly footprint"},
-  {t:205,m:"That&rsquo;s a gas car driven ~500,000 miles &mdash; flying emits ~20&times; more per mile"}
+  {t:210,m:"That&rsquo;s a year of carbon for ~45 people worldwide"},
+  {t:235,m:"That&rsquo;s ~16 Americans&rsquo; yearly carbon footprint"},
+  {t:260,m:"That&rsquo;s what ~12,000 trees absorb in a year"},
+  {t:290,m:"That&rsquo;s a gas car driven ~700,000 miles &mdash; flying emits ~20&times; more per mile"}
 ];
