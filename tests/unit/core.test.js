@@ -6,8 +6,8 @@ import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from 
 import { stops, legMiles, totalMiles, co2Steps } from "../../public/data.js";
 
 describe("itinerary data integrity", () => {
-  test("28 stops, 27 legs", () => {
-    expect(stops.length).toBe(28);
+  test("29 stops, 28 legs", () => {
+    expect(stops.length).toBe(29);
     expect(legMiles.length).toBe(stops.length - 1);
   });
 
@@ -66,10 +66,10 @@ describe("distances", () => {
     }
   });
 
-  test("totalMiles is the sum of legs (~34,858)", () => {
+  test("totalMiles is the sum of legs (~35,263)", () => {
     expect(totalMiles).toBe(legMiles.reduce((x, y) => x + y, 0));
     expect(totalMiles).toBeGreaterThan(34000);
-    expect(totalMiles).toBeLessThan(36000);
+    expect(totalMiles).toBeLessThan(37000);
   });
 });
 
@@ -89,11 +89,11 @@ describe("flight cost", () => {
     expect(tripCost(1000, 2)).toBe(24000 + 8000);
   });
 
-  test("full tour is ~$945k", () => {
+  test("full tour is ~$958k", () => {
     const cost = tripCost(totalMiles, legMiles.length);
     expect(cost).toBe(totalMiles * 24 + legMiles.length * 4000);
-    expect(cost).toBeGreaterThan(900000);
-    expect(cost).toBeLessThan(990000);
+    expect(cost).toBeGreaterThan(910000);
+    expect(cost).toBeLessThan(1010000);
   });
 });
 
@@ -105,8 +105,8 @@ describe("projection", () => {
 });
 
 describe("CO2 model", () => {
-  test("full tour is ~303 tonnes", () => {
-    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(303.3, 1);
+  test("full tour is ~307 tonnes", () => {
+    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(306.8, 1);
   });
 
   test("milestone thresholds are strictly increasing", () => {
@@ -157,7 +157,7 @@ describe("games attended", () => {
   test("counts only matches; excludes the Miami summit", () => {
     const matchCount = stops.filter(s => s.f1).length;
     expect(gamesAttended(stops.length - 1)).toBe(matchCount);
-    expect(matchCount).toBe(27);
+    expect(matchCount).toBe(28);
   });
 
   test("accumulates as stops are reached", () => {
