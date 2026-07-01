@@ -14,29 +14,29 @@ async function ready(page) {
 test("end-of-tour stats", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("35,788");
-  await expect(page.locator("#games")).toHaveText("29");
-  await expect(page.locator("#co2")).toHaveText("311.4");
-  await expect(page.locator("#cost")).toHaveText("$974,912");
-  await expect(page.locator("#leg")).toContainText("Dallas");
-  await expect(page.locator("#leg")).toContainText("AT&T Stadium");
+  await expect(page.locator("#miles")).toHaveText("36,726");
+  await expect(page.locator("#games")).toHaveText("30");
+  await expect(page.locator("#co2")).toHaveText("319.5");
+  await expect(page.locator("#cost")).toHaveText("$1,001,424");
+  await expect(page.locator("#leg")).toContainText("Mexico City");
+  await expect(page.locator("#leg")).toContainText("Estadio Azteca");
 });
 
 test("mi/km flips on a tap anywhere in the control (not just the off radio)", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("35,788");
+  await expect(page.locator("#miles")).toHaveText("36,726");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 
   // tapping the whole control flips mi -> km
   await page.locator("#unit").click();
-  await expect(page.locator("#miles")).toHaveText("57,595");
+  await expect(page.locator("#miles")).toHaveText("59,105");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
   await expect(page.getByRole("radio", { name: "km" })).toBeChecked();
 
   // tapping the *already-active* "km" label still flips back to mi (whole area toggles)
   await page.locator('label[for="unit-km"]').click();
-  await expect(page.locator("#miles")).toHaveText("35,788");
+  await expect(page.locator("#miles")).toHaveText("36,726");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 });
 
