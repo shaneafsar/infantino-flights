@@ -6,8 +6,8 @@ import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from 
 import { stops, legMiles, totalMiles, co2Steps } from "../../public/data.js";
 
 describe("itinerary data integrity", () => {
-  test("32 stops, 31 legs", () => {
-    expect(stops.length).toBe(32);
+  test("33 stops, 32 legs", () => {
+    expect(stops.length).toBe(33);
     expect(legMiles.length).toBe(stops.length - 1);
   });
 
@@ -66,10 +66,10 @@ describe("distances", () => {
     }
   });
 
-  test("totalMiles is the sum of legs (~38,584)", () => {
+  test("totalMiles is the sum of legs (~38,898)", () => {
     expect(totalMiles).toBe(legMiles.reduce((x, y) => x + y, 0));
     expect(totalMiles).toBeGreaterThan(37000);
-    expect(totalMiles).toBeLessThan(40000);
+    expect(totalMiles).toBeLessThan(41000);
   });
 });
 
@@ -89,11 +89,11 @@ describe("flight cost", () => {
     expect(tripCost(1000, 2)).toBe(24000 + 8000);
   });
 
-  test("full tour is ~$1.05M", () => {
+  test("full tour is ~$1.06M", () => {
     const cost = tripCost(totalMiles, legMiles.length);
     expect(cost).toBe(totalMiles * 24 + legMiles.length * 4000);
-    expect(cost).toBeGreaterThan(1000000);
-    expect(cost).toBeLessThan(1110000);
+    expect(cost).toBeGreaterThan(1010000);
+    expect(cost).toBeLessThan(1120000);
   });
 });
 
@@ -105,8 +105,8 @@ describe("projection", () => {
 });
 
 describe("CO2 model", () => {
-  test("full tour is ~336 tonnes", () => {
-    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(335.7, 1);
+  test("full tour is ~338 tonnes", () => {
+    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(338.4, 1);
   });
 
   test("milestone thresholds are strictly increasing", () => {
@@ -157,7 +157,7 @@ describe("games attended", () => {
   test("counts only matches; excludes the Miami summit", () => {
     const matchCount = stops.filter(s => s.f1).length;
     expect(gamesAttended(stops.length - 1)).toBe(matchCount);
-    expect(matchCount).toBe(31);
+    expect(matchCount).toBe(32);
   });
 
   test("accumulates as stops are reached", () => {
