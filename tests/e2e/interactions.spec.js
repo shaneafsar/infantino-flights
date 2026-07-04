@@ -60,8 +60,8 @@ test("CO2 milestone text steps up across the tour", async ({ page }) => {
   await expect(page.locator("#co2note")).toContainText("average American");
   await setT(page, 5); // ~48 t (Miami)
   await expect(page.locator("#co2note")).toContainText("3 Americans");
-  await scrubToEnd(page); // ~320 t — top of the ladder
-  await expect(page.locator("#co2note")).toContainText("790,000 miles");
+  await scrubToEnd(page); // ~359 t — top of the ladder
+  await expect(page.locator("#co2note")).toContainText("890,000 miles");
 });
 
 test("captions show stadium name; Miami summit is not counted as a game", async ({ page }) => {
