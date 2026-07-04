@@ -56,6 +56,7 @@
   @keyframes co2flash{0%{color:#ffee66;text-shadow:0 0 12px rgba(255,238,102,.9)}100%{color:#ff8888;text-shadow:none}}
   .src{margin-top:12px}
   .src .lbl{color:#8888bb;text-transform:uppercase;letter-spacing:.08em}
+  .src-h{display:block;margin-top:14px;color:#7a7ac8;text-transform:uppercase;letter-spacing:.06em;font-size:.9em;opacity:.9}
   .src ul{list-style:none;margin:8px 0 0;padding:0}
   .src li{margin-top:5px}
   .updated{margin-top:12px;color:#8888bb;letter-spacing:.04em}
