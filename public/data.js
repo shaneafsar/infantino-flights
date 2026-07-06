@@ -43,7 +43,7 @@ export const stops = [
   {n:"Los Angeles",lon:-118.3392,lat:33.9535,v:"SoFi Stadium",date:"Jul 2",match:"Spain 3–0 Austria",f1:"🇪🇸",f2:"🇦🇹",note:"Round of 32"},
   {n:"Miami",lon:-80.1300,lat:25.7906,v:"Hard Rock Stadium",date:"Jul 3",match:"Argentina 3–2 Cape Verde",f1:"🇦🇷",f2:"🇨🇻",note:"Round of 32 · a.e.t."},
   {n:"Houston",lon:-95.4107,lat:29.6847,v:"NRG Stadium",date:"Jul 4",match:"Canada 0–3 Morocco",f1:"🇨🇦",f2:"🇲🇦",note:"Round of 16"},
-  {n:"Mexico City",lon:-99.1504,lat:19.3030,v:"Estadio Azteca",date:"Jul 5",match:"Mexico 1–3 England",f1:"🇲🇽",f2:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",note:"Round of 16 · live — score not final"}
+  {n:"Mexico City",lon:-99.1504,lat:19.3030,v:"Estadio Azteca",date:"Jul 5",match:"Mexico 2–3 England",f1:"🇲🇽",f2:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",note:"Round of 16"}
 ];
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
@@ -71,5 +71,9 @@ export const co2Steps = [
   {t:310,m:"That&rsquo;s ~22 Americans&rsquo; yearly carbon footprint"},
   {t:318,m:"That&rsquo;s enough to melt ~950 m&sup2; of Arctic summer sea ice"},
   {t:335,m:"That&rsquo;s a year of carbon for ~71 people worldwide"},
-  {t:358,m:"That&rsquo;s a gas car driven ~890,000 miles"}
+  {t:358,m:"That&rsquo;s a gas car driven ~890,000 miles"},
+  {t:365,m:"That&rsquo;s the carbon of producing ~3.6 tonnes of beef"},
+  {t:375,m:"That&rsquo;s enough CO2 gas to fill ~80 Olympic pools"},
+  {t:388,m:"That&rsquo;s ~640 tonnes of cement produced"},
+  {t:400,m:"That&rsquo;s roughly one Falcon 9 rocket launch"}
 ];
