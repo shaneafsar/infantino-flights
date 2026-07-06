@@ -74,3 +74,7 @@ npx wrangler pages deploy
 ```
 
 The project name and asset directory come from `wrangler.jsonc`. Prompts for auth if you aren't logged in (`npx wrangler login`).
+
+## License
+
+Released under the [MIT License](LICENSE).

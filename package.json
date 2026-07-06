@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Animated pixel-art map of Gianni Infantino's 2026 World Cup flight tour.",
+  "license": "MIT",
   "scripts": {
     "test": "jest",
     "e2e": "playwright test",
