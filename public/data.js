@@ -42,11 +42,12 @@ export const stops = [
   {n:"San Francisco",lon:-121.9694,lat:37.4033,v:"Levi's Stadium",date:"Jul 1",match:"USA 2–0 Bosnia & Herzegovina",f1:"🇺🇸",f2:"🇧🇦",note:"Round of 32"},
   {n:"Los Angeles",lon:-118.3392,lat:33.9535,v:"SoFi Stadium",date:"Jul 2",match:"Spain 3–0 Austria",f1:"🇪🇸",f2:"🇦🇹",note:"Round of 32"},
   {n:"Miami",lon:-80.1300,lat:25.7906,v:"Hard Rock Stadium",date:"Jul 3",match:"Argentina 3–2 Cape Verde",f1:"🇦🇷",f2:"🇨🇻",note:"Round of 32 · a.e.t."},
-  {n:"Houston",lon:-95.4107,lat:29.6847,v:"NRG Stadium",date:"Jul 4",match:"Canada 0–3 Morocco",f1:"🇨🇦",f2:"🇲🇦",note:"Round of 16"}
+  {n:"Houston",lon:-95.4107,lat:29.6847,v:"NRG Stadium",date:"Jul 4",match:"Canada 0–3 Morocco",f1:"🇨🇦",f2:"🇲🇦",note:"Round of 16"},
+  {n:"Mexico City",lon:-99.1504,lat:19.3030,v:"Estadio Azteca",date:"Jul 5",match:"Mexico 1–3 England",f1:"🇲🇽",f2:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",note:"Round of 16 · live — score not final"}
 ];
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
-export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972];
+export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972,755];
 export const totalMiles = legMiles.reduce((a, b) => a + b, 0);
 
 // CO2 milestones: cumulative tonnes -> relatable comparison shown as the plane flies.
