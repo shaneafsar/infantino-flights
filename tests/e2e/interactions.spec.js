@@ -14,29 +14,29 @@ async function ready(page) {
 test("end-of-tour stats", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("42,968");
-  await expect(page.locator("#games")).toHaveText("35");
-  await expect(page.locator("#co2")).toHaveText("373.8");
-  await expect(page.locator("#cost")).toHaveText("$1,171,232");
-  await expect(page.locator("#leg")).toContainText("Mexico City");
-  await expect(page.locator("#leg")).toContainText("Estadio Azteca");
+  await expect(page.locator("#miles")).toHaveText("45,316");
+  await expect(page.locator("#games")).toHaveText("36");
+  await expect(page.locator("#co2")).toHaveText("394.2");
+  await expect(page.locator("#cost")).toHaveText("$1,231,584");
+  await expect(page.locator("#leg")).toContainText("Seattle");
+  await expect(page.locator("#leg")).toContainText("Lumen Field");
 });
 
 test("mi/km flips on a tap anywhere in the control (not just the off radio)", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("42,968");
+  await expect(page.locator("#miles")).toHaveText("45,316");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 
   // tapping the whole control flips mi -> km
   await page.locator("#unit").click();
-  await expect(page.locator("#miles")).toHaveText("69,150");
+  await expect(page.locator("#miles")).toHaveText("72,929");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
   await expect(page.getByRole("radio", { name: "km" })).toBeChecked();
 
   // tapping the *already-active* "km" label still flips back to mi (whole area toggles)
   await page.locator('label[for="unit-km"]').click();
-  await expect(page.locator("#miles")).toHaveText("42,968");
+  await expect(page.locator("#miles")).toHaveText("45,316");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 });
 
@@ -60,8 +60,8 @@ test("CO2 milestone text steps up across the tour", async ({ page }) => {
   await expect(page.locator("#co2note")).toContainText("average American");
   await setT(page, 5); // ~48 t (Miami)
   await expect(page.locator("#co2note")).toContainText("cars driven for a full year");
-  await scrubToEnd(page); // ~374 t — lands on the beef tier (higher rungs are headroom)
-  await expect(page.locator("#co2note")).toContainText("beef");
+  await scrubToEnd(page); // ~394 t — lands on the cement tier (Falcon 9 rung is headroom)
+  await expect(page.locator("#co2note")).toContainText("cement");
 });
 
 test("captions show stadium name; Miami summit is not counted as a game", async ({ page }) => {
