@@ -45,11 +45,12 @@ export const stops = [
   {n:"Houston",lon:-95.4107,lat:29.6847,v:"NRG Stadium",date:"Jul 4",match:"Canada 0–3 Morocco",f1:"🇨🇦",f2:"🇲🇦",note:"Round of 16"},
   {n:"Mexico City",lon:-99.1504,lat:19.3030,v:"Estadio Azteca",date:"Jul 5",match:"Mexico 2–3 England",f1:"🇲🇽",f2:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",note:"Round of 16"},
   {n:"Seattle",lon:-122.3316,lat:47.5952,v:"Lumen Field",date:"Jul 6",match:"USA 1–4 Belgium",f1:"🇺🇸",f2:"🇧🇪",note:"Round of 16"},
-  {n:"Vancouver",lon:-123.1119,lat:49.2767,v:"BC Place",date:"Jul 7",match:"Switzerland 0–0 Colombia",f1:"🇨🇭",f2:"🇨🇴",note:"Round of 16 · Switzerland 4–3 pens"}
+  {n:"Vancouver",lon:-123.1119,lat:49.2767,v:"BC Place",date:"Jul 7",match:"Switzerland 0–0 Colombia",f1:"🇨🇭",f2:"🇨🇴",note:"Round of 16 · Switzerland 4–3 pens"},
+  {n:"Boston",lon:-71.2643,lat:42.0909,v:"Gillette Stadium",date:"Jul 9",match:"France 0–0 Morocco",f1:"🇫🇷",f2:"🇲🇦",note:"Quarter-final · live — score not final"}
 ];
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
-export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972,755,2348,122];
+export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972,755,2348,122,2502];
 export const totalMiles = legMiles.reduce((a, b) => a + b, 0);
 
 // CO2 milestones: cumulative tonnes -> relatable comparison shown as the plane flies.
@@ -77,5 +78,8 @@ export const co2Steps = [
   {t:365,m:"That&rsquo;s the carbon of producing ~3.6 tonnes of beef"},
   {t:375,m:"That&rsquo;s enough CO2 gas to fill ~80 Olympic pools"},
   {t:388,m:"That&rsquo;s ~640 tonnes of cement produced"},
-  {t:400,m:"That&rsquo;s roughly one Falcon 9 rocket launch"}
+  {t:400,m:"That&rsquo;s roughly one Falcon 9 rocket launch"},
+  {t:405,m:"That&rsquo;s a year of energy use for ~56 US homes"},
+  {t:415,m:"That&rsquo;s a year of carbon for ~88 people worldwide"},
+  {t:430,m:"That&rsquo;s ~1,000 barrels of oil burned"}
 ];
