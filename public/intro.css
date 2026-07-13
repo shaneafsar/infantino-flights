@@ -1,0 +1,26 @@
+.arcade-intro{position:fixed;inset:0;z-index:10000;overflow:hidden;background:#03030a;color:#fff;isolation:isolate}
+.arcade-intro[hidden]{display:none}
+.arcade-intro__stage{position:absolute;left:50%;top:50%;width:max(100vw,calc(100vh * 16 / 9));height:max(100vh,calc(100vw * 9 / 16));transform:translate(-50%,-50%);image-rendering:pixelated}
+.arcade-intro__canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
+.arcade-intro__grain{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0,rgba(0,0,0,.18) 1px,transparent 1px,transparent 4px);mix-blend-mode:multiply}
+.arcade-intro__skip{position:absolute;right:16px;top:16px;width:38px;height:38px;padding:0;border:2px solid rgba(255,255,255,.42);background:rgba(0,0,12,.55);color:#fff;font:1rem/1 "Press Start 2P",monospace;box-shadow:2px 2px 0 rgba(0,0,0,.7);opacity:.7;z-index:2}
+.arcade-intro__skip:hover,.arcade-intro__skip:focus-visible{background:#fff;color:#090914;border-color:#fff;box-shadow:2px 2px 0 #5b5b88;opacity:1}
+.arcade-intro__sound{position:absolute;right:64px;top:16px;width:38px;height:38px;padding:0;border:2px solid rgba(255,255,255,.42);background:rgba(0,0,12,.55);color:#fff;font:.8rem/1 "Press Start 2P",monospace;box-shadow:2px 2px 0 rgba(0,0,0,.7);opacity:.7;z-index:2}
+.arcade-intro__sound:hover,.arcade-intro__sound:focus-visible{background:#fff;color:#090914;border-color:#fff;box-shadow:2px 2px 0 #5b5b88;opacity:1}
+.arcade-intro__sound.is-muted{color:#ef6673;text-decoration:line-through}
+.arcade-intro__actions{position:absolute;left:50%;bottom:max(32px,env(safe-area-inset-bottom));display:flex;gap:14px;transform:translate(-50%,18px);opacity:0;visibility:hidden;transition:opacity .25s ease,transform .25s ease;z-index:2}
+.arcade-intro.is-finished .arcade-intro__actions{transform:translate(-50%,0);opacity:1;visibility:visible}
+.arcade-intro__action{height:42px;padding:0 16px;border:3px solid #f8e15b;background:#d42f3d;color:#fff;font:.55rem/1 "Press Start 2P",monospace;text-shadow:2px 2px 0 #5d0b21;box-shadow:4px 4px 0 #55192a}
+.arcade-intro__action:hover,.arcade-intro__action:focus-visible{background:#f8e15b;color:#161325;text-shadow:none;box-shadow:4px 4px 0 #8d5a19}
+.arcade-intro__action--close{border-color:#83d8ff;background:#162c63;box-shadow:4px 4px 0 #071332;text-shadow:2px 2px 0 #071332}
+.arcade-intro__sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:600px){
+  .arcade-intro__skip{right:10px;top:10px;width:34px;height:34px;font-size:.85rem}
+  .arcade-intro__sound{right:52px;top:10px;width:34px;height:34px;font-size:.72rem}
+  .arcade-intro__actions{bottom:max(20px,env(safe-area-inset-bottom));gap:8px;width:calc(100% - 24px);justify-content:center}
+  .arcade-intro__action{height:38px;padding:0 12px;font-size:.46rem}
+}
+@media(orientation:portrait){
+  .arcade-intro__stage{top:46%;width:100vw;height:calc(100vw * 9 / 16)}
+}
+@media(prefers-reduced-motion:reduce){.arcade-intro__actions{transition:none}}

@@ -61,6 +61,9 @@
   .src li{margin-top:5px}
   .updated{margin-top:12px;color:#8888bb;letter-spacing:.04em}
   .updated time{color:#aab0e0}
+  .intro-trigger{width:24px;height:24px;min-width:24px;margin-top:8px;padding:0;border:1px solid #2f2f55;background:transparent;color:#55557a;font-size:.42rem;box-shadow:none;opacity:.65}
+  .intro-trigger:hover,.intro-trigger:focus-visible{border-color:#6666aa;background:#111128;color:#aaaadd;box-shadow:none;opacity:1}
+  .intro-trigger:active{box-shadow:none}
   .all-stops{margin-top:16px}
   .all-stops>summary{cursor:pointer;color:#8888bb;text-transform:uppercase;letter-spacing:.08em}
   .all-stops>summary:hover{color:#ffcc00}

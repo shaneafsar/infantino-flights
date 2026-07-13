@@ -217,6 +217,58 @@ shareBtn.addEventListener("click", async () => {
   setTimeout(() => { shareBtn.innerHTML = orig; }, 1500);
 });
 
+// The optional arcade intro (including its stylesheet) is fetched only after the
+// small footer trigger is activated. Pause this page's loop while it is covered,
+// then restore the exact prior playback state when the overlay closes.
+const introTrigger = document.getElementById("intro-trigger");
+let introLoading = false;
+introTrigger.addEventListener("click", async () => {
+  if (introLoading || document.getElementById("arcade-intro")) return;
+  introLoading = true;
+  // Start the lazy audio request inside the click gesture so autoplay policies
+  // permit it even though the visual module and stylesheet still need to load.
+  const introAudio = new Audio("./intro-title-theme.mp3");
+  introAudio.preload = "auto";
+  introAudio.volume = .55;
+  introAudio.play().catch(() => { /* visitor can retry via the music toggle */ });
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  const introSfxContext = AudioContextClass ? new AudioContextClass() : null;
+  introSfxContext?.resume().catch(() => { /* effects remain available after a later user gesture */ });
+  const resumeTour = playing && t < N;
+  if (resumeTour) {
+    playing = false;
+    pp.innerHTML = "&#9654; Play";
+  }
+  try {
+    const { openIntro } = await import("./intro.js");
+    await openIntro({
+      audio: introAudio,
+      sfxContext: introSfxContext,
+      onClose() {
+        introTrigger.focus();
+        if (resumeTour && t < N) {
+          playing = true;
+          lastTs = 0;
+          pp.innerHTML = "&#9208; Pause";
+          requestAnimationFrame(tick);
+        }
+      },
+    });
+  } catch (error) {
+    console.error("Unable to load arcade intro", error);
+    introAudio.pause();
+    introSfxContext?.close();
+    if (resumeTour && t < N) {
+      playing = true;
+      lastTs = 0;
+      pp.innerHTML = "&#9208; Pause";
+      requestAnimationFrame(tick);
+    }
+  } finally {
+    introLoading = false;
+  }
+});
+
 // Full itinerary in the footer accordion (kept in sync with the data).
 document.getElementById("stoplist").innerHTML = stops.map(s => {
   const game = s.f1 ? s.f1 + " " + s.match + " " + s.f2 : "🏢 " + s.match;
