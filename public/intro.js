@@ -551,15 +551,22 @@ function createOverlay(onClose, audio, sfxContext, assets) {
   else frameId = requestAnimationFrame(animate);
 }
 
-export async function openIntro({ onClose, audio, sfxContext } = {}) {
-  const [, atlas, officialsAtlas, crowdAtlas, stadium, logo] = await Promise.all([
+export async function openIntro({ onClose, audio, sfxContext, onProgress } = {}) {
+  const requests = [
     loadStyles(),
     loadImage("arcade-players.webp"),
     loadImage("arcade-officials.webp"),
     loadImage("arcade-crowd-animations.webp"),
     loadImage("arcade-stadium.webp"),
     loadImage("arcade-logo.webp"),
-  ]);
+  ];
+  let completedRequests = 0;
+  onProgress?.(0);
+  const [, atlas, officialsAtlas, crowdAtlas, stadium, logo] = await Promise.all(requests.map(request => request.then(result => {
+    completedRequests++;
+    onProgress?.(.9 * completedRequests / requests.length);
+    return result;
+  })));
   const assets = {
     sprites: buildSpriteFrames(atlas),
     officials: buildOfficialFrames(officialsAtlas),
@@ -568,4 +575,5 @@ export async function openIntro({ onClose, audio, sfxContext } = {}) {
     logo,
   };
   if (!document.getElementById("arcade-intro")) createOverlay(onClose, audio, sfxContext, assets);
+  onProgress?.(1);
 }

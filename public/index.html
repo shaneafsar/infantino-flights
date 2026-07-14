@@ -61,7 +61,6 @@
   <footer class="foot">
     <p class="method">Stops reflect reported sightings of Infantino during the opening week of the 2026 FIFA World Cup. Distances are great-circle (as-the-crow-flies) approximations measured stadium-to-stadium &mdash; the same method ESPN uses. CO&#8322; estimated at ~8.7 kg per mile for a Gulfstream G650ER (the Qatar-flown private jet). Cost estimated at ~$24/mile (G650ER charter, crew &amp; fuel included) plus ~$4,000/leg landing &amp; handling. Country outlines are real (Natural Earth 1:110m data).</p>
     <p class="updated">Data last updated: <time id="updated"></time></p>
-    <button class="intro-trigger" id="intro-trigger" type="button" aria-label="Play arcade intro" title="Play arcade intro">&#9654;</button>
     <details class="all-stops">
       <summary>All stops (<span id="stopcount"></span>) &amp; sources</summary>
       <ol id="stoplist"></ol>
@@ -124,6 +123,18 @@
         </ul>
       </div>
     </details>
+    <div class="footer-actions">
+      <a class="repo-link" href="https://github.com/shaneafsar/infantino-flights" target="_blank" rel="noopener" aria-label="Infantino Flights on GitHub" title="GitHub repository">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.23c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49v-1.91c-2.78.62-3.37-1.21-3.37-1.21-.45-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .08 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05A9.35 9.35 0 0 1 12 6.91c.85 0 1.69.12 2.48.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.89v2.81c0 .27.18.59.69.49A10.25 10.25 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"/></svg>
+      </a>
+      <div class="intro-control">
+        <button class="intro-trigger" id="intro-trigger" type="button" aria-label="Play arcade intro" title="Play arcade intro">&#9654;</button>
+        <span class="intro-loader" id="intro-loader" hidden>
+          <span class="intro-loader__track" role="progressbar" aria-label="Loading arcade intro" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="intro-loader__fill" id="intro-loader-fill"></span></span>
+          <span class="intro-loader__value" id="intro-loader-value">0%</span>
+        </span>
+      </div>
+    </div>
   </footer>
 
 <script type="module" src="app.js"></script>

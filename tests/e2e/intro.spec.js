@@ -26,6 +26,25 @@ test("arcade intro is lazy loaded and can be closed", async ({ page }) => {
   await expect(page.locator("#intro-trigger")).toBeFocused();
 });
 
+test("shows download progress while lazy intro assets load", async ({ page }) => {
+  await page.route("**/arcade-stadium.webp", async route => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    await route.continue();
+  });
+  await page.goto("/");
+  await expect(page.locator("#intro-loader")).toBeHidden();
+
+  await page.locator("#intro-trigger").click();
+  await expect(page.locator("#intro-loader")).toBeVisible();
+  await expect(page.locator("#intro-trigger")).toBeHidden();
+  await expect(page.getByRole("progressbar", { name: "Loading arcade intro" })).toBeVisible();
+
+  await expect(page.locator("#arcade-intro")).toBeVisible();
+  await expect(page.locator("#intro-loader")).toBeHidden();
+  await expect(page.locator("#intro-trigger")).toBeVisible();
+  await expect(page.locator("#intro-trigger")).toBeEnabled();
+});
+
 test("reduced motion shows replay and close controls immediately", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");

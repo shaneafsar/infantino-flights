@@ -221,10 +221,41 @@ shareBtn.addEventListener("click", async () => {
 // small footer trigger is activated. Pause this page's loop while it is covered,
 // then restore the exact prior playback state when the overlay closes.
 const introTrigger = document.getElementById("intro-trigger");
+const introLoader = document.getElementById("intro-loader");
+const introLoaderBar = introLoader.querySelector('[role="progressbar"]');
+const introLoaderFill = document.getElementById("intro-loader-fill");
+const introLoaderValue = document.getElementById("intro-loader-value");
 let introLoading = false;
+
+function setIntroProgress(value) {
+  const percent = Math.round(Math.max(0, Math.min(1, value)) * 100);
+  introLoader.hidden = false;
+  introLoaderFill.style.transform = `scaleX(${percent / 100})`;
+  introLoaderValue.textContent = `${percent}%`;
+  introLoaderBar.setAttribute("aria-valuenow", percent);
+}
+
+function waitForIntroAudio(audio) {
+  if (audio.readyState >= 3) return Promise.resolve();
+  return new Promise(resolve => {
+    const timeout = setTimeout(finish, 5000);
+    function finish() {
+      clearTimeout(timeout);
+      audio.removeEventListener("canplaythrough", finish);
+      audio.removeEventListener("error", finish);
+      resolve();
+    }
+    audio.addEventListener("canplaythrough", finish, { once: true });
+    audio.addEventListener("error", finish, { once: true });
+  });
+}
+
 introTrigger.addEventListener("click", async () => {
   if (introLoading || document.getElementById("arcade-intro")) return;
   introLoading = true;
+  introTrigger.disabled = true;
+  introTrigger.hidden = true;
+  setIntroProgress(0);
   // Start the lazy audio request inside the click gesture so autoplay policies
   // permit it even though the visual module and stylesheet still need to load.
   const introAudio = new Audio("./intro-title-theme.mp3");
@@ -240,10 +271,15 @@ introTrigger.addEventListener("click", async () => {
     pp.innerHTML = "&#9654; Play";
   }
   try {
-    const { openIntro } = await import("./intro.js");
+    let completedInitialRequests = 0;
+    const reportInitialRequest = () => setIntroProgress(++completedInitialRequests / 8);
+    const modulePromise = import("./intro.js").then(module => { reportInitialRequest(); return module; });
+    const audioPromise = waitForIntroAudio(introAudio).then(() => { reportInitialRequest(); });
+    const [{ openIntro }] = await Promise.all([modulePromise, audioPromise]);
     await openIntro({
       audio: introAudio,
       sfxContext: introSfxContext,
+      onProgress(progress) { setIntroProgress(.25 + progress * .75); },
       onClose() {
         introTrigger.focus();
         if (resumeTour && t < N) {
@@ -266,6 +302,9 @@ introTrigger.addEventListener("click", async () => {
     }
   } finally {
     introLoading = false;
+    introTrigger.disabled = false;
+    introTrigger.hidden = false;
+    introLoader.hidden = true;
   }
 });
 

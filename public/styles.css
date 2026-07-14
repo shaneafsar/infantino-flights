@@ -61,9 +61,21 @@
   .src li{margin-top:5px}
   .updated{margin-top:12px;color:#8888bb;letter-spacing:.04em}
   .updated time{color:#aab0e0}
-  .intro-trigger{width:24px;height:24px;min-width:24px;margin-top:8px;padding:0;border:1px solid #2f2f55;background:transparent;color:#55557a;font-size:.42rem;box-shadow:none;opacity:.65}
-  .intro-trigger:hover,.intro-trigger:focus-visible{border-color:#6666aa;background:#111128;color:#aaaadd;box-shadow:none;opacity:1}
+  .footer-actions{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;margin-top:16px}
+  .intro-control{display:flex;align-items:center;justify-content:center;min-height:22px}
+  .intro-trigger{width:22px;height:22px;min-width:22px;padding:0;border:1px solid #665400;background:transparent;color:#ffcc00;font-size:.38rem;box-shadow:none;opacity:.72}
+  .intro-trigger[hidden]{display:none}
+  .intro-trigger:hover,.intro-trigger:focus-visible{border-color:#ffcc00;background:#ffcc00;color:#0a0a1a;box-shadow:none;opacity:1}
   .intro-trigger:active{box-shadow:none}
+  .intro-trigger:disabled{cursor:wait;opacity:.35}
+  .foot .repo-link{display:grid;place-items:center;width:30px;height:30px;border:1px solid #665400;color:#ffcc00;text-decoration:none;line-height:1;opacity:.78}
+  .foot .repo-link svg{display:block;width:17px;height:17px;border:0;fill:currentColor}
+  .foot .repo-link:hover,.foot .repo-link:focus-visible{border-color:#ffcc00;background:#ffcc00;color:#0a0a1a;opacity:1}
+  .intro-loader{display:inline-flex;align-items:center;gap:5px}
+  .intro-loader[hidden]{display:none}
+  .intro-loader__track{display:block;width:76px;height:4px;border:1px solid #30305a;background:#090919;overflow:hidden}
+  .intro-loader__fill{display:block;width:100%;height:100%;background:#ffcc00;transform:scaleX(0);transform-origin:left center;transition:transform .12s linear}
+  .intro-loader__value{min-width:30px;color:#7777aa;font-size:.42rem;text-align:left}
   .all-stops{margin-top:16px}
   .all-stops>summary{cursor:pointer;color:#8888bb;text-transform:uppercase;letter-spacing:.08em}
   .all-stops>summary:hover{color:#ffcc00}
