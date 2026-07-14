@@ -11,7 +11,7 @@ test("footer 'All stops' accordion is collapsed and lists the itinerary in order
   const items = page.locator("#stoplist li");
   expect(await items.count()).toBeGreaterThan(10);
   await expect(items.first()).toContainText("Mexico 2–0 South Africa"); // opener
-  await expect(items.last()).toContainText("France 0–0 Spain");  // latest stop
+  await expect(items.last()).toContainText("France 0–2 Spain");  // latest stop
   await expect(items.last()).toContainText("Dallas");
 
   // expands on click
