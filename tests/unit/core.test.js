@@ -6,8 +6,8 @@ import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from 
 import { stops, legMiles, totalMiles, co2Steps } from "../../public/data.js";
 
 describe("itinerary data integrity", () => {
-  test("40 stops, 39 legs", () => {
-    expect(stops.length).toBe(40);
+  test("41 stops, 40 legs", () => {
+    expect(stops.length).toBe(41);
     expect(legMiles.length).toBe(stops.length - 1);
   });
 
@@ -66,10 +66,10 @@ describe("distances", () => {
     }
   });
 
-  test("totalMiles is the sum of legs (~49,174)", () => {
+  test("totalMiles is the sum of legs (~50,302)", () => {
     expect(totalMiles).toBe(legMiles.reduce((x, y) => x + y, 0));
-    expect(totalMiles).toBeGreaterThan(47000);
-    expect(totalMiles).toBeLessThan(51000);
+    expect(totalMiles).toBeGreaterThan(48000);
+    expect(totalMiles).toBeLessThan(52000);
   });
 });
 
@@ -89,11 +89,11 @@ describe("flight cost", () => {
     expect(tripCost(1000, 2)).toBe(24000 + 8000);
   });
 
-  test("full tour is ~$1.34M", () => {
+  test("full tour is ~$1.37M", () => {
     const cost = tripCost(totalMiles, legMiles.length);
     expect(cost).toBe(totalMiles * 24 + legMiles.length * 4000);
-    expect(cost).toBeGreaterThan(1280000);
-    expect(cost).toBeLessThan(1380000);
+    expect(cost).toBeGreaterThan(1320000);
+    expect(cost).toBeLessThan(1420000);
   });
 });
 
@@ -105,8 +105,8 @@ describe("projection", () => {
 });
 
 describe("CO2 model", () => {
-  test("full tour is ~428 tonnes", () => {
-    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(427.8, 1);
+  test("full tour is ~438 tonnes", () => {
+    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(437.6, 1);
   });
 
   test("milestone thresholds are strictly increasing", () => {
@@ -157,7 +157,7 @@ describe("games attended", () => {
   test("counts only matches; excludes the Miami summit", () => {
     const matchCount = stops.filter(s => s.f1).length;
     expect(gamesAttended(stops.length - 1)).toBe(matchCount);
-    expect(matchCount).toBe(39);
+    expect(matchCount).toBe(40);
   });
 
   test("accumulates as stops are reached", () => {
