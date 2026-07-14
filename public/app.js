@@ -1,7 +1,7 @@
 // View layer — builds the SVG map, runs the animation, wires up the controls.
 
 import { W, H, lonMin, lonMax, latMin, latMax, CO2_PER_MILE, SPEED_PER_SEC, PAUSE_MS, MAX_FRAME_MS } from "./constants.js";
-import { stops, legMiles, totalMiles, co2Steps, dataUpdated } from "./data.js";
+import { stops, legMiles, totalMiles, co2Steps, dataUpdated, projected } from "./data.js";
 import { NA_OUTLINES } from "./geo.js";
 import { proj, milesToUnit, co2MilestoneIndex, gamesAttended, tripCost, stopSlug, stopIndexFromParam } from "./core.js";
 
@@ -47,6 +47,17 @@ let bg = "";
 pts.forEach((p, i) => bg += (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1) + " ");
 svg.appendChild(el("path", { d: bg, class: "route-bg" }));
 
+// Projected onward route — a dashed line from the last confirmed stop through the
+// fixtures Infantino is expected to attend next. Drawn under the live route + dots;
+// its node halos + round tags go on top (after the dots below). Purely estimated.
+const projPts = projected.map(s => proj(s.lon, s.lat));
+if (projPts.length) {
+  const last = pts[pts.length - 1];
+  let pd = "M" + last[0].toFixed(1) + " " + last[1].toFixed(1) + " ";
+  projPts.forEach(p => pd += "L" + p[0].toFixed(1) + " " + p[1].toFixed(1) + " ");
+  svg.appendChild(el("path", { d: pd, class: "route-proj" }));
+}
+
 const fg = el("path", { class: "route-fg", d: "" });
 svg.appendChild(fg);
 
@@ -80,6 +91,23 @@ stops.forEach((s, i) => {
   svg.appendChild(lab);
   dots.push(dot); labels.push(lab);
   seen[key] = { dot, lab };
+});
+
+// Projected-stop markers: a hollow ring haloing the (already-visited) city dot plus
+// a short round badge, so the estimated final three read as distinct from the flown
+// route. Offsets are hand-tuned to clear each city's own label and the map edge.
+const projTagPos = [
+  { dx: 11, dy: -9, anchor: "start" },  // Atlanta: above-right, into open ground
+  { dx: 11, dy: -9, anchor: "start" },  // Miami: above-right, over the Atlantic
+  { dx: -11, dy: 17, anchor: "end" },   // New York: below-left, away from the map edge
+];
+projected.forEach((s, i) => {
+  const [x, y] = projPts[i];
+  svg.appendChild(el("circle", { cx: x, cy: y, r: 8, class: "proj-node" }));
+  const o = projTagPos[i] || { dx: 11, dy: -9, anchor: "start" };
+  const tag = el("text", { x: x + o.dx, y: y + o.dy, class: "proj-label", "text-anchor": o.anchor });
+  tag.textContent = s.tag + " " + s.date.replace("Jul ", "7/");
+  svg.appendChild(tag);
 });
 
 const plane = el("text", { class: "plane", "text-anchor": "middle", "dominant-baseline": "central" });

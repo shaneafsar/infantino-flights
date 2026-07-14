@@ -10,6 +10,8 @@ test("loads with no console errors and a fully built map", async ({ page }) => {
   // app.js (ES module) has run once the deduped city dots exist
   await expect(page.locator("circle.city")).toHaveCount(16); // 41 stops dedupe to 16 unique cities
   await expect(page.locator("path.route-bg")).toHaveCount(1);
+  await expect(page.locator("path.route-proj")).toHaveCount(1);   // projected onward route
+  await expect(page.locator("circle.proj-node")).toHaveCount(3);  // 3 remaining fixtures
   await expect(page.locator("text.plane")).toHaveCount(1);
   await expect.poll(() => page.locator("path.land").count()).toBeGreaterThan(0);
 

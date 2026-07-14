@@ -11,6 +11,11 @@
   .graticule{fill:none;stroke:#1a1a3a;stroke-width:.5}
   .route-bg{fill:none;stroke:#333366;stroke-width:1.6;stroke-dasharray:4 4;opacity:.6}
   .route-fg{fill:none;stroke:#ffcc00;stroke-width:3;stroke-linecap:butt;filter:drop-shadow(0 0 6px rgba(255,204,0,.6))}
+  .route-proj{fill:none;stroke:#5fd3ff;stroke-width:2;stroke-dasharray:2 7;stroke-linecap:round;opacity:.8;filter:drop-shadow(0 0 4px rgba(95,211,255,.55));animation:projflow 1.4s linear infinite}
+  @keyframes projflow{to{stroke-dashoffset:-18}}
+  .proj-node{fill:none;stroke:#5fd3ff;stroke-width:2;animation:projpulse 1.8s ease-in-out infinite}
+  @keyframes projpulse{0%,100%{opacity:.4;stroke-width:1.5}50%{opacity:1;stroke-width:2.5}}
+  .proj-label{fill:#8fe4ff;font-family:"Press Start 2P",monospace;font-size:6px;paint-order:stroke;stroke:#0a0a2a;stroke-width:3px;stroke-linejoin:round}
   .city{fill:#555588;stroke:#111128;stroke-width:1.5}
   .city.visited{fill:#ffcc00}
   .city.current{fill:#ff3333}
@@ -106,6 +111,7 @@
     .vs-text{font-size:.7rem}
     .vs-display{gap:10px}
     .clabel{font-size:9px}
+    .proj-label{font-size:8px}
     .city{r:6}
   }
   @media(max-width:380px){
