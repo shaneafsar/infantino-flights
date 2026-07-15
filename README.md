@@ -16,7 +16,6 @@ public/
 tests/
   unit/           # Jest — core logic + itinerary data integrity
   e2e/            # Playwright — browser behavior + responsive layout
-wrangler.jsonc    # Cloudflare Pages config
 ```
 
 The browser code is split into ES modules (`app.js` imports the rest), so it must be
@@ -34,7 +33,7 @@ The page opens paused on that stop. The **🔗 Share** button copies a slug link
 ## Local preview
 
 ```sh
-npx wrangler dev                                   # serves public/ like Cloudflare
+npx wrangler pages dev public                      # serves public/ like Cloudflare
 # or any static server:
 python3 -m http.server 5173 --directory public     # http://localhost:5173
 ```
@@ -70,10 +69,10 @@ Requires two repo secrets:
 ### Manual (fallback)
 
 ```sh
-npx wrangler pages deploy
+npx wrangler pages deploy public --project-name=infantino-flights
 ```
 
-The project name and asset directory come from `wrangler.jsonc`. Prompts for auth if you aren't logged in (`npx wrangler login`).
+The project name and asset directory are passed explicitly (same as CI). Prompts for auth if you aren't logged in (`npx wrangler login`).
 
 ## License
 
