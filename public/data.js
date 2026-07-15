@@ -79,12 +79,12 @@ export const co2Steps = [
   {t:358,m:"That&rsquo;s a gas car driven ~890,000 miles"},
   {t:365,m:"That&rsquo;s the carbon of producing ~3.6 tonnes of beef"},
   {t:375,m:"That&rsquo;s enough CO2 gas to fill ~80 Olympic pools"},
-  {t:388,m:"That&rsquo;s ~640 tonnes of cement produced"},
+  {t:388,m:"That&rsquo;s ~84 cars driven for a full year"},
   {t:400,m:"That&rsquo;s roughly one Falcon 9 rocket launch"},
   {t:405,m:"That&rsquo;s a year of energy use for ~56 US homes"},
   {t:415,m:"That&rsquo;s a year of carbon for ~88 people worldwide"},
   {t:430,m:"That&rsquo;s ~1,000 barrels of oil burned"},
-  {t:435,m:"That&rsquo;s ~235 tonnes of steel produced"},
+  {t:435,m:"That&rsquo;s a gas car driven around the Earth ~43 times"},
   {t:450,m:"That&rsquo;s ~190 tonnes of coal burned"}
 ];
 

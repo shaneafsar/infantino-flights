@@ -60,8 +60,8 @@ test("CO2 milestone text steps up across the tour", async ({ page }) => {
   await expect(page.locator("#co2note")).toContainText("average American");
   await setT(page, 5); // ~48 t (Miami)
   await expect(page.locator("#co2note")).toContainText("cars driven for a full year");
-  await scrubToEnd(page); // ~438 t — lands on the "235 tonnes of steel" tier (coal rung is headroom)
-  await expect(page.locator("#co2note")).toContainText("steel");
+  await scrubToEnd(page); // ~438 t — lands on the "around the Earth ~43 times" tier (coal rung is headroom)
+  await expect(page.locator("#co2note")).toContainText("around the Earth");
 });
 
 test("captions show stadium name; Miami summit is not counted as a game", async ({ page }) => {
