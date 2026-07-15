@@ -9,10 +9,14 @@ public/
   index.html      # markup
   styles.css      # styles
   constants.js    # numeric constants (projection, emissions, animation)
-  data.js         # itinerary stops + CO2 milestones
+  data.js         # confirmed stops, CO2 milestones + projected onward route
   geo.js          # map outline data (Natural Earth)
   core.js         # pure logic — projection, distance, conversions (unit-tested)
   app.js          # view layer — builds the SVG map + runs the animation
+  intro.js        # optional lazy-loaded arcade intro overlay
+scripts/
+  stamp-updated.sh  # deploy: stamp "data last updated" from data.js's last commit
+  cachebust.sh      # deploy: append ?v=<sha> to asset URLs
 tests/
   unit/           # Jest — core logic + itinerary data integrity
   e2e/            # Playwright — browser behavior + responsive layout
@@ -20,6 +24,11 @@ tests/
 
 The browser code is split into ES modules (`app.js` imports the rest), so it must be
 served over HTTP — opening `index.html` via `file://` won't load the modules.
+
+## On the map
+
+- **Solid amber route** — the flown tour: confirmed sightings, animated stop by stop, driving the Miles / CO₂ / cost / games counters.
+- **Dashed cyan route** — the *projected* onward route: the fixtures Infantino is expected to attend next, drawn from a separate `projected` array in `data.js`. It's an estimate only, so it never affects any of the counters. As each game happens, its leg is promoted from projected to a confirmed stop.
 
 ## Share links
 
