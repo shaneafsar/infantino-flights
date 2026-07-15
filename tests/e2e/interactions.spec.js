@@ -14,29 +14,29 @@ async function ready(page) {
 test("end-of-tour stats", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("50,302");
-  await expect(page.locator("#games")).toHaveText("40");
-  await expect(page.locator("#co2")).toHaveText("437.6");
-  await expect(page.locator("#cost")).toHaveText("$1,367,248");
-  await expect(page.locator("#leg")).toContainText("Dallas");
-  await expect(page.locator("#leg")).toContainText("AT&T Stadium");
+  await expect(page.locator("#miles")).toHaveText("51,038");
+  await expect(page.locator("#games")).toHaveText("41");
+  await expect(page.locator("#co2")).toHaveText("444.0");
+  await expect(page.locator("#cost")).toHaveText("$1,388,912");
+  await expect(page.locator("#leg")).toContainText("Atlanta");
+  await expect(page.locator("#leg")).toContainText("Mercedes-Benz Stadium");
 });
 
 test("mi/km flips on a tap anywhere in the control (not just the off radio)", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("50,302");
+  await expect(page.locator("#miles")).toHaveText("51,038");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 
   // tapping the whole control flips mi -> km
   await page.locator("#unit").click();
-  await expect(page.locator("#miles")).toHaveText("80,953");
+  await expect(page.locator("#miles")).toHaveText("82,137");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
   await expect(page.getByRole("radio", { name: "km" })).toBeChecked();
 
   // tapping the *already-active* "km" label still flips back to mi (whole area toggles)
   await page.locator('label[for="unit-km"]').click();
-  await expect(page.locator("#miles")).toHaveText("50,302");
+  await expect(page.locator("#miles")).toHaveText("51,038");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 });
 
@@ -60,7 +60,7 @@ test("CO2 milestone text steps up across the tour", async ({ page }) => {
   await expect(page.locator("#co2note")).toContainText("average American");
   await setT(page, 5); // ~48 t (Miami)
   await expect(page.locator("#co2note")).toContainText("cars driven for a full year");
-  await scrubToEnd(page); // ~438 t — lands on the "around the Earth ~43 times" tier (coal rung is headroom)
+  await scrubToEnd(page); // ~444 t — lands on the "around the Earth ~43 times" tier (coal rung is headroom)
   await expect(page.locator("#co2note")).toContainText("around the Earth");
 });
 

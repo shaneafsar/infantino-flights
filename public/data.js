@@ -48,11 +48,12 @@ export const stops = [
   {n:"Vancouver",lon:-123.1119,lat:49.2767,v:"BC Place",date:"Jul 7",match:"Switzerland 0–0 Colombia",f1:"🇨🇭",f2:"🇨🇴",note:"Round of 16 · Switzerland 4–3 pens"},
   {n:"Boston",lon:-71.2643,lat:42.0909,v:"Gillette Stadium",date:"Jul 9",match:"France 2–0 Morocco",f1:"🇫🇷",f2:"🇲🇦",note:"Quarter-final"},
   {n:"Miami",lon:-80.1300,lat:25.7906,v:"Hard Rock Stadium",date:"Jul 11",match:"Norway 1–2 England",f1:"🇳🇴",f2:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",note:"Quarter-final · a.e.t."},
-  {n:"Dallas",lon:-97.0945,lat:32.7473,v:"AT&T Stadium",date:"Jul 14",match:"France 0–2 Spain",f1:"🇫🇷",f2:"🇪🇸",note:"Semi-final"}
+  {n:"Dallas",lon:-97.0945,lat:32.7473,v:"AT&T Stadium",date:"Jul 14",match:"France 0–2 Spain",f1:"🇫🇷",f2:"🇪🇸",note:"Semi-final"},
+  {n:"Atlanta",lon:-84.4008,lat:33.7554,v:"Mercedes-Benz Stadium",date:"Jul 15",match:"England 0–0 Argentina",f1:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",f2:"🇦🇷",note:"Semi-final · live — score not final"}
 ];
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
-export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972,755,2348,122,2502,1234,1128];
+export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972,755,2348,122,2502,1234,1128,736];
 export const totalMiles = legMiles.reduce((a, b) => a + b, 0);
 
 // CO2 milestones: cumulative tonnes -> relatable comparison shown as the plane flies.
@@ -93,7 +94,6 @@ export const co2Steps = [
 // are expectations, not sightings, so they never affect miles / CO2 / cost / games.
 // tag = short round badge shown on the map; date/venue mirror the FIFA schedule.
 export const projected = [
-  {n:"Atlanta",lon:-84.4008,lat:33.7554,v:"Mercedes-Benz Stadium",date:"Jul 15",tag:"SEMI",round:"Semi-final",match:"England vs Argentina"},
   {n:"Miami",lon:-80.1300,lat:25.7906,v:"Hard Rock Stadium",date:"Jul 18",tag:"3RD",round:"Third place",match:"Third-place play-off"},
   {n:"New York",lon:-74.0745,lat:40.8135,v:"MetLife Stadium",date:"Jul 19",tag:"FINAL",round:"Final",match:"Spain vs winner of England/Argentina"}
 ];
