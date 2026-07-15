@@ -3,7 +3,7 @@ import {
   stopSlug, stopIndexFromParam,
 } from "../../public/core.js";
 import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from "../../public/constants.js";
-import { stops, legMiles, totalMiles, co2Steps } from "../../public/data.js";
+import { stops, legMiles, totalMiles, co2Steps, projected, CITIES } from "../../public/data.js";
 
 describe("itinerary data integrity", () => {
   test("42 stops, 41 legs", () => {
@@ -40,6 +40,18 @@ describe("itinerary data integrity", () => {
       expect(s.lat).toBeGreaterThanOrEqual(latMin);
       expect(s.lat).toBeLessThanOrEqual(latMax);
     }
+  });
+
+  test("every stop and projected fixture resolves its coords from CITIES", () => {
+    for (const s of [...stops, ...projected]) {
+      expect(CITIES[s.n]).toBeDefined();
+      expect([s.lon, s.lat]).toEqual(CITIES[s.n]);
+    }
+  });
+
+  test("CITIES has no unused entries", () => {
+    const used = new Set([...stops, ...projected].map(s => s.n));
+    for (const name of Object.keys(CITIES)) expect(used.has(name)).toBe(true);
   });
 
   test("repeat cities share identical coords so the map dedupes them", () => {
