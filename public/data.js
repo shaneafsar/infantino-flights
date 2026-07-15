@@ -122,6 +122,6 @@ export const co2Steps = [
 // are expectations, not sightings, so they never affect miles / CO2 / cost / games.
 // tag = short round badge shown on the map; date/venue mirror the FIFA schedule.
 export const projected = [
-  {n:"Miami",v:"Hard Rock Stadium",date:"Jul 18",tag:"3RD",round:"Third place",match:"Third-place play-off"},
-  {n:"New York",v:"MetLife Stadium",date:"Jul 19",tag:"FINAL",round:"Final",match:"Spain vs winner of England/Argentina"}
+  {n:"Miami",v:"Hard Rock Stadium",date:"Jul 18",tag:"3RD",round:"Third place",match:"France vs England"},
+  {n:"New York",v:"MetLife Stadium",date:"Jul 19",tag:"FINAL",round:"Final",match:"Spain vs Argentina"}
 ].map(withCoords);
