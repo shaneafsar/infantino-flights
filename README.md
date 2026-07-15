@@ -62,11 +62,17 @@ they pass** (the `deploy` job `needs: test`).
 
 ## Deploy to Cloudflare
 
-Hosted on the [Cloudflare Pages](https://developers.cloudflare.com/pages/) project `infantino-flights` — `public/` is uploaded and served from the edge, no build step required.
+Hosted on the [Cloudflare Pages](https://developers.cloudflare.com/pages/) project `infantino-flights` at [infantino-flights.glup.dev](https://infantino-flights.glup.dev/) — `public/` is uploaded and served from the edge, no build step required.
 
 ### Automatic (CI)
 
-Every push to `main` triggers `.github/workflows/deploy.yml`: it runs the Jest + Playwright suites, then — only if they pass — runs `wrangler pages deploy` via [`cloudflare/wrangler-action`](https://github.com/cloudflare/wrangler-action). No manual step needed.
+Every push to `main` triggers `.github/workflows/deploy.yml`: it runs the Jest + Playwright suites, then — only if they pass — the `deploy` job checks out with full history and:
+
+1. stamps the "data last updated" time from `data.js`'s last commit (`scripts/stamp-updated.sh`),
+2. cache-busts asset URLs with the commit SHA (`scripts/cachebust.sh`),
+3. deploys `public/` with `wrangler pages deploy` via [`cloudflare/wrangler-action`](https://github.com/cloudflare/wrangler-action).
+
+No manual step needed. (These two scripts run only in CI, so local files are never rewritten.)
 
 Requires two repo secrets:
 
