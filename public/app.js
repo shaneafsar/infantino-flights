@@ -13,11 +13,13 @@ const NS = "http://www.w3.org/2000/svg";
 const svg = document.getElementById("map");
 function el(t, a) { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; }
 
-// Play/pause/replay labels: the glyph is wrapped so it centres with the pixel-font text.
-const btnIco = glyph => '<span class="btn-ico" aria-hidden="true">' + glyph + '</span>';
-const LBL_PAUSE = btnIco("&#9208;") + "Pause";
-const LBL_PLAY = btnIco("&#9654;") + "Play";
-const LBL_REPLAY = btnIco("&#8635;") + "Replay";
+// Play/pause/replay labels: an inline SVG icon (centred artwork) + text. The icon is
+// aria-hidden so screen readers announce only the label.
+const btnIco = path => '<span class="btn-ico" aria-hidden="true"><svg viewBox="0 0 24 24">' + path + '</svg></span>';
+const LBL_PAUSE = btnIco('<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>') + "Pause";
+const LBL_PLAY = btnIco('<path d="M8 5v14l11-7z"/>') + "Play";
+const LBL_REPLAY = btnIco('<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>') + "Replay";
+const ICO_CHECK = '<path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>';
 
 // ocean
 svg.appendChild(el("rect", { x: 0, y: 0, width: W, height: H, class: "ocean" }));
@@ -247,7 +249,7 @@ shareBtn.addEventListener("click", async () => {
   const url = location.origin + location.pathname + "?stop=" + stopSlug(stops[idx]);
   try { await navigator.clipboard.writeText(url); } catch (e) { /* clipboard may be blocked */ }
   const orig = shareBtn.innerHTML;
-  shareBtn.innerHTML = btnIco("&#10003;") + "Copied";
+  shareBtn.innerHTML = btnIco(ICO_CHECK) + "Copied";
   setTimeout(() => { shareBtn.innerHTML = orig; }, 1500);
 });
 

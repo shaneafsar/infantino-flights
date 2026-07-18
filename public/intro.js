@@ -498,8 +498,8 @@ function createOverlay(onClose, audio, sfxContext, assets) {
     <button class="arcade-intro__sound" type="button" aria-label="Mute music" title="Mute music">&#9835;</button>
     <button class="arcade-intro__skip" type="button" aria-label="Close intro" title="Close">&times;</button>
     <div class="arcade-intro__actions" aria-label="Intro controls">
-      <button class="arcade-intro__action arcade-intro__replay" type="button"><span class="btn-ico" aria-hidden="true">&#8635;</span>Replay</button>
-      <button class="arcade-intro__action arcade-intro__action--close arcade-intro__close" type="button"><span class="btn-ico" aria-hidden="true">&times;</span>Close</button>
+      <button class="arcade-intro__action arcade-intro__replay" type="button"><span class="btn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg></span>Replay</button>
+      <button class="arcade-intro__action arcade-intro__action--close arcade-intro__close" type="button"><span class="btn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></span>Close</button>
     </div>`;
   document.body.appendChild(overlay);
 
