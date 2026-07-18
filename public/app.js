@@ -146,8 +146,26 @@ let lastTs = 0;            // timestamp of the previous frame; 0 = loop just (re
 const lerp = (a, b, f) => a + (b - a) * f;
 
 function vsHtml(s) {
-  if (!s.f1) return '<div class="vs-summit">🏢</div><span class="match">' + s.match + '</span>' + (s.note ? '<span class="vs-score">' + s.note + '</span>' : '');
+  // Non-game stops (summit/reception): icon + title only. The venue/context (note)
+  // is folded into the date line so these captions stay the same height as games.
+  if (!s.f1) return '<div class="vs-summit">🏢</div><span class="match">' + s.match + '</span>';
   return '<div class="vs-display"><span class="vs-flag">' + s.f1 + '</span><span class="vs-text">VS</span><span class="vs-flag">' + s.f2 + '</span></div><span class="match">' + s.match + (s.note ? ' (' + s.note + ')' : '') + '</span>';
+}
+
+// The caption shows just the venue for a non-game stop: strip the trailing
+// "· no match" marker and any "— extra context" clause (kept in the data + sources),
+// so the date line stays one line and matches the height of game captions.
+function captionNote(n) {
+  const cleaned = n.replace(/\s*[·—-]\s*no match\s*$/i, "").trim();
+  const dash = cleaned.indexOf("—");
+  return (dash > 0 ? cleaned.slice(0, dash) : cleaned).trim();
+}
+
+// Full caption HTML for a stop: matchup/title + a single compact date · place line.
+function stopCaption(s) {
+  const extra = !s.f1 && s.note ? captionNote(s.note) : "";
+  return vsHtml(s) + '<span class="dt">' + s.date + ' &middot; ' + s.n +
+    (s.v ? ' &middot; ' + s.v : '') + (extra ? ' &middot; ' + extra : '') + '</span>';
 }
 
 function render() {
@@ -202,11 +220,9 @@ function render() {
 
   // caption
   if (end) {
-    const s = stops[N];
-    legEl.innerHTML = vsHtml(s) + '<span class="dt">' + s.date + ' &middot; ' + s.n + (s.v ? ' &middot; ' + s.v : '') + '</span>';
+    legEl.innerHTML = stopCaption(stops[N]);
   } else if (pauseTimer > 0 || f < 0.06) {
-    const s = stops[seg];
-    legEl.innerHTML = vsHtml(s) + '<span class="dt">' + s.date + ' &middot; ' + s.n + (s.v ? ' &middot; ' + s.v : '') + '</span>';
+    legEl.innerHTML = stopCaption(stops[seg]);
   } else {
     const ns = stops[seg + 1];
     legEl.innerHTML = 'Flying to <b>' + ns.n + '</b><span class="dt">next: ' + ns.match + ' (' + ns.date + ')</span>';
