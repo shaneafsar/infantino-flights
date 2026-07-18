@@ -9,11 +9,11 @@ public/
   index.html      # markup
   styles.css      # styles
   constants.js    # numeric constants (projection, emissions, animation)
-  data.js         # confirmed stops, CO2 milestones + projected onward route
+  data.js         # host-city coords (CITIES), stops, CO2 milestones + projected route
   geo.js          # map outline data (Natural Earth)
   core.js         # pure logic — projection, distance, conversions (unit-tested)
   app.js          # view layer — builds the SVG map + runs the animation
-  intro.js        # optional lazy-loaded arcade intro overlay
+  intro.js        # optional lazy-loaded arcade intro (with intro.css, arcade-*.webp, *.mp3)
 scripts/
   stamp-updated.sh  # deploy: stamp "data last updated" from data.js's last commit
   cachebust.sh      # deploy: append ?v=<sha> to asset URLs
@@ -29,6 +29,10 @@ served over HTTP — opening `index.html` via `file://` won't load the modules.
 
 - **Solid amber route** — the flown tour: confirmed sightings, animated stop by stop, driving the Miles / CO₂ / cost / games counters.
 - **Dashed cyan route** — the *projected* onward route: the fixtures Infantino is expected to attend next, drawn from a separate `projected` array in `data.js`. It's an estimate only, so it never affects any of the counters. As each game happens, its leg is promoted from projected to a confirmed stop.
+
+Every stop references its city by name; coordinates live once in the `CITIES` lookup in `data.js` (repeat visits share a coordinate and dedupe to one map marker). Non-game appearances (e.g. the FIFA summit / reception) are stops that add a flight leg but don't count as games.
+
+There's also a hidden arcade intro: the small ✈ button in the footer lazy-loads a pixel-art penalty-kick cutscene.
 
 ## Share links
 
