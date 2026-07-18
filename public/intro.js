@@ -89,10 +89,10 @@ function sampleSky(stadium) {
     for (let i = 0; i < data.length; i += 4) { r += data[i]; g += data[i + 1]; b += data[i + 2]; }
     r = Math.round(r / n); g = Math.round(g / n); b = Math.round(b / n);
     const deep = c => Math.round(c * 0.42);
-    return { horizon: `rgb(${r},${g},${b})`, deep: `rgb(${deep(r)},${deep(g)},${Math.round(b * 0.55)})` };
+    return { r, g, b, horizon: `rgb(${r},${g},${b})`, deep: `rgb(${deep(r)},${deep(g)},${Math.round(b * 0.55)})` };
   } catch (error) {
     // getImageData can fail (e.g. tainted canvas); fall back to a plausible night sky.
-    return { horizon: "#0b1030", deep: "#05060f" };
+    return { r: 11, g: 16, b: 48, horizon: "#0b1030", deep: "#05060f" };
   }
 }
 
@@ -376,6 +376,17 @@ function drawFrame(ctx, assets, time, finished) {
   ctx.imageSmoothingEnabled = true;
   ctx.drawImage(assets.stadium, 0, offset, WIDTH, HEIGHT);
   ctx.imageSmoothingEnabled = false;
+  // Feather the stadium's hard top edge into the sky so its clouds/floodlights
+  // dissolve upward instead of being sliced off at the image boundary.
+  if (offset > 0 && assets.sky) {
+    const { r, g, b } = assets.sky;
+    const featherH = 34;
+    const feather = ctx.createLinearGradient(0, offset, 0, offset + featherH);
+    feather.addColorStop(0, `rgba(${r},${g},${b},1)`);
+    feather.addColorStop(1, `rgba(${r},${g},${b},0)`);
+    ctx.fillStyle = feather;
+    ctx.fillRect(0, offset, WIDTH, featherH);
+  }
 
   if (time < 10.15) {
     drawCrowdAnimations(ctx, assets.crowd, time, offset);
@@ -487,8 +498,8 @@ function createOverlay(onClose, audio, sfxContext, assets) {
     <button class="arcade-intro__sound" type="button" aria-label="Mute music" title="Mute music">&#9835;</button>
     <button class="arcade-intro__skip" type="button" aria-label="Close intro" title="Close">&times;</button>
     <div class="arcade-intro__actions" aria-label="Intro controls">
-      <button class="arcade-intro__action arcade-intro__replay" type="button">&#8635; Replay</button>
-      <button class="arcade-intro__action arcade-intro__action--close arcade-intro__close" type="button">&times; Close</button>
+      <button class="arcade-intro__action arcade-intro__replay" type="button"><span class="btn-ico" aria-hidden="true">&#8635;</span>Replay</button>
+      <button class="arcade-intro__action arcade-intro__action--close arcade-intro__close" type="button"><span class="btn-ico" aria-hidden="true">&times;</span>Close</button>
     </div>`;
   document.body.appendChild(overlay);
 

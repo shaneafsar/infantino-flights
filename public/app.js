@@ -13,6 +13,12 @@ const NS = "http://www.w3.org/2000/svg";
 const svg = document.getElementById("map");
 function el(t, a) { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; }
 
+// Play/pause/replay labels: the glyph is wrapped so it centres with the pixel-font text.
+const btnIco = glyph => '<span class="btn-ico" aria-hidden="true">' + glyph + '</span>';
+const LBL_PAUSE = btnIco("&#9208;") + "Pause";
+const LBL_PLAY = btnIco("&#9654;") + "Play";
+const LBL_REPLAY = btnIco("&#8635;") + "Replay";
+
 // ocean
 svg.appendChild(el("rect", { x: 0, y: 0, width: W, height: H, class: "ocean" }));
 
@@ -219,20 +225,20 @@ function tick(ts) {
   t += SPEED_PER_SEC * dt / 1000;
   const cur = Math.floor(t);
   if (cur > prev && t < N) { t = cur; pauseTimer = PAUSE_MS; }
-  if (t >= N) { t = N; render(); playing = false; pp.innerHTML = "&#8635; Replay"; return; }
+  if (t >= N) { t = N; render(); playing = false; pp.innerHTML = LBL_REPLAY; return; }
   render();
   requestAnimationFrame(tick);
 }
 pp.addEventListener("click", () => {
-  if (t >= N) { t = 0; playing = true; pauseTimer = PAUSE_MS; lastTs = 0; pp.innerHTML = "&#9208; Pause"; requestAnimationFrame(tick); return; }
-  playing = !playing; pp.innerHTML = playing ? "&#9208; Pause" : "&#9654; Play";
+  if (t >= N) { t = 0; playing = true; pauseTimer = PAUSE_MS; lastTs = 0; pp.innerHTML = LBL_PAUSE; requestAnimationFrame(tick); return; }
+  playing = !playing; pp.innerHTML = playing ? LBL_PAUSE : LBL_PLAY;
   if (playing) { lastTs = 0; requestAnimationFrame(tick); }
 });
-slider.addEventListener("input", () => { t = parseFloat(slider.value); pauseTimer = 0; playing = false; pp.innerHTML = t >= N ? "&#8635; Replay" : "&#9654; Play"; render(); });
+slider.addEventListener("input", () => { t = parseFloat(slider.value); pauseTimer = 0; playing = false; pp.innerHTML = t >= N ? LBL_REPLAY : LBL_PLAY; render(); });
 
 // Deep link: ?stop=<1-based number | date-city slug> opens paused at that stop.
 const sharedIdx = stopIndexFromParam(new URLSearchParams(location.search).get("stop"));
-if (sharedIdx >= 0) { t = sharedIdx; playing = false; pp.innerHTML = sharedIdx >= N ? "&#8635; Replay" : "&#9654; Play"; }
+if (sharedIdx >= 0) { t = sharedIdx; playing = false; pp.innerHTML = sharedIdx >= N ? LBL_REPLAY : LBL_PLAY; }
 
 // Share button: copy a link to the stop currently on screen.
 const shareBtn = document.getElementById("share");
@@ -241,7 +247,7 @@ shareBtn.addEventListener("click", async () => {
   const url = location.origin + location.pathname + "?stop=" + stopSlug(stops[idx]);
   try { await navigator.clipboard.writeText(url); } catch (e) { /* clipboard may be blocked */ }
   const orig = shareBtn.innerHTML;
-  shareBtn.innerHTML = "&#10003; Copied";
+  shareBtn.innerHTML = btnIco("&#10003;") + "Copied";
   setTimeout(() => { shareBtn.innerHTML = orig; }, 1500);
 });
 
@@ -296,7 +302,7 @@ introTrigger.addEventListener("click", async () => {
   const resumeTour = playing && t < N;
   if (resumeTour) {
     playing = false;
-    pp.innerHTML = "&#9654; Play";
+    pp.innerHTML = LBL_PLAY;
   }
   try {
     let completedInitialRequests = 0;
@@ -313,7 +319,7 @@ introTrigger.addEventListener("click", async () => {
         if (resumeTour && t < N) {
           playing = true;
           lastTs = 0;
-          pp.innerHTML = "&#9208; Pause";
+          pp.innerHTML = LBL_PAUSE;
           requestAnimationFrame(tick);
         }
       },
@@ -325,7 +331,7 @@ introTrigger.addEventListener("click", async () => {
     if (resumeTour && t < N) {
       playing = true;
       lastTs = 0;
-      pp.innerHTML = "&#9208; Pause";
+      pp.innerHTML = LBL_PAUSE;
       requestAnimationFrame(tick);
     }
   } finally {

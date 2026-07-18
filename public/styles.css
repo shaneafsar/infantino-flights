@@ -41,7 +41,10 @@
   .vs-score{color:#ffcc00;font-size:.6rem;margin-top:2px}
   .vs-summit{font-size:1.5rem;margin-bottom:4px}
   .controls{display:flex;align-items:center;gap:10px;margin-top:12px}
-  button{font-family:"Press Start 2P",monospace;background:#ffcc00;color:#0a0a1a;border:3px solid #ffee66;padding:0 18px;height:40px;font-size:.55rem;cursor:pointer;white-space:nowrap;text-transform:uppercase;box-shadow:3px 3px 0 #804000;display:inline-flex;align-items:center;justify-content:center}
+  button{font-family:"Press Start 2P",monospace;background:#ffcc00;color:#0a0a1a;border:3px solid #ffee66;padding:0 18px;height:40px;font-size:.55rem;cursor:pointer;white-space:nowrap;text-transform:uppercase;box-shadow:3px 3px 0 #804000;display:inline-flex;align-items:center;justify-content:center;gap:.5em}
+  /* Leading glyph (play/pause/replay/etc.) as a flex item so it centres vertically
+     with the pixel-font label regardless of the fallback font's baseline. */
+  .btn-ico{font-size:1.4em;line-height:1;display:inline-flex;align-items:center;justify-content:center}
   button:hover{background:#ffee66;box-shadow:2px 2px 0 #804000}
   button:active{box-shadow:1px 1px 0 #804000;transform:translate(1px,1px)}
   input[type=range]{flex:1;accent-color:#ffcc00;cursor:pointer;height:28px}
