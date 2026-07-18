@@ -6,8 +6,8 @@ import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from 
 import { stops, legMiles, totalMiles, co2Steps, projected, CITIES } from "../../public/data.js";
 
 describe("itinerary data integrity", () => {
-  test("42 stops, 41 legs", () => {
-    expect(stops.length).toBe(42);
+  test("43 stops, 42 legs", () => {
+    expect(stops.length).toBe(43);
     expect(legMiles.length).toBe(stops.length - 1);
   });
 
@@ -21,11 +21,12 @@ describe("itinerary data integrity", () => {
     }
   });
 
-  test("match stops have two flags + a stadium; the summit has neither", () => {
-    const summits = stops.filter(s => !s.f1);
-    expect(summits).toHaveLength(1);
-    expect(summits[0].n).toBe("Miami");
-    expect(summits[0].note).toMatch(/no match/i);
+  test("match stops have two flags + a stadium; non-game stops are flagged 'no match'", () => {
+    const nonGames = stops.filter(s => !s.f1);
+    // the FIFA summit (Miami) and the Trump Tower reception (New York) are the appearances
+    expect(nonGames.length).toBeGreaterThanOrEqual(1);
+    for (const s of nonGames) expect(s.note).toMatch(/no match/i);
+    expect(nonGames.some(s => s.n === "Miami")).toBe(true);
 
     for (const s of stops.filter(s => s.f1)) {
       expect(typeof s.f2).toBe("string");
@@ -78,10 +79,10 @@ describe("distances", () => {
     }
   });
 
-  test("totalMiles is the sum of legs (~51,038)", () => {
+  test("totalMiles is the sum of legs (~51,785)", () => {
     expect(totalMiles).toBe(legMiles.reduce((x, y) => x + y, 0));
     expect(totalMiles).toBeGreaterThan(49000);
-    expect(totalMiles).toBeLessThan(53000);
+    expect(totalMiles).toBeLessThan(54000);
   });
 });
 
@@ -101,11 +102,11 @@ describe("flight cost", () => {
     expect(tripCost(1000, 2)).toBe(24000 + 8000);
   });
 
-  test("full tour is ~$1.39M", () => {
+  test("full tour is ~$1.41M", () => {
     const cost = tripCost(totalMiles, legMiles.length);
     expect(cost).toBe(totalMiles * 24 + legMiles.length * 4000);
-    expect(cost).toBeGreaterThan(1340000);
-    expect(cost).toBeLessThan(1440000);
+    expect(cost).toBeGreaterThan(1360000);
+    expect(cost).toBeLessThan(1460000);
   });
 });
 
@@ -117,8 +118,8 @@ describe("projection", () => {
 });
 
 describe("CO2 model", () => {
-  test("full tour is ~444 tonnes", () => {
-    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(444.0, 1);
+  test("full tour is ~451 tonnes", () => {
+    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(450.5, 1);
   });
 
   test("milestone thresholds are strictly increasing", () => {

@@ -77,11 +77,12 @@ export const stops = [
   {n:"Boston",v:"Gillette Stadium",date:"Jul 9",match:"France 2–0 Morocco",f1:"🇫🇷",f2:"🇲🇦",note:"Quarter-final"},
   {n:"Miami",v:"Hard Rock Stadium",date:"Jul 11",match:"Norway 1–2 England",f1:"🇳🇴",f2:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",note:"Quarter-final · a.e.t."},
   {n:"Dallas",v:"AT&T Stadium",date:"Jul 14",match:"France 0–2 Spain",f1:"🇫🇷",f2:"🇪🇸",note:"Semi-final"},
-  {n:"Atlanta",v:"Mercedes-Benz Stadium",date:"Jul 15",match:"England 1–2 Argentina",f1:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",f2:"🇦🇷",note:"Semi-final · a.e.t."}
+  {n:"Atlanta",v:"Mercedes-Benz Stadium",date:"Jul 15",match:"England 1–2 Argentina",f1:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",f2:"🇦🇷",note:"Semi-final · a.e.t."},
+  {n:"New York",date:"Jul 17",match:"FIFA World Cup Final reception",note:"Trump Tower — with President Trump · no match"}
 ].map(withCoords);
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
-export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972,755,2348,122,2502,1234,1128,736];
+export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972,755,2348,122,2502,1234,1128,736,747];
 export const totalMiles = legMiles.reduce((a, b) => a + b, 0);
 
 // CO2 milestones: cumulative tonnes -> relatable comparison shown as the plane flies.
@@ -114,7 +115,8 @@ export const co2Steps = [
   {t:415,m:"That&rsquo;s a year of carbon for ~88 people worldwide"},
   {t:430,m:"That&rsquo;s ~1,000 barrels of oil burned"},
   {t:435,m:"That&rsquo;s a gas car driven around the Earth ~43 times"},
-  {t:450,m:"That&rsquo;s ~190 tonnes of coal burned"}
+  {t:450,m:"That&rsquo;s ~190 tonnes of coal burned"},
+  {t:465,m:"That&rsquo;s ~465 economy round-trips, New York to London"}
 ];
 
 // Estimated onward route for the three fixtures left in the tournament, drawn as a
