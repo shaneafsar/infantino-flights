@@ -34,6 +34,13 @@ function loadImage(src) {
   return promise;
 }
 
+// Stars fixed in the sky above the stadium (k = px above the stadium's top edge),
+// revealed and scrolled down as the camera pans up. Deterministic so they don't jitter.
+const STARS = Array.from({ length: 44 }, (_, i) => {
+  const rand = n => { const s = Math.sin(i * 12.9898 + n * 78.233) * 43758.5453; return s - Math.floor(s); };
+  return { x: rand(1) * WIDTH, k: 10 + rand(2) * 196, big: rand(3) > 0.72, tw: rand(4) * TAU };
+});
+
 const clamp = value => Math.max(0, Math.min(1, value));
 const ease = value => {
   const n = clamp(value);
@@ -66,6 +73,28 @@ const CROWD_SPRITES = Array.from({ length: 3 }, (_, column) => [
   [column * 512, 0, 512, 512],
   [column * 512, 512, 512, 512],
 ]);
+
+// Sample the stadium art's top row so the sky revealed above it as the camera pans
+// can be continued with an exactly-matching gradient (no hard seam at the image edge).
+function sampleSky(stadium) {
+  try {
+    const strip = document.createElement("canvas");
+    strip.width = stadium.width;
+    strip.height = 1;
+    const stripCtx = strip.getContext("2d", { willReadFrequently: true });
+    stripCtx.drawImage(stadium, 0, 0, stadium.width, 1, 0, 0, stadium.width, 1);
+    const { data } = stripCtx.getImageData(0, 0, stadium.width, 1);
+    let r = 0, g = 0, b = 0;
+    const n = data.length / 4;
+    for (let i = 0; i < data.length; i += 4) { r += data[i]; g += data[i + 1]; b += data[i + 2]; }
+    r = Math.round(r / n); g = Math.round(g / n); b = Math.round(b / n);
+    const deep = c => Math.round(c * 0.42);
+    return { horizon: `rgb(${r},${g},${b})`, deep: `rgb(${deep(r)},${deep(g)},${Math.round(b * 0.55)})` };
+  } catch (error) {
+    // getImageData can fail (e.g. tainted canvas); fall back to a plausible night sky.
+    return { horizon: "#0b1030", deep: "#05060f" };
+  }
+}
 
 function drawSprite(ctx, sprite, centerX, bottomY, targetHeight) {
   const targetWidth = targetHeight * sprite.width / sprite.height;
@@ -326,6 +355,24 @@ function drawFrame(ctx, assets, time, finished) {
   rect(ctx, "#080a21", 0, 0, WIDTH, HEIGHT);
   const pan = ease(range(time, 8.35, 10.1));
   const offset = pan * 192;
+  // Continue the night sky into the strip revealed above the stadium as it pans down.
+  // The gradient's bottom edge matches the stadium's top-row color, so there's no seam.
+  if (offset > 0 && assets.sky) {
+    const sky = ctx.createLinearGradient(0, 0, 0, offset);
+    sky.addColorStop(0, assets.sky.deep);
+    sky.addColorStop(1, assets.sky.horizon);
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, WIDTH, Math.ceil(offset) + 1);
+    for (const star of STARS) {
+      if (star.k >= offset) continue;                     // not yet revealed
+      const y = offset - star.k;
+      const fade = clamp((offset - star.k) / 12);          // ease in as it clears the horizon
+      const twinkle = 0.55 + 0.45 * Math.sin(time * 3 + star.tw);
+      ctx.fillStyle = `rgba(214,226,255,${(0.5 * fade * twinkle).toFixed(3)})`;
+      const s = star.big ? 2 : 1;
+      ctx.fillRect(Math.round(star.x), Math.round(y), s, s);
+    }
+  }
   ctx.imageSmoothingEnabled = true;
   ctx.drawImage(assets.stadium, 0, offset, WIDTH, HEIGHT);
   ctx.imageSmoothingEnabled = false;
@@ -573,6 +620,7 @@ export async function openIntro({ onClose, audio, sfxContext, onProgress } = {})
     crowd: buildCrowdFrames(crowdAtlas),
     stadium,
     logo,
+    sky: sampleSky(stadium),
   };
   if (!document.getElementById("arcade-intro")) createOverlay(onClose, audio, sfxContext, assets);
   onProgress?.(1);
