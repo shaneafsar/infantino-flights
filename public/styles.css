@@ -52,6 +52,14 @@
   .foot{color:#666688;font-size:.45rem;margin-top:16px;text-align:center;max-width:920px;line-height:2.4;padding:0 8px}
   .foot a{color:#66aaff;text-decoration:underline}
   .foot a:hover{color:#ffcc00}
+  .method{max-width:640px;margin:16px auto 0;text-align:left;background:#0d0d24;border:2px solid #2a2a55;padding:14px 18px}
+  .method-h{font-size:.5rem;color:#ffcc00;text-transform:uppercase;letter-spacing:.08em;text-align:center;margin-bottom:12px}
+  .method-list{list-style:none;margin:0;padding:0}
+  .method-list li{position:relative;padding-left:15px;margin:8px 0;line-height:2;color:#7f83b0}
+  .method-list li::before{content:"";position:absolute;left:0;top:.85em;width:5px;height:5px;background:#5fd3ff}
+  .method-list b{color:#c7cbf0;font-weight:normal}
+  .method-list b.proj{color:#5fd3ff}
+  .method-list em{color:#5fd3ff;font-style:normal}
   .note{margin-top:10px;color:#8888bb;font-style:italic}
   .miles-stat .l{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
   .unit-toggle{display:inline-flex;flex:none;border:2px solid #ffcc00;box-shadow:2px 2px 0 #804000;line-height:1;cursor:pointer}
