@@ -170,3 +170,23 @@ test("play / pause / replay button labels", async ({ page }) => {
   await scrubToEnd(page);
   await expect(pp).toContainText("Replay");   // at the end
 });
+
+// Guards the regression where a global `svg{}` rule (meant for the map) leaked onto
+// the button icons and blew them up to ~100px, overlapping the whole UI.
+test("control button icons stay small and never exceed their button", async ({ page }) => {
+  await ready(page);
+  const icons = page.locator("button .btn-ico svg");
+  const count = await icons.count();
+  expect(count).toBeGreaterThan(0); // #pp + #share at minimum
+  for (let i = 0; i < count; i++) {
+    const size = await icons.nth(i).evaluate((svg) => {
+      const r = svg.getBoundingClientRect();
+      const btn = svg.closest("button").getBoundingClientRect();
+      return { w: r.width, h: r.height, btnH: btn.height };
+    });
+    expect(size.w).toBeGreaterThan(6);          // rendered, not collapsed
+    expect(size.w).toBeLessThan(24);            // small icon, not a giant SVG
+    expect(size.h).toBeLessThan(24);
+    expect(size.h).toBeLessThanOrEqual(size.btnH + 0.5); // fits inside its button
+  }
+});
