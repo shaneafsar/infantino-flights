@@ -14,12 +14,12 @@ async function ready(page) {
 test("end-of-tour stats", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("51,785");
-  await expect(page.locator("#games")).toHaveText("41"); // Trump Tower reception is not a game
+  await expect(page.locator("#miles")).toHaveText("51,785"); // final is a 0-mile leg (he was already in NY)
+  await expect(page.locator("#games")).toHaveText("42");     // the final counts; reception did not
   await expect(page.locator("#co2")).toHaveText("450.5");
-  await expect(page.locator("#cost")).toHaveText("$1,410,840");
+  await expect(page.locator("#cost")).toHaveText("$1,410,840"); // no landing fee for the 0-mile leg
   await expect(page.locator("#leg")).toContainText("New York");
-  await expect(page.locator("#leg")).toContainText("Trump Tower");
+  await expect(page.locator("#leg")).toContainText("MetLife Stadium");
 });
 
 test("mi/km flips on a tap anywhere in the control (not just the off radio)", async ({ page }) => {

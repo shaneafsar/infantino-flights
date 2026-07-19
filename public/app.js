@@ -148,6 +148,9 @@ unitToggle.addEventListener("change", (e) => { if (e.target.name === "unit") set
 
 // ---- animation ----
 const N = stops.length - 1; // legs
+// Landing fees are per *flight*, so a zero-mile leg (a game in the city he's already
+// in) incurs none. Count only flown legs among the first n for the cost model.
+const flownLegs = n => { let c = 0; for (let i = 0; i < n; i++) if (legMiles[i] > 0) c++; return c; };
 let t = 0, playing = true;
 let pauseTimer = PAUSE_MS; // ms left to hold at the current stop (starts at the first city)
 let lastTs = 0;            // timestamp of the previous frame; 0 = loop just (re)started
@@ -201,7 +204,7 @@ function render() {
   milesEl.textContent = Math.round(milesToUnit(miles, unit)).toLocaleString();
   milesLabelEl.textContent = unit === "km" ? "Km flown" : "Miles flown";
   co2El.textContent = (miles * CO2_PER_MILE).toFixed(1);
-  costEl.textContent = "$" + Math.round(tripCost(miles, Math.min(Math.floor(t), N))).toLocaleString();
+  costEl.textContent = "$" + Math.round(tripCost(miles, flownLegs(Math.min(Math.floor(t), N)))).toLocaleString();
 
   // CO2 milestone: update text, flash when a new (higher) tier is crossed
   const cs = co2MilestoneIndex(miles * CO2_PER_MILE);

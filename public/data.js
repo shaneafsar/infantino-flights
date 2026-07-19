@@ -78,11 +78,12 @@ export const stops = [
   {n:"Miami",v:"Hard Rock Stadium",date:"Jul 11",match:"Norway 1–2 England",f1:"🇳🇴",f2:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",note:"Quarter-final · a.e.t."},
   {n:"Dallas",v:"AT&T Stadium",date:"Jul 14",match:"France 0–2 Spain",f1:"🇫🇷",f2:"🇪🇸",note:"Semi-final"},
   {n:"Atlanta",v:"Mercedes-Benz Stadium",date:"Jul 15",match:"England 1–2 Argentina",f1:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",f2:"🇦🇷",note:"Semi-final · a.e.t."},
-  {n:"New York",date:"Jul 17",match:"FIFA World Cup Final reception",note:"Trump Tower — with President Trump · no match"}
+  {n:"New York",date:"Jul 17",match:"FIFA World Cup Final reception",note:"Trump Tower — with President Trump · no match"},
+  {n:"New York",v:"MetLife Stadium",date:"Jul 19",match:"Spain 1–0 Argentina",f1:"🇪🇸",f2:"🇦🇷",note:"Final · a.e.t."}
 ].map(withCoords);
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
-export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972,755,2348,122,2502,1234,1128,736,747];
+export const legMiles = [296,1291,313,822,2804,2732,966,1367,649,755,2459,2501,1592,405,1101,607,1128,1313,85,170,426,1234,1016,2375,2733,2343,1375,405,525,938,1858,314,2343,972,755,2348,122,2502,1234,1128,736,747,0];
 export const totalMiles = legMiles.reduce((a, b) => a + b, 0);
 
 // CO2 milestones: cumulative tonnes -> relatable comparison shown as the plane flies.
@@ -123,8 +124,5 @@ export const co2Steps = [
 // dashed "projected" line from the last confirmed stop. NOT part of `stops`: these
 // are expectations, not sightings, so they never affect miles / CO2 / cost / games.
 // tag = short round badge shown on the map; date/venue mirror the FIFA schedule.
-// Infantino skipped the Miami third-place (Jul 18) — weather grounded him in New York
-// — so only the final remains, in the city he's already in (no onward leg to fly).
-export const projected = [
-  {n:"New York",v:"MetLife Stadium",date:"Jul 19",tag:"FINAL",round:"Final",match:"Spain vs Argentina"}
-].map(withCoords);
+// Tour complete: the final (Jul 19) is now a confirmed stop, so nothing is projected.
+export const projected = [].map(withCoords);
