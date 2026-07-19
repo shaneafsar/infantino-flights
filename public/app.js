@@ -61,8 +61,15 @@ svg.appendChild(el("path", { d: bg, class: "route-bg" }));
 const projPts = projected.map(s => proj(s.lon, s.lat));
 if (projPts.length) {
   const last = pts[pts.length - 1];
+  let prev = last;
   let pd = "M" + last[0].toFixed(1) + " " + last[1].toFixed(1) + " ";
-  projPts.forEach(p => pd += "L" + p[0].toFixed(1) + " " + p[1].toFixed(1) + " ");
+  projPts.forEach(p => {
+    // skip a zero-length hop (e.g. the final is in the city he's already in)
+    if (p[0].toFixed(1) !== prev[0].toFixed(1) || p[1].toFixed(1) !== prev[1].toFixed(1)) {
+      pd += "L" + p[0].toFixed(1) + " " + p[1].toFixed(1) + " ";
+      prev = p;
+    }
+  });
   svg.appendChild(el("path", { d: pd, class: "route-proj" }));
 }
 
@@ -102,17 +109,18 @@ stops.forEach((s, i) => {
 });
 
 // Projected-stop markers: a hollow ring haloing the (already-visited) city dot plus
-// a short round badge, so the estimated final three read as distinct from the flown
-// route. Offsets are hand-tuned to clear each city's own label and the map edge.
-const projTagPos = [
-  { dx: 11, dy: -9, anchor: "start" },  // Atlanta: above-right, into open ground
-  { dx: 11, dy: -9, anchor: "start" },  // Miami: above-right, over the Atlantic
-  { dx: -11, dy: 17, anchor: "end" },   // New York: below-left, away from the map edge
-];
+// a short round badge, so the upcoming fixtures read as distinct from the flown route.
+// Offsets are keyed by city (not array position) so they stay correct as fixtures are
+// promoted off the projected list; hand-tuned to clear each label and the map edge.
+const projTagPos = {
+  "Atlanta":  { dx: 11, dy: -9, anchor: "start" },   // above-right, into open ground
+  "Miami":    { dx: 11, dy: -9, anchor: "start" },   // above-right, over the Atlantic
+  "New York": { dx: -11, dy: 17, anchor: "end" },    // below-left, away from the map edge
+};
 projected.forEach((s, i) => {
   const [x, y] = projPts[i];
   svg.appendChild(el("circle", { cx: x, cy: y, r: 8, class: "proj-node" }));
-  const o = projTagPos[i] || { dx: 11, dy: -9, anchor: "start" };
+  const o = projTagPos[s.n] || { dx: 11, dy: -9, anchor: "start" };
   const tag = el("text", { x: x + o.dx, y: y + o.dy, class: "proj-label", "text-anchor": o.anchor });
   tag.textContent = s.tag + " " + s.date.replace("Jul ", "7/");
   svg.appendChild(tag);

@@ -123,7 +123,8 @@ export const co2Steps = [
 // dashed "projected" line from the last confirmed stop. NOT part of `stops`: these
 // are expectations, not sightings, so they never affect miles / CO2 / cost / games.
 // tag = short round badge shown on the map; date/venue mirror the FIFA schedule.
+// Infantino skipped the Miami third-place (Jul 18) — weather grounded him in New York
+// — so only the final remains, in the city he's already in (no onward leg to fly).
 export const projected = [
-  {n:"Miami",v:"Hard Rock Stadium",date:"Jul 18",tag:"3RD",round:"Third place",match:"France vs England"},
   {n:"New York",v:"MetLife Stadium",date:"Jul 19",tag:"FINAL",round:"Final",match:"Spain vs Argentina"}
 ].map(withCoords);
