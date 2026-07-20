@@ -371,6 +371,28 @@ introTrigger.addEventListener("click", async () => {
   }
 });
 
+// Tick ruler under the slider: one mark per stop, taller/amber where the tournament
+// phase changes (opener → R32 → R16 → QF → SF → Final) so it reads as a legend too.
+(() => {
+  const ticksEl = document.getElementById("ticks");
+  if (!ticksEl) return;
+  const phase = s => {
+    const nt = s.note || "";
+    if (/^Final/.test(nt)) return "F";
+    if (/Semi-final/.test(nt)) return "SF";
+    if (/Quarter-final/.test(nt)) return "QF";
+    if (/Round of 16/.test(nt)) return "R16";
+    if (/Round of 32/.test(nt)) return "R32";
+    return "group";
+  };
+  let html = "";
+  for (let i = 0; i <= N; i++) {
+    const major = i === 0 || phase(stops[i]) !== phase(stops[i - 1]);
+    html += '<span class="tick' + (major ? " major" : "") + '" style="left:' + (i / N * 100).toFixed(3) + '%"></span>';
+  }
+  ticksEl.innerHTML = html;
+})();
+
 // "By the numbers" — a recap of the completed tour, all derived from the itinerary
 // so the figures can never drift from the data.
 (() => {

@@ -49,6 +49,13 @@
   button:hover{background:#ffee66;box-shadow:2px 2px 0 #804000}
   button:active{box-shadow:1px 1px 0 #804000;transform:translate(1px,1px)}
   input[type=range]{flex:1;accent-color:#ffcc00;cursor:pointer;height:28px}
+  .slider-col{flex:1;display:flex;flex-direction:column}
+  .slider-col input[type=range]{flex:none;width:100%}
+  /* Tick ruler under the slider. Inset by ~the thumb radius so tick i lines up with
+     the thumb centre at stop i; taller amber ticks mark tournament-phase boundaries. */
+  .ticks{position:relative;height:9px;margin:1px 8px 0}
+  .tick{position:absolute;top:0;width:1px;height:4px;margin-left:-.5px;background:#4a4a7a}
+  .tick.major{height:9px;width:2px;margin-left:-1px;background:#ffcc00;opacity:.85}
   .foot{color:#666688;font-size:.45rem;margin-top:16px;text-align:center;max-width:920px;line-height:2.4;padding:0 8px}
   .foot a{color:#66aaff;text-decoration:underline}
   .foot a:hover{color:#ffcc00}

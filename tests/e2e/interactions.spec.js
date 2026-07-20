@@ -171,6 +171,21 @@ test("play / pause / replay button labels", async ({ page }) => {
   await expect(pp).toContainText("Replay");   // at the end
 });
 
+test("slider tick ruler has one tick per stop, aligned to the track, with phase majors", async ({ page }) => {
+  await ready(page);
+  const stopCount = Number(await page.locator("#stopcount").textContent());
+  await expect(page.locator("#ticks .tick")).toHaveCount(stopCount);   // one mark per stop
+  expect(await page.locator("#ticks .tick.major").count()).toBeGreaterThanOrEqual(5); // opener + knockout starts
+  const align = await page.evaluate(() => {
+    const s = document.getElementById("slider").getBoundingClientRect();
+    const t = [...document.querySelectorAll("#ticks .tick")];
+    const f = t[0].getBoundingClientRect(), l = t[t.length - 1].getBoundingClientRect();
+    return { dl: Math.abs(f.left - s.left), dr: Math.abs(l.left - s.right) };
+  });
+  expect(align.dl).toBeLessThan(14); // first tick ≈ thumb centre at stop 0
+  expect(align.dr).toBeLessThan(14); // last tick ≈ thumb centre at final stop
+});
+
 // Guards the regression where a global `svg{}` rule (meant for the map) leaked onto
 // the button icons and blew them up to ~100px, overlapping the whole UI.
 test("control button icons stay small and never exceed their button", async ({ page }) => {
