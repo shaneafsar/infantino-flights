@@ -80,12 +80,14 @@ const pulse = el("circle", { r: 5, class: "ring" });
 svg.appendChild(pulse);
 
 const dots = [], labels = [];
+// Keyed by city (not stop index) so hand-tuned label placement survives inserting or
+// removing stops. Applied to each city's first-drawn marker below.
 const labelOffsets = {
-  1: { anchor: "end", dx: -9, dy: -9 },   // Guadalajara: push left
-  12: { anchor: "end", dx: -9, dy: -9 },  // Boston: push left (near edge)
-  18: { anchor: "end", dx: -9, dy: 15 },  // Philadelphia: left + below (it's right next to NYC)
-  19: { anchor: "end", dx: -9, dy: -9 },  // New York: left + above (separate from PHL)
-  21: { anchor: "end", dx: -9, dy: -9 },  // Toronto: left + above (clear of Boston/NY to the SE)
+  "Guadalajara":  { anchor: "end", dx: -9, dy: -9 },  // push left
+  "Boston":       { anchor: "end", dx: -9, dy: -9 },  // push left (near edge)
+  "Philadelphia": { anchor: "end", dx: -9, dy: 15 },  // left + below (right next to NYC)
+  "New York":     { anchor: "end", dx: -9, dy: -9 },  // left + above (separate from PHL)
+  "Toronto":      { anchor: "end", dx: -9, dy: -9 },  // left + above (clear of Boston/NY to the SE)
 };
 const seen = {}; // cities visited more than once share one dot + label
 stops.forEach((s, i) => {
@@ -97,7 +99,7 @@ stops.forEach((s, i) => {
     return;
   }
   const dot = svg.appendChild(el("circle", { cx: x, cy: y, r: 5, class: "city" }));
-  const ov = labelOffsets[i];
+  const ov = labelOffsets[s.n];
   const anchor = ov ? ov.anchor : (s.lon < -110 ? "end" : "start");
   const dx = ov ? ov.dx : (anchor === "end" ? -9 : 9);
   const dy = ov ? ov.dy : (i % 2 ? 14 : -9);
@@ -413,20 +415,27 @@ introTrigger.addEventListener("click", async () => {
   const topN = ranked[0][1];
   const secondN = Math.max(...ranked.filter(r => r[1] < topN).map(r => r[1]));
   const secondCities = ranked.filter(r => r[1] === secondN).map(r => r[0]);
-  // busiest single day (by games)
-  const byDay = {}; stops.forEach(s => { if (s.f1) (byDay[s.date] = byDay[s.date] || []).push(s.n); });
-  let day = { d: "", arr: [] };
-  for (const [d, arr] of Object.entries(byDay)) if (arr.length > day.arr.length) day = { d, arr };
+  // busiest day: the multi-game day with the most miles flown between its games
+  const byDay = {}; stops.forEach((s, i) => { if (s.f1) (byDay[s.date] = byDay[s.date] || []).push(i); });
+  let day = { games: 0, mi: 0, d: "", cities: [] };
+  for (const [d, idx] of Object.entries(byDay)) {
+    if (idx.length < 2) continue;
+    let m = 0; for (let j = idx[0]; j < idx[idx.length - 1]; j++) m += legMiles[j];
+    if (idx.length > day.games || (idx.length === day.games && m > day.mi))
+      day = { games: idx.length, mi: m, d, cities: idx.map(k => stops[k].n) };
+  }
   // the round trip weather spared him (New York <-> Miami, never flown)
   const miamiRT = 2 * haversineMiles(CITIES["New York"][0], CITIES["New York"][1], CITIES["Miami"][0], CITIES["Miami"][1]);
+  const miamiCo2 = miamiRT * CO2_PER_MILE;
+  const miamiCost = miamiRT * 24 + 2 * 4000; // two legs
 
   list.innerHTML = [
     `<b>Equator laps</b> &mdash; ${fig((totalMiles / 24901).toFixed(1) + "×")} around the Earth (${num(totalMiles)} mi flown in all)`,
     `<b>Longest hop</b> &mdash; ${fig(stops[mx].n + " → " + stops[mx + 1].n + ", " + num(legMiles[mx]) + " mi")}`,
     `<b>Per match</b> &mdash; ${fig("~" + num(totalMiles / games) + " mi")}, ${fig("~" + (co2 / games).toFixed(1) + " t CO₂")}, ${fig("~$" + num(Math.round(cost / games / 100) * 100))}`,
-    `<b>Chaos day</b> &mdash; ${fig(day.arr.length + " games in one day")} (${day.d}): ${day.arr.join(" → ")}`,
+    `<b>Busiest day</b> &mdash; ${fig(day.games + " games, " + num(day.mi) + " mi apart")} (${day.d}): ${day.cities.join(" → ")}`,
     `<b>Favorite hub</b> &mdash; ${fig(ranked[0][0] + " ×" + topN)} (then ${secondCities.join(", ")} ×${secondN})`,
-    `<b>The trip weather saved</b> &mdash; the Miami third-place would&rsquo;ve added ${fig("~" + num(Math.round(miamiRT / 10) * 10) + " mi")} (New York → Miami → New York)`,
+    `<b>The trip weather saved</b> &mdash; grounded in New York, he skipped the Miami third-place &mdash; sparing ${fig("~" + num(Math.round(miamiRT / 10) * 10) + " mi")} (~${miamiCo2.toFixed(0)} t CO₂, ~$${Math.round(miamiCost / 10000) * 10}k): New York → Miami → New York`,
   ].map(t => "<li>" + t + "</li>").join("");
 })();
 

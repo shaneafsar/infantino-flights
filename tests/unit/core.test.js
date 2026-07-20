@@ -6,8 +6,8 @@ import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from 
 import { stops, legMiles, totalMiles, co2Steps, projected, CITIES } from "../../public/data.js";
 
 describe("itinerary data integrity", () => {
-  test("44 stops, 43 legs", () => {
-    expect(stops.length).toBe(44);
+  test("43 stops, 42 legs", () => {
+    expect(stops.length).toBe(43);
     expect(legMiles.length).toBe(stops.length - 1);
   });
 
@@ -80,10 +80,10 @@ describe("distances", () => {
     }
   });
 
-  test("totalMiles is the sum of legs (~51,785)", () => {
+  test("totalMiles is the sum of legs (~50,360)", () => {
     expect(totalMiles).toBe(legMiles.reduce((x, y) => x + y, 0));
-    expect(totalMiles).toBeGreaterThan(49000);
-    expect(totalMiles).toBeLessThan(54000);
+    expect(totalMiles).toBeGreaterThan(48000);
+    expect(totalMiles).toBeLessThan(53000);
   });
 });
 
@@ -103,13 +103,13 @@ describe("flight cost", () => {
     expect(tripCost(1000, 2)).toBe(24000 + 8000);
   });
 
-  test("full tour is ~$1.41M", () => {
+  test("full tour is ~$1.37M", () => {
     // landing fees count only flown legs, so the closing 0-mile leg (final in NY) adds none
     const flownLegs = legMiles.filter(m => m > 0).length;
     const cost = tripCost(totalMiles, flownLegs);
     expect(cost).toBe(totalMiles * 24 + flownLegs * 4000);
-    expect(cost).toBeGreaterThan(1360000);
-    expect(cost).toBeLessThan(1460000);
+    expect(cost).toBeGreaterThan(1320000);
+    expect(cost).toBeLessThan(1420000);
   });
 });
 
@@ -121,8 +121,8 @@ describe("projection", () => {
 });
 
 describe("CO2 model", () => {
-  test("full tour is ~451 tonnes", () => {
-    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(450.5, 1);
+  test("full tour is ~438 tonnes", () => {
+    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(438.1, 1);
   });
 
   test("milestone thresholds are strictly increasing", () => {
@@ -173,7 +173,7 @@ describe("games attended", () => {
   test("counts only matches; excludes the Miami summit", () => {
     const matchCount = stops.filter(s => s.f1).length;
     expect(gamesAttended(stops.length - 1)).toBe(matchCount);
-    expect(matchCount).toBe(42);
+    expect(matchCount).toBe(41);
   });
 
   test("accumulates as stops are reached", () => {

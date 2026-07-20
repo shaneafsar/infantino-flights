@@ -28,7 +28,7 @@ test("'By the numbers' recap renders derived insights", async ({ page }) => {
   await expect(page.locator("#insights")).toContainText("around the Earth");
   await expect(page.locator("#insights")).toContainText("Per match");
   await expect(page.locator("#insights")).toContainText("Miami ×6");          // most-visited hub
-  await expect(page.locator("#insights")).toContainText("3 games in one day"); // Jun 22 chaos day
+  await expect(page.locator("#insights")).toContainText("Busiest day");        // most-travel double-header
   await expect(page.locator("#insights")).toContainText("weather saved");      // Miami what-if
   // every insight highlights at least one figure
   await expect(page.locator("#insights .fig").first()).toBeVisible();
