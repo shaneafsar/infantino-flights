@@ -19,6 +19,21 @@ test("footer 'All stops' accordion is collapsed and lists the itinerary in order
   await expect(details).toHaveJSProperty("open", true);
 });
 
+test("'By the numbers' recap renders derived insights", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("circle.city")).toHaveCount(16);
+
+  const items = page.locator("#insights li");
+  await expect(items).toHaveCount(6);
+  await expect(page.locator("#insights")).toContainText("around the Earth");
+  await expect(page.locator("#insights")).toContainText("Per match");
+  await expect(page.locator("#insights")).toContainText("Miami ×6");          // most-visited hub
+  await expect(page.locator("#insights")).toContainText("3 games in one day"); // Jun 22 chaos day
+  await expect(page.locator("#insights")).toContainText("weather saved");      // Miami what-if
+  // every insight highlights at least one figure
+  await expect(page.locator("#insights .fig").first()).toBeVisible();
+});
+
 test("'data last updated' stamp renders a formatted date with a timezone", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("circle.city")).toHaveCount(16);

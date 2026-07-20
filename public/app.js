@@ -1,9 +1,9 @@
 // View layer — builds the SVG map, runs the animation, wires up the controls.
 
 import { W, H, lonMin, lonMax, latMin, latMax, CO2_PER_MILE, SPEED_PER_SEC, PAUSE_MS, MAX_FRAME_MS } from "./constants.js";
-import { stops, legMiles, totalMiles, co2Steps, dataUpdated, projected } from "./data.js";
+import { stops, legMiles, totalMiles, co2Steps, dataUpdated, projected, CITIES } from "./data.js";
 import { NA_OUTLINES } from "./geo.js";
-import { proj, milesToUnit, co2MilestoneIndex, gamesAttended, tripCost, stopSlug, stopIndexFromParam } from "./core.js";
+import { proj, milesToUnit, co2MilestoneIndex, gamesAttended, tripCost, stopSlug, stopIndexFromParam, haversineMiles } from "./core.js";
 
 // ---- UI state ----
 let unit = "mi";   // active display unit
@@ -370,6 +370,43 @@ introTrigger.addEventListener("click", async () => {
     introLoader.hidden = true;
   }
 });
+
+// "By the numbers" — a recap of the completed tour, all derived from the itinerary
+// so the figures can never drift from the data.
+(() => {
+  const list = document.getElementById("insights");
+  if (!list) return;
+  const games = stops.filter(s => s.f1).length;
+  const flown = legMiles.filter(m => m > 0).length;         // landings only for real flights
+  const cost = totalMiles * 24 + flown * 4000;
+  const co2 = totalMiles * CO2_PER_MILE;
+  const num = n => Math.round(n).toLocaleString();
+  const fig = v => '<span class="fig">' + v + '</span>';
+
+  // longest single hop
+  let mx = 0; for (let i = 1; i < legMiles.length; i++) if (legMiles[i] > legMiles[mx]) mx = i;
+  // most-visited city + the next tier
+  const counts = {}; for (const s of stops) counts[s.n] = (counts[s.n] || 0) + 1;
+  const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const topN = ranked[0][1];
+  const secondN = Math.max(...ranked.filter(r => r[1] < topN).map(r => r[1]));
+  const secondCities = ranked.filter(r => r[1] === secondN).map(r => r[0]);
+  // busiest single day (by games)
+  const byDay = {}; stops.forEach(s => { if (s.f1) (byDay[s.date] = byDay[s.date] || []).push(s.n); });
+  let day = { d: "", arr: [] };
+  for (const [d, arr] of Object.entries(byDay)) if (arr.length > day.arr.length) day = { d, arr };
+  // the round trip weather spared him (New York <-> Miami, never flown)
+  const miamiRT = 2 * haversineMiles(CITIES["New York"][0], CITIES["New York"][1], CITIES["Miami"][0], CITIES["Miami"][1]);
+
+  list.innerHTML = [
+    `<b>Equator laps</b> &mdash; ${fig((totalMiles / 24901).toFixed(1) + "×")} around the Earth (${num(totalMiles)} mi flown in all)`,
+    `<b>Longest hop</b> &mdash; ${fig(stops[mx].n + " → " + stops[mx + 1].n + ", " + num(legMiles[mx]) + " mi")}`,
+    `<b>Per match</b> &mdash; ${fig("~" + num(totalMiles / games) + " mi")}, ${fig("~" + (co2 / games).toFixed(1) + " t CO₂")}, ${fig("~$" + num(Math.round(cost / games / 100) * 100))}`,
+    `<b>Chaos day</b> &mdash; ${fig(day.arr.length + " games in one day")} (${day.d}): ${day.arr.join(" → ")}`,
+    `<b>Favorite hub</b> &mdash; ${fig(ranked[0][0] + " ×" + topN)} (then ${secondCities.join(", ")} ×${secondN})`,
+    `<b>The trip weather saved</b> &mdash; the Miami third-place would&rsquo;ve added ${fig("~" + num(Math.round(miamiRT / 10) * 10) + " mi")} (New York → Miami → New York)`,
+  ].map(t => "<li>" + t + "</li>").join("");
+})();
 
 // Full itinerary in the footer accordion (kept in sync with the data).
 document.getElementById("stoplist").innerHTML = stops.map(s => {

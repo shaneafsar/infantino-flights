@@ -60,6 +60,7 @@
   .method-list b{color:#c7cbf0;font-weight:normal}
   .method-list b.proj{color:#5fd3ff}
   .method-list em{color:#5fd3ff;font-style:normal}
+  .method-list .fig{color:#ffcc00}
   .note{margin-top:10px;color:#8888bb;font-style:italic}
   .miles-stat .l{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
   .unit-toggle{display:inline-flex;flex:none;border:2px solid #ffcc00;box-shadow:2px 2px 0 #804000;line-height:1;cursor:pointer}
