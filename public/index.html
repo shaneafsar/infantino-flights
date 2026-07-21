@@ -46,7 +46,7 @@
         <dt class="l"><span id="milesLabel">Miles flown</span><span class="unit-toggle" id="unit" role="radiogroup" aria-label="Distance unit"><input class="u-input" type="radio" name="unit" id="unit-mi" value="mi" checked><label class="u-mi" for="unit-mi">mi</label><input class="u-input" type="radio" name="unit" id="unit-km" value="km"><label class="u-km" for="unit-km">km</label></span></dt>
         <dd class="v" id="miles">0</dd>
       </div>
-      <div class="stat"><dt class="l">Tonnes CO&#8322; (est.)</dt><dd class="v co2" id="co2">0</dd></div>
+      <div class="stat"><dt class="l">Metric tons CO&#8322; (est.)</dt><dd class="v co2" id="co2">0</dd></div>
       <div class="stat"><dt class="l">Est. cost</dt><dd class="v cost" id="cost">$0</dd></div>
       <div class="stat"><dt class="l">Games attended</dt><dd class="v" id="games">0</dd></div>
     </dl>
@@ -54,7 +54,7 @@
     <div class="controls">
       <button id="pp"><span class="btn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></span>Pause</button>
       <div class="slider-col">
-        <input type="range" id="slider" min="0" max="42" value="0" step="0.001" aria-label="Tour progress — scrub through the stops">
+        <input type="range" id="slider" min="0" max="49" value="0" step="0.001" aria-label="Tour progress — scrub through the stops">
         <div class="ticks" id="ticks" aria-hidden="true"></div>
       </div>
       <button id="share" title="Copy a link to this stop"><span class="btn-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></span>Share</button>
@@ -71,7 +71,7 @@
       <ul class="method-list">
         <li><b>Stops</b> &mdash; reported sightings of Infantino across the 2026 FIFA World Cup.</li>
         <li><b>Distance</b> &mdash; great-circle (as-the-crow-flies), stadium to stadium, as ESPN measures.</li>
-        <li><b>CO&#8322;</b> &mdash; est. ~8.7&nbsp;kg per mile for a Gulfstream G650ER (the Qatar-flown jet).</li>
+        <li><b>CO&#8322;</b> &mdash; est. ~8.7&nbsp;kg per mile for a Gulfstream G650ER (the Qatar-flown jet). The carbon milestones (cars, homes, trees, oil, coal, gasoline, transatlantic flights) use the standard equivalency factors published by the <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener">EPA Greenhouse Gas Equivalencies Calculator</a>.</li>
         <li><b>Cost</b> &mdash; est. ~$24/mile (charter, crew &amp; fuel) + ~$4,000/leg (landing &amp; handling).</li>
         <li><b>Map</b> &mdash; real country outlines (Natural Earth 1:110m data).</li>
       </ul>
@@ -96,10 +96,12 @@
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760440/qatar-canada" target="_blank" rel="noopener">ESPN &mdash; Canada 6&ndash;0 Qatar, Vancouver (Jun 18)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760445/morocco-scotland" target="_blank" rel="noopener">ESPN &mdash; Scotland 0&ndash;1 Morocco, Boston (Jun 19)</a></li>
           <li><a href="https://www.reutersconnect.com/item/fifa-world-cup-2026-group-c-scotland-v-morocco/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkoxUEZBNUE" target="_blank" rel="noopener">Reuters &mdash; Scotland v Morocco, Boston (Jun 19): Infantino in the stands with the Scottish &amp; Moroccan FA presidents</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760444/haiti-brazil" target="_blank" rel="noopener">ESPN &mdash; Brazil 3&ndash;0 Haiti, Philadelphia (Jun 19): Infantino attended after the Boston match (rondo with Brazil legends beforehand)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760453/saudi-arabia-spain" target="_blank" rel="noopener">ESPN &mdash; Spain 4&ndash;0 Saudi Arabia, Atlanta (Jun 21)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760450/cape-verde-uruguay" target="_blank" rel="noopener">ESPN &mdash; Uruguay 2&ndash;2 Cape Verde, Miami (Jun 21)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760457/iraq-france" target="_blank" rel="noopener">ESPN &mdash; France 3&ndash;0 Iraq, Philadelphia (Jun 22)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760454/senegal-norway" target="_blank" rel="noopener">ESPN &mdash; Norway 3&ndash;2 Senegal, New York (Jun 22)</a></li>
+          <li class="src-note">Also Jun 22: ESPN notes Infantino dashed into midtown Manhattan for a &ldquo;Fox &amp; Friends&rdquo; TV hit. Not plotted &mdash; he was already in the New York area (~6 mi), so it adds no meaningful travel.</li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760458/ghana-england" target="_blank" rel="noopener">ESPN &mdash; England 0&ndash;0 Ghana, Boston (Jun 23)</a></li>
           <li class="src-note">Jun 23 attendance confirmed by eyewitness &amp; press reports where wire coverage hasn&rsquo;t caught up &mdash; The Sun (England&ndash;Ghana, Boston) and Croatian outlets Ve&#269;ernji &amp; Index.hr (Croatia&ndash;Panama, Toronto).</li>
           <li><a href="https://www.reutersconnect.com/item/fifa-world-cup-2026-group-c-scotland-v-brazil/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNk8xUjE1UTg" target="_blank" rel="noopener">Reuters &mdash; Scotland v Brazil, Miami (Jun 24): Infantino at the match</a></li>
@@ -107,6 +109,7 @@
           <li><a href="https://www.voetbalprimeur.nl/nieuws/2105051/curacao-uitgeschakeld-op-het-wk.html" target="_blank" rel="noopener">VoetbalPrimeur &mdash; Cura&ccedil;ao 0&ndash;2 Ivory Coast, Philadelphia (Jun 25): &ldquo;onder toeziend oog van FIFA-baas Gianni Infantino&rdquo; (under the watchful eye of FIFA boss Infantino)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760473/ivory-coast-curacao" target="_blank" rel="noopener">ESPN &mdash; Cura&ccedil;ao 0&ndash;2 Ivory Coast, Philadelphia (Jun 25)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760476/iran-egypt" target="_blank" rel="noopener">ESPN &mdash; Egypt 1&ndash;1 Iran, Seattle (Jun 26)</a></li>
+          <li><a href="https://petra.gov.jo/en/news/fifa-president-praises-jordans-world-cup-performance" target="_blank" rel="noopener">Petra (Jordan News Agency) &mdash; after Seattle, Infantino flew to Dallas (Jun 26) to farewell the eliminated Jordan squad, meeting Prince Ali bin Hussein &amp; the players (no match)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760481/portugal-colombia" target="_blank" rel="noopener">ESPN &mdash; Colombia 0&ndash;0 Portugal, Miami (Jun 27)</a></li>
           <li><a href="https://sports.yahoo.com/articles/marco-rubio-kash-patel-attend-234137500.html" target="_blank" rel="noopener">Yahoo Sports &mdash; Marco Rubio &amp; FBI Director Kash Patel attend Colombia&ndash;Portugal alongside Infantino, Miami (Jun 27)</a></li>
           <li class="src-note">Colombia&ndash;Portugal, Miami (Jun 27): Reuters and Miami Herald photo captions place Infantino in the stands with Secretary of State Marco Rubio and FBI Director Kash Patel before the match; an eyewitness put the sighting at ~8:20 of the first half.</li>
@@ -118,13 +121,15 @@
           <li class="src-note">Netherlands&ndash;Morocco, Monterrey (Jun 29): Infantino spotted in the stands during the second half (~55:40, eyewitness). Morocco advanced on penalties.</li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760490/norway-ivory-coast" target="_blank" rel="noopener">ESPN &mdash; Ivory Coast 1&ndash;2 Norway, Dallas (Jun 30, Round of 32)</a></li>
           <li><a href="https://www.instagram.com/p/DaOJenBg2Jy/" target="_blank" rel="noopener">FIFA World Cup Dallas (Instagram) &mdash; Infantino at AT&amp;T Stadium for Ivory Coast v Norway (Jun 30)</a></li>
-          <li><a href="https://www.espn.com/soccer/match/_/gameId/760491/ecuador-mexico" target="_blank" rel="noopener">ESPN &mdash; Mexico 2&ndash;0 Ecuador, Mexico City (Jul 1, Round of 32)</a></li>
-          <li class="src-note">Mexico&ndash;Ecuador, Mexico City (Jul 1): Infantino spotted at Estadio Azteca during the opening ceremony (eyewitness); kickoff was weather-delayed.</li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760491/ecuador-mexico" target="_blank" rel="noopener">ESPN &mdash; Mexico 2&ndash;0 Ecuador, Mexico City (Jun 30, Round of 32)</a></li>
+          <li class="src-note">Mexico&ndash;Ecuador, Mexico City (Jun 30): Infantino spotted at Estadio Azteca during the opening ceremony (eyewitness); kickoff was weather-delayed. ESPN&rsquo;s match page dates it Jun 30 (a late local kickoff sometimes read as Jul 1).</li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760495/congo-dr-england" target="_blank" rel="noopener">ESPN &mdash; England 2&ndash;1 Congo DR, Atlanta (Jul 1, Round of 32)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760494/bosnia-herzegovina-united-states" target="_blank" rel="noopener">ESPN &mdash; USA 2&ndash;0 Bosnia &amp; Herzegovina, San Francisco (Jul 1, Round of 32)</a></li>
           <li class="src-note">USA&ndash;Bosnia &amp; Herzegovina, San Francisco / Levi&rsquo;s Stadium (Jul 1): Infantino spotted ~16:30 into the match with U.S. Commerce Secretary Howard Lutnick (eyewitness).</li>
           <li><a href="https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-spain-v-austria/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzIxR1c4MEI" target="_blank" rel="noopener">Reuters &mdash; Spain v Austria, Los Angeles (Jul 2): &ldquo;FIFA President Gianni Infantino in the stands before the match&rdquo;</a></li>
           <li><a href="https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-spain-v-austria/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzIxSDhaMVU" target="_blank" rel="noopener">Reuters &mdash; Spain v Austria, Los Angeles (Jul 2): Infantino seated with Austrian FA president Josef Pr&ouml;ll &amp; Spanish FA president Rafael Louz&aacute;n</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760497/austria-spain" target="_blank" rel="noopener">ESPN &mdash; Spain 3&ndash;0 Austria, Los Angeles (Jul 2, Round of 32)</a></li>
+          <li><a href="https://www.espn.com/soccer/match/_/gameId/760498/algeria-switzerland" target="_blank" rel="noopener">ESPN &mdash; Switzerland 2&ndash;0 Algeria, Vancouver (Jul 2, Round of 32)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760500/cape-verde-argentina" target="_blank" rel="noopener">ESPN &mdash; Argentina 3&ndash;2 Cape Verde (a.e.t.), Miami (Jul 3, Round of 32)</a></li>
           <li><a href="https://www.reutersconnect.com/item/argentina-v-cape-verde-fifa-world-cup-2026-round-of-32/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX01UMUFOQURMMDAwU0FGTkpL" target="_blank" rel="noopener">Reuters &mdash; Argentina v Cape Verde, Miami (Jul 3): Infantino at the match</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760502/morocco-canada" target="_blank" rel="noopener">ESPN &mdash; Canada 0&ndash;3 Morocco, Houston (Jul 4, Round of 16)</a></li>
@@ -133,13 +138,16 @@
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760507/belgium-united-states" target="_blank" rel="noopener">ESPN &mdash; USA v Belgium, Seattle (Jul 6, Round of 16)</a></li>
           <li><a href="https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-16-united-states-v-belgium/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzcwMkE1Mlc" target="_blank" rel="noopener">Reuters &mdash; USA v Belgium, Seattle (Jul 6, Round of 16): Infantino at the match</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760508/colombia-switzerland" target="_blank" rel="noopener">ESPN &mdash; Switzerland v Colombia, Vancouver (Jul 7, Round of 16)</a></li>
-          <li><a href="https://www.aljazeera.com/sports/liveblog/2026/7/7/live-switzerland-vs-colombia-fifa-world-cup-2026" target="_blank" rel="noopener">Al Jazeera live blog &mdash; Switzerland v Colombia, Vancouver (Jul 7): Infantino shown on the big screen, booed by the crowd</a></li>
+          <li><a href="https://www.espn.com/soccer/story/_/id/49300023/switzerland-colombia-world-cup-2026-penalty-shootout-argentina" target="_blank" rel="noopener">ESPN &mdash; Switzerland v Colombia, Vancouver (Jul 7, Round of 16): &ldquo;FIFA president Gianni Infantino was among those at BC Place&rdquo;</a></li>
+          <li><a href="https://inside.fifa.com/news/final-four-world-cup-2026-matches-trionda-official-match-ball" target="_blank" rel="noopener">FIFA &mdash; en route to Boston, Infantino helped unveil the Adidas &lsquo;Trionda Final&rsquo; match ball in New Jersey (Jul 9) for the final four (no match)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760510/morocco-france" target="_blank" rel="noopener">ESPN &mdash; France v Morocco, Boston (Jul 9, Quarter-final)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760512/england-norway" target="_blank" rel="noopener">ESPN &mdash; Norway v England, Miami (Jul 11, Quarter-final)</a></li>
+          <li><a href="https://www.insideworldfootball.com/2026/07/14/infantino-jets-to-doha-for-qatari-funeral-on-eve-of-world-cup-semis/" target="_blank" rel="noopener">Inside World Football &mdash; Infantino flew Miami &rarr; Doha &rarr; Dallas (Jul 13&ndash;14, ~15,600 mi in 24 h) to offer condolences to Emir Sheikh Tamim at Lusail Palace before the semi-final</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760514/spain-france" target="_blank" rel="noopener">ESPN &mdash; France v Spain, Dallas (Jul 14, Semi-final)</a></li>
           <li><a href="https://www.reutersconnect.com/item/fifa-world-cup-2026-semi-final-france-v-spain/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNN0UxSFAwS1c" target="_blank" rel="noopener">Reuters &mdash; France v Spain, Dallas (Jul 14, Semi-final): Infantino photographed at the match</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760515/argentina-england" target="_blank" rel="noopener">ESPN &mdash; England v Argentina, Atlanta (Jul 15, Semi-final)</a></li>
           <li><a href="https://www.reutersconnect.com/item/fifa-world-cup-2026-semi-final-england-v-argentina/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNN0YxSDJQVDM" target="_blank" rel="noopener">Reuters &mdash; England v Argentina, Atlanta (Jul 15, Semi-final): Infantino photographed at the match</a></li>
+          <li><a href="https://tennistonic.com/tennis-news/1028547/the-video-tyson-zlatan-and-infantino-join-djokovic-at-the-wolf-in-winter/" target="_blank" rel="noopener">Tennis Tonic &mdash; Infantino joined Djokovic (with Tyson &amp; Ibrahimovi&cacute;) at the New York premiere of &lsquo;Novak Djokovic: The Wolf in Winter&rsquo; (Jul 16, non-match)</a></li>
           <li><a href="https://apnews.com/article/gianni-infantino-fifa-world-cup-19d8d459c51e08047bfbfc60fddd9b2e" target="_blank" rel="noopener">AP &mdash; FIFA reception at Trump Tower, New York (Jul 17): Infantino with President Trump ahead of the final (non-match appearance)</a></li>
           <li><a href="https://www.espn.com/soccer/match/_/gameId/760517/argentina-spain" target="_blank" rel="noopener">ESPN &mdash; Spain 1&ndash;0 Argentina (a.e.t.), New York (Jul 19, Final)</a></li>
         </ul>

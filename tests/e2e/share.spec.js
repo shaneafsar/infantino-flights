@@ -6,7 +6,7 @@ test("?stop=<slug> opens paused on that stop", async ({ page }) => {
   await expect(page.locator("#leg")).toContainText("Hard Rock Stadium");
   await expect(page.locator("#leg")).toContainText("Uruguay 2–2 Cape Verde");
   await expect(page.locator("#pp")).not.toContainText("Pause"); // paused, not autoplaying
-  expect(await page.$eval("#slider", el => el.value)).toBe("16"); // last stop index
+  expect(await page.$eval("#slider", el => el.value)).toBe("17"); // Miami Jun 21 shifted +1 after inserting Philadelphia Jun 19
 });
 
 test("?stop=<number> works (1-based)", async ({ page }) => {

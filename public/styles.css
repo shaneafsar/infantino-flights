@@ -4,7 +4,7 @@
   h1{font-size:1rem;text-transform:uppercase;letter-spacing:.05em;text-align:center;color:#ffcc00;text-shadow:2px 2px 0 #804000,0 0 10px rgba(255,204,0,.4)}
   .sub{color:#66aaff;font-size:.6rem;margin-top:8px;text-align:center;margin-bottom:18px;line-height:2}
   .stage{width:100%;max-width:920px;background:#111128;border:4px solid #4444aa;padding:8px;box-shadow:inset 0 0 30px rgba(0,0,40,.8),0 0 20px rgba(68,68,170,.3)}
-  #map{width:100%;height:auto;display:block;border:2px solid #333366}
+  #map{width:100%;height:auto;display:block;border:2px solid #333366;overflow:hidden}
   .ocean{fill:#0a0a2a}
   .land{fill:#1a1a44;stroke:#3333aa;stroke-width:.8;stroke-linejoin:round}
   .land.host{fill:#222266}
@@ -22,6 +22,24 @@
   .ring{fill:none;stroke:#ff3333;stroke-width:2;opacity:0}
   .clabel{fill:#8888cc;font-family:"Press Start 2P",monospace;font-size:7px;paint-order:stroke;stroke:#0a0a2a;stroke-width:3px;stroke-linejoin:round}
   .clabel.current{fill:#ffffff}
+  /* Off-continent inset: the Doha detour, on a zoomed mini world map. Hidden until the
+     plane flies off the map (.revealed), brightens (.active) while it's airborne to Doha. */
+  .inset{opacity:0;transform:translateY(10px);transform-box:fill-box;transform-origin:100% 100%;transition:opacity .4s ease,transform .4s ease;pointer-events:none}
+  .inset.revealed{opacity:.92;transform:translateY(0)}
+  .inset-plane{font-size:9px}
+  .inset-panel{fill:rgba(8,8,26,.94);stroke:#333366;stroke-width:2}
+  .inset-title{fill:#ffcc00;font-family:"Press Start 2P",monospace;font-size:6.5px;paint-order:stroke;stroke:#0a0a2a;stroke-width:2.5px;stroke-linejoin:round}
+  .inset-ocean{fill:#0a0a2a}
+  .inset-land{fill:#1a1a44;stroke:#3333aa;stroke-width:.4;stroke-linejoin:round}
+  .inset-arc{fill:none;stroke:#ff8844;stroke-width:1.6;stroke-dasharray:3 3;stroke-linecap:round;opacity:.85;filter:drop-shadow(0 0 3px rgba(255,136,68,.6));animation:projflow 1.4s linear infinite}
+  .inset-dot{fill:#ffcc00;stroke:#111128;stroke-width:1}
+  .inset-dot.doha{fill:#ff3333}
+  .inset-place{fill:#9a9ad0;font-family:"Press Start 2P",monospace;font-size:5px;paint-order:stroke;stroke:#0a0a2a;stroke-width:2.5px;stroke-linejoin:round}
+  .inset-cap{fill:#8fb0ff;font-family:"Press Start 2P",monospace;font-size:5px;paint-order:stroke;stroke:#0a0a2a;stroke-width:2px;stroke-linejoin:round}
+  .inset.active{opacity:1}
+  .inset.active .inset-panel{stroke:#ffcc00}
+  .inset.active .inset-arc{stroke:#ffdd66;stroke-width:2.2;opacity:1;filter:drop-shadow(0 0 5px rgba(255,204,0,.8))}
+  .inset.active .inset-dot.doha{fill:#ff5555}
   .plane{font-size:20px}
   .panel{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
   .stat{flex:1;min-width:130px;background:#0a0a1a;border:3px solid #4444aa;padding:12px 14px;display:flex;flex-direction:column}
@@ -41,6 +59,9 @@
   .vs-score{color:#ffcc00;font-size:.6rem;margin-top:2px}
   .vs-summit{font-size:1.5rem;margin-bottom:4px}
   .controls{display:flex;align-items:center;gap:10px;margin-top:12px}
+  /* Reserve the widest label's width so the slider (flex:1) doesn't resize when the
+     play/pause label flips (Pause/Play/Replay) or share flips (Share/Copied). */
+  #pp,#share{flex:none;min-width:116px}
   button{font-family:"Press Start 2P",monospace;background:#ffcc00;color:#0a0a1a;border:3px solid #ffee66;padding:0 18px;height:40px;font-size:.55rem;cursor:pointer;white-space:nowrap;text-transform:uppercase;box-shadow:3px 3px 0 #804000;display:inline-flex;align-items:center;justify-content:center;gap:.6em}
   /* Leading icon as an inline SVG: artwork is centred in the viewBox, so it sits dead-
      centre next to the pixel-font label (font-glyph baselines can't be trusted here). */
@@ -68,6 +89,9 @@
   .method-list b.proj{color:#5fd3ff}
   .method-list em{color:#5fd3ff;font-style:normal}
   .method-list .fig{color:#ffcc00}
+  .method-list a{color:#8fe4ff}
+  /* The pixel font has no arrow glyph; render → in a legible sans-serif, a touch larger. */
+  .arr{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:1.4em;font-weight:700;line-height:1;vertical-align:-0.1em;padding:0 .12em}
   .note{margin-top:10px;color:#8888bb;font-style:italic}
   .miles-stat .l{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
   .unit-toggle{display:inline-flex;flex:none;border:2px solid #ffcc00;box-shadow:2px 2px 0 #804000;line-height:1;cursor:pointer}
@@ -108,6 +132,10 @@
   .all-stops li{margin:9px 0}
   .sl-game{display:block;color:#ffcc00}
   .sl-meta{display:block;color:#8888bb;margin-top:2px}
+  /* Clickable stop title (map caption + footer list): keep the surrounding yellow, add
+     an underline so it reads as a link to the photo/source reference. */
+  .src-link{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;text-decoration-color:rgba(255,204,0,.55)}
+  .src-link:hover,.src-link:focus-visible{color:#ffee66;text-decoration-color:#ffee66}
   .all-stops .src{max-width:560px;margin:16px auto 0;border-top:1px solid #2a2a55;padding-top:12px}
   .all-stops .src li{margin:6px 0}
   .src-note{list-style:none;margin-left:-1.4em;color:#666688;font-style:italic}
@@ -133,6 +161,11 @@
     .clabel{font-size:9px}
     .proj-label{font-size:8px}
     .city{r:6}
+    #pp,#share{min-width:96px}
+    /* Enlarge the off-map inset so its labels are legible on small screens. Anchored to
+       its bottom-right corner (transform-box:fill-box) so it grows up-left and stays in frame. */
+    .inset{transform:scale(1.7) translateY(10px)}
+    .inset.revealed{transform:scale(1.7)}
   }
   @media(max-width:380px){
     h1{font-size:.6rem}
@@ -142,4 +175,5 @@
     .leg{font-size:.42rem}
     .leg .dt{font-size:.38rem}
     button{padding:0 10px;height:30px;font-size:.4rem}
+    #pp,#share{min-width:84px}
   }

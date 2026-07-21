@@ -6,8 +6,8 @@ import { W, H, lonMin, lonMax, latMin, latMax, KM_PER_MILE, CO2_PER_MILE } from 
 import { stops, legMiles, totalMiles, co2Steps, projected, CITIES } from "../../public/data.js";
 
 describe("itinerary data integrity", () => {
-  test("43 stops, 42 legs", () => {
-    expect(stops.length).toBe(43);
+  test("50 stops, 49 legs", () => {
+    expect(stops.length).toBe(50);
     expect(legMiles.length).toBe(stops.length - 1);
   });
 
@@ -23,10 +23,12 @@ describe("itinerary data integrity", () => {
 
   test("match stops have two flags + a stadium; non-game stops are flagged 'no match'", () => {
     const nonGames = stops.filter(s => !s.f1);
-    // the FIFA summit (Miami) and the Trump Tower reception (New York) are the appearances
-    expect(nonGames.length).toBeGreaterThanOrEqual(1);
+    // six non-game appearances: Miami summit, Dallas (Jordan farewell), NJ Trionda
+    // ball launch, Doha condolence detour, NY documentary premiere, Trump Tower reception
+    expect(nonGames.length).toBe(6);
     for (const s of nonGames) expect(s.note).toMatch(/no match/i);
     expect(nonGames.some(s => s.n === "Miami")).toBe(true);
+    expect(nonGames.some(s => s.n === "Doha")).toBe(true);
 
     for (const s of stops.filter(s => s.f1)) {
       expect(typeof s.f2).toBe("string");
@@ -34,13 +36,16 @@ describe("itinerary data integrity", () => {
     }
   });
 
-  test("all coordinates fall inside the projection viewport", () => {
-    for (const s of stops) {
+  test("on-map coordinates fall inside the viewport; off-map stops (Doha) fall outside", () => {
+    for (const s of stops.filter(s => !s.offMap)) {
       expect(s.lon).toBeGreaterThanOrEqual(lonMin);
       expect(s.lon).toBeLessThanOrEqual(lonMax);
       expect(s.lat).toBeGreaterThanOrEqual(latMin);
       expect(s.lat).toBeLessThanOrEqual(latMax);
     }
+    const offMap = stops.filter(s => s.offMap);
+    expect(offMap.length).toBeGreaterThanOrEqual(1); // the Doha detour
+    for (const s of offMap) expect(s.lon < lonMin || s.lon > lonMax || s.lat < latMin || s.lat > latMax).toBe(true);
   });
 
   test("every stop and projected fixture resolves its coords from CITIES", () => {
@@ -80,10 +85,10 @@ describe("distances", () => {
     }
   });
 
-  test("totalMiles is the sum of legs (~50,360)", () => {
+  test("totalMiles is the sum of legs (~68,120, incl. the Doha detour)", () => {
     expect(totalMiles).toBe(legMiles.reduce((x, y) => x + y, 0));
-    expect(totalMiles).toBeGreaterThan(48000);
-    expect(totalMiles).toBeLessThan(53000);
+    expect(totalMiles).toBeGreaterThan(66000);
+    expect(totalMiles).toBeLessThan(70000);
   });
 });
 
@@ -103,13 +108,13 @@ describe("flight cost", () => {
     expect(tripCost(1000, 2)).toBe(24000 + 8000);
   });
 
-  test("full tour is ~$1.37M", () => {
-    // landing fees count only flown legs, so the closing 0-mile leg (final in NY) adds none
+  test("full tour is ~$1.82M", () => {
+    // landing fees count only flown legs, so the two closing 0-mile NY legs add none
     const flownLegs = legMiles.filter(m => m > 0).length;
     const cost = tripCost(totalMiles, flownLegs);
     expect(cost).toBe(totalMiles * 24 + flownLegs * 4000);
-    expect(cost).toBeGreaterThan(1320000);
-    expect(cost).toBeLessThan(1420000);
+    expect(cost).toBeGreaterThan(1780000);
+    expect(cost).toBeLessThan(1870000);
   });
 });
 
@@ -121,8 +126,8 @@ describe("projection", () => {
 });
 
 describe("CO2 model", () => {
-  test("full tour is ~438 tonnes", () => {
-    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(438.1, 1);
+  test("full tour is ~593 metric tons", () => {
+    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(592.6, 1);
   });
 
   test("milestone thresholds are strictly increasing", () => {
@@ -173,7 +178,7 @@ describe("games attended", () => {
   test("counts only matches; excludes the Miami summit", () => {
     const matchCount = stops.filter(s => s.f1).length;
     expect(gamesAttended(stops.length - 1)).toBe(matchCount);
-    expect(matchCount).toBe(41);
+    expect(matchCount).toBe(44);
   });
 
   test("accumulates as stops are reached", () => {

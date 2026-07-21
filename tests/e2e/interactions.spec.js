@@ -14,29 +14,47 @@ async function ready(page) {
 test("end-of-tour stats", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("50,360"); // final is a 0-mile leg (he was already in NY)
-  await expect(page.locator("#games")).toHaveText("41");     // the final counts; reception did not
-  await expect(page.locator("#co2")).toHaveText("438.1");
-  await expect(page.locator("#cost")).toHaveText("$1,372,640"); // no landing fee for the 0-mile leg
+  await expect(page.locator("#miles")).toHaveText("68,120"); // final week is same-city (0-mile) NY legs
+  await expect(page.locator("#games")).toHaveText("44");     // matches only; the 6 non-game stops don't count
+  await expect(page.locator("#co2")).toHaveText("592.6");
+  await expect(page.locator("#cost")).toHaveText("$1,822,880"); // no landing fee for the 0-mile legs
   await expect(page.locator("#leg")).toContainText("New York");
   await expect(page.locator("#leg")).toContainText("MetLife Stadium");
+});
+
+test("slider scrubs smoothly but snaps to the nearest stop on release; arrows step whole stops", async ({ page }) => {
+  await ready(page);
+  // dragging (input) keeps the fractional value — smooth scrub, no snapping mid-drag
+  await page.$eval("#slider", el => { el.value = "5.4"; el.dispatchEvent(new Event("input")); });
+  expect(await page.$eval("#slider", el => el.value)).toBe("5.4");
+  // releasing (change) snaps to the nearest stop
+  await page.$eval("#slider", el => el.dispatchEvent(new Event("change")));
+  expect(await page.$eval("#slider", el => el.value)).toBe("5");
+  await expect(page.locator("#leg")).toContainText("Jun 14"); // snapped onto stop 5 (Miami summit)
+  // keyboard arrows move a whole stop at a time (overriding the fine native step)
+  await page.$eval("#slider", el => el.focus());
+  await page.keyboard.press("ArrowRight");
+  expect(await page.$eval("#slider", el => el.value)).toBe("6");
+  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("ArrowLeft");
+  expect(await page.$eval("#slider", el => el.value)).toBe("4");
 });
 
 test("mi/km flips on a tap anywhere in the control (not just the off radio)", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("50,360");
+  await expect(page.locator("#miles")).toHaveText("68,120");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 
   // tapping the whole control flips mi -> km
   await page.locator("#unit").click();
-  await expect(page.locator("#miles")).toHaveText("81,046");
+  await expect(page.locator("#miles")).toHaveText("109,628");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
   await expect(page.getByRole("radio", { name: "km" })).toBeChecked();
 
   // tapping the *already-active* "km" label still flips back to mi (whole area toggles)
   await page.locator('label[for="unit-km"]').click();
-  await expect(page.locator("#miles")).toHaveText("50,360");
+  await expect(page.locator("#miles")).toHaveText("68,120");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 });
 
@@ -60,8 +78,8 @@ test("CO2 milestone text steps up across the tour", async ({ page }) => {
   await expect(page.locator("#co2note")).toContainText("average American");
   await setT(page, 5); // ~48 t (Miami)
   await expect(page.locator("#co2note")).toContainText("cars driven for a full year");
-  await scrubToEnd(page); // ~438 t — lands on the "around the Earth ~43 times" tier (coal rung is headroom)
-  await expect(page.locator("#co2note")).toContainText("around the Earth");
+  await scrubToEnd(page); // ~593 t — lands on the top "~245 metric tons of coal" tier
+  await expect(page.locator("#co2note")).toContainText("245 metric tons of coal");
 });
 
 test("captions show stadium name; Miami summit is not counted as a game", async ({ page }) => {

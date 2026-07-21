@@ -1,8 +1,8 @@
 // View layer — builds the SVG map, runs the animation, wires up the controls.
 
 import { W, H, lonMin, lonMax, latMin, latMax, CO2_PER_MILE, SPEED_PER_SEC, PAUSE_MS, MAX_FRAME_MS } from "./constants.js";
-import { stops, legMiles, totalMiles, co2Steps, dataUpdated, projected, CITIES } from "./data.js";
-import { NA_OUTLINES } from "./geo.js";
+import { stops, legMiles, totalMiles, co2Steps, dataUpdated, projected, CITIES, stopSources } from "./data.js";
+import { NA_OUTLINES, WORLD_OUTLINES } from "./geo.js";
 import { proj, milesToUnit, co2MilestoneIndex, gamesAttended, tripCost, stopSlug, stopIndexFromParam, haversineMiles } from "./core.js";
 
 // ---- UI state ----
@@ -48,7 +48,27 @@ for (const name in NA_OUTLINES) {
   }
 }
 
+// Main-map geometry. An off-continent stop (Doha, ~51°E) projects far past the right
+// edge, so the plane and route visibly fly OFF the map and back — the SVG clips them —
+// while the real arc plays out in the world inset. Off-map stops draw no visible dot.
 const pts = stops.map(s => proj(s.lon, s.lat));
+
+// Points along the great circle between two [lon,lat] endpoints (for the inset arc).
+function gcPoints(a, b, n) {
+  const R = Math.PI / 180, D = 180 / Math.PI;
+  const lo1 = a[0] * R, la1 = a[1] * R, lo2 = b[0] * R, la2 = b[1] * R;
+  const d = 2 * Math.asin(Math.sqrt(Math.sin((la2 - la1) / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin((lo2 - lo1) / 2) ** 2));
+  const out = [];
+  for (let i = 0; i <= n; i++) {
+    const f = i / n;
+    const A = d ? Math.sin((1 - f) * d) / Math.sin(d) : 1 - f, B = d ? Math.sin(f * d) / Math.sin(d) : f;
+    const x = A * Math.cos(la1) * Math.cos(lo1) + B * Math.cos(la2) * Math.cos(lo2);
+    const y = A * Math.cos(la1) * Math.sin(lo1) + B * Math.cos(la2) * Math.sin(lo2);
+    const z = A * Math.sin(la1) + B * Math.sin(la2);
+    out.push([Math.atan2(y, x) * D, Math.atan2(z, Math.hypot(x, y)) * D]);
+  }
+  return out;
+}
 
 // background dashed full route
 let bg = "";
@@ -91,6 +111,9 @@ const labelOffsets = {
 };
 const seen = {}; // cities visited more than once share one dot + label
 stops.forEach((s, i) => {
+  // Off-continent stops fly off-map; keep dots[]/labels[] aligned with a detached
+  // placeholder so render()'s index math holds, but draw nothing visible on the map.
+  if (s.offMap) { dots.push(el("circle", {})); labels.push(el("text", {})); return; }
   const [x, y] = pts[i];
   const key = x.toFixed(1) + "," + y.toFixed(1);
   if (seen[key]) { // repeat visit: reuse the existing marker so labels don't double up
@@ -132,6 +155,77 @@ const plane = el("text", { class: "plane", "text-anchor": "middle", "dominant-ba
 plane.textContent = "✈️";
 svg.appendChild(plane);
 
+// ---- Off-continent inset: the Doha condolence detour ----
+// The main map is locked to North America, so when the plane flies off the right edge
+// toward Doha (~51°E), this zoomed world inset pops up on the right and plays the real
+// great-circle arc — its own little plane running out to Doha and back — in sync with
+// the two off-map legs. Hidden until that portion of the tour; everything is derived
+// from the data so it can't drift.
+const dohaIdx = stops.findIndex(s => s.n === "Doha");
+const detourMiles = dohaIdx > 0 ? legMiles[dohaIdx - 1] + legMiles[dohaIdx] : 0;
+const insetG = el("g", {
+  class: "inset", role: "img",
+  "aria-label": "Inset world map: a great-circle flight from the United States to Doha, Qatar and back — the tour's only trip off the continent, about " + detourMiles.toLocaleString() + " miles in 24 hours",
+});
+// Position/orientation for the little inset plane along the two arc point-arrays.
+let insetPlane = null, insetArcOut = [], insetArcRet = [];
+// Interpolated [ [x,y], travelAngle° ] a fraction f (0..1) along a polyline of points.
+function arcAt(p, f) {
+  const n = p.length - 1;
+  const x = Math.max(0, Math.min(0.99999, f)) * n;
+  const i = Math.floor(x), g = x - i;
+  const a = p[i], b = p[Math.min(i + 1, n)];
+  return [[a[0] + (b[0] - a[0]) * g, a[1] + (b[1] - a[1]) * g], Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI];
+}
+if (dohaIdx > 0) {
+  const pw = 316, ph = 164, x0 = W - pw - 12, y0 = 428;         // panel, bottom-right
+  const IX = x0 + 12, IY = y0 + 28, IW = pw - 24, IH = 106;     // world-map draw area
+  // Zoomed window: North America → the Middle East. Crops South America, Asia & Oceania.
+  const wLonMin = -112, wLonMax = 64, wLatMin = 6, wLatMax = 70;
+  const wp = (lon, lat) => [IX + (lon - wLonMin) / (wLonMax - wLonMin) * IW, IY + (wLatMax - lat) / (wLatMax - wLatMin) * IH];
+
+  insetG.appendChild(el("rect", { x: x0, y: y0, width: pw, height: ph, rx: 8, class: "inset-panel" }));
+  const title = el("text", { x: x0 + 12, y: y0 + 19, class: "inset-title" });
+  title.textContent = "The condolence detour";
+  insetG.appendChild(title);
+  insetG.appendChild(el("rect", { x: IX, y: IY, width: IW, height: IH, class: "inset-ocean" }));
+
+  // clip the land + arc to the little map rectangle
+  const clip = el("clipPath", { id: "inset-clip" });
+  clip.appendChild(el("rect", { x: IX, y: IY, width: IW, height: IH }));
+  insetG.appendChild(clip);
+  const clipped = el("g", { "clip-path": "url(#inset-clip)" });
+
+  for (const ring of WORLD_OUTLINES) {
+    let d = "";
+    for (let i = 0; i < ring.length; i++) { const [x, y] = wp(ring[i][0], ring[i][1]); d += (i ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1); }
+    clipped.appendChild(el("path", { d: d + "Z", class: "inset-land" }));
+  }
+
+  insetArcOut = gcPoints(CITIES["Miami"], CITIES["Doha"], 48).map(q => wp(q[0], q[1]));
+  insetArcRet = gcPoints(CITIES["Doha"], CITIES["Dallas"], 48).map(q => wp(q[0], q[1]));
+  const path = pts => pts.map((q, i) => (i ? "L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" ");
+  clipped.appendChild(el("path", { d: path(insetArcOut) + " " + path(insetArcRet).replace(/^M/, "L"), class: "inset-arc" }));
+  insetG.appendChild(clipped);
+
+  const [mx, my] = wp(...CITIES["Miami"]);
+  const [dx, dy] = wp(...CITIES["Doha"]);
+  insetG.appendChild(el("circle", { cx: mx, cy: my, r: 3, class: "inset-dot" }));
+  insetG.appendChild(el("circle", { cx: dx, cy: dy, r: 3.4, class: "inset-dot doha" }));
+  const usL = el("text", { x: mx - 5, y: my + 11, class: "inset-place", "text-anchor": "end" }); usL.textContent = "USA"; insetG.appendChild(usL);
+  const dL = el("text", { x: dx + 6, y: dy - 4, class: "inset-place", "text-anchor": "start" }); dL.textContent = "Doha"; insetG.appendChild(dL);
+
+  const cap = el("text", { x: x0 + 12, y: y0 + ph - 12, class: "inset-cap" });
+  cap.textContent = "Miami → Doha → Dallas · " + detourMiles.toLocaleString() + " mi in ~24 h";
+  insetG.appendChild(cap);
+
+  insetPlane = el("text", { class: "inset-plane", "text-anchor": "middle", "dominant-baseline": "central" });
+  insetPlane.textContent = "✈️";
+  insetPlane.style.display = "none";
+  insetG.appendChild(insetPlane);
+}
+svg.appendChild(insetG);
+
 // ---- controls + element refs ----
 const slider = document.getElementById("slider"), pp = document.getElementById("pp");
 const milesEl = document.getElementById("miles"), co2El = document.getElementById("co2"),
@@ -158,11 +252,19 @@ let pauseTimer = PAUSE_MS; // ms left to hold at the current stop (starts at the
 let lastTs = 0;            // timestamp of the previous frame; 0 = loop just (re)started
 const lerp = (a, b, f) => a + (b - a) * f;
 
+// Wrap a stop's title in a link to its source (a photo/report of Infantino there) so
+// visitors can click through to the reference. Opens in a new tab; plain text if none.
+const srcOf = s => stopSources[stopSlug(s)];
+function titleLink(s, inner) {
+  const u = srcOf(s);
+  return u ? '<a class="src-link" href="' + u + '" target="_blank" rel="noopener">' + inner + '</a>' : inner;
+}
+
 function vsHtml(s) {
   // Non-game stops (summit/reception): icon + title only. The venue/context (note)
   // is folded into the date line so these captions stay the same height as games.
-  if (!s.f1) return '<div class="vs-summit">🏢</div><span class="match">' + s.match + '</span>';
-  return '<div class="vs-display"><span class="vs-flag">' + s.f1 + '</span><span class="vs-text">VS</span><span class="vs-flag">' + s.f2 + '</span></div><span class="match">' + s.match + (s.note ? ' (' + s.note + ')' : '') + '</span>';
+  if (!s.f1) return '<div class="vs-summit">🏢</div><span class="match">' + titleLink(s, s.match) + '</span>';
+  return '<div class="vs-display"><span class="vs-flag">' + s.f1 + '</span><span class="vs-text">VS</span><span class="vs-flag">' + s.f2 + '</span></div><span class="match">' + titleLink(s, s.match) + (s.note ? ' (' + s.note + ')' : '') + '</span>';
 }
 
 // The caption shows just the venue for a non-game stop: strip the trailing
@@ -197,9 +299,36 @@ function render() {
   // Aim the ✈️ nose along the current leg, always rotating around the plane's CURRENT
   // center (+45° because the glyph points up-right). At the end, face along the final leg —
   // and crucially update the rotation center to px,py so it doesn't fling off a stale center.
-  const faceLeg = end ? N - 1 : seg;
+  // Face along the current leg — but skip any zero-length leg (an off-map stop like
+  // Doha collapses onto its prior city, so its legs have no on-map direction).
+  let faceLeg = end ? N - 1 : seg;
+  const zeroLeg = k => pts[k + 1][0] === pts[k][0] && pts[k + 1][1] === pts[k][1];
+  while (faceLeg < N - 1 && zeroLeg(faceLeg)) faceLeg++;
+  while (faceLeg > 0 && zeroLeg(faceLeg)) faceLeg--;
   const ang = Math.atan2(pts[faceLeg + 1][1] - pts[faceLeg][1], pts[faceLeg + 1][0] - pts[faceLeg][0]) * 180 / Math.PI;
   plane.setAttribute("transform", "rotate(" + (ang + 45) + " " + px + " " + py + ")");
+
+  // World inset: pops up once the plane leaves for Doha (t past the Miami stop) and its
+  // own little plane runs out along the arc to Doha, then back — resting at Dallas through
+  // that stop's pause — and fades out again the instant the plane departs Dallas for the
+  // next leg. Visible only for the detour: (Miami stop, Dallas stop].
+  if (dohaIdx > 0) {
+    const inDetour = t > dohaIdx - 1 && t <= dohaIdx + 1;
+    insetG.classList.toggle("revealed", inDetour);
+    insetG.classList.toggle("active", inDetour);
+    if (insetPlane) {
+      if (inDetour) {
+        const outbound = t < dohaIdx;
+        const [pos, ia] = arcAt(outbound ? insetArcOut : insetArcRet, outbound ? t - (dohaIdx - 1) : t - dohaIdx);
+        insetPlane.style.display = "";
+        insetPlane.setAttribute("x", pos[0].toFixed(1));
+        insetPlane.setAttribute("y", pos[1].toFixed(1));
+        insetPlane.setAttribute("transform", "rotate(" + (ia + 45).toFixed(1) + " " + pos[0].toFixed(1) + " " + pos[1].toFixed(1) + ")");
+      } else {
+        insetPlane.style.display = "none";
+      }
+    }
+  }
 
   let miles = 0; for (let i = 0; i < seg; i++) miles += legMiles[i];
   miles = end ? totalMiles : miles + legMiles[seg] * f;
@@ -265,7 +394,18 @@ pp.addEventListener("click", () => {
   playing = !playing; pp.innerHTML = playing ? LBL_PAUSE : LBL_PLAY;
   if (playing) { lastTs = 0; requestAnimationFrame(tick); }
 });
-slider.addEventListener("input", () => { t = parseFloat(slider.value); pauseTimer = 0; playing = false; pp.innerHTML = t >= N ? LBL_REPLAY : LBL_PLAY; render(); });
+// Scrubbing: drag freely (smooth) via `input`; on release (`change`) snap to the nearest
+// stop so it's easy to land exactly on one. Keyboard arrows move a whole stop at a time.
+function scrubTo(v) { t = Math.max(0, Math.min(N, v)); pauseTimer = 0; playing = false; pp.innerHTML = t >= N ? LBL_REPLAY : LBL_PLAY; render(); }
+slider.addEventListener("input", () => scrubTo(parseFloat(slider.value)));
+slider.addEventListener("change", () => scrubTo(Math.round(parseFloat(slider.value)))); // snap on release
+slider.addEventListener("keydown", (e) => {
+  const d = { ArrowRight: 1, ArrowUp: 1, PageUp: 1, ArrowLeft: -1, ArrowDown: -1, PageDown: -1 }[e.key];
+  let nt = d != null ? Math.round(t) + d : e.key === "Home" ? 0 : e.key === "End" ? N : null;
+  if (nt == null) return;
+  e.preventDefault(); // override the tiny native step so arrows jump stop-to-stop
+  scrubTo(nt);
+});
 
 // Deep link: ?stop=<1-based number | date-city slug> opens paused at that stop.
 const sharedIdx = stopIndexFromParam(new URLSearchParams(location.search).get("stop"));
@@ -378,18 +518,22 @@ introTrigger.addEventListener("click", async () => {
 (() => {
   const ticksEl = document.getElementById("ticks");
   if (!ticksEl) return;
-  const phase = s => {
+  // Tournament phase of a stop; non-game stops (summit / reception / Doha visit) return
+  // "" so they inherit the surrounding phase instead of forcing a false major tick.
+  const phaseOf = s => {
     const nt = s.note || "";
     if (/^Final/.test(nt)) return "F";
     if (/Semi-final/.test(nt)) return "SF";
     if (/Quarter-final/.test(nt)) return "QF";
     if (/Round of 16/.test(nt)) return "R16";
     if (/Round of 32/.test(nt)) return "R32";
-    return "group";
+    return s.f1 ? "group" : "";
   };
+  let cur = "group";
+  const phases = stops.map(s => { const p = phaseOf(s); if (p) cur = p; return cur; });
   let html = "";
   for (let i = 0; i <= N; i++) {
-    const major = i === 0 || phase(stops[i]) !== phase(stops[i - 1]);
+    const major = i === 0 || phases[i] !== phases[i - 1];
     html += '<span class="tick' + (major ? " major" : "") + '" style="left:' + (i / N * 100).toFixed(3) + '%"></span>';
   }
   ticksEl.innerHTML = html;
@@ -409,6 +553,9 @@ introTrigger.addEventListener("click", async () => {
 
   // longest single hop
   let mx = 0; for (let i = 1; i < legMiles.length; i++) if (legMiles[i] > legMiles[mx]) mx = i;
+  // the off-continent condolence detour (Miami → Doha → Dallas)
+  const di = stops.findIndex(s => s.n === "Doha");
+  const detour = di > 0 ? legMiles[di - 1] + legMiles[di] : 0;
   // most-visited city + the next tier
   const counts = {}; for (const s of stops) counts[s.n] = (counts[s.n] || 0) + 1;
   const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1]);
@@ -432,18 +579,22 @@ introTrigger.addEventListener("click", async () => {
   list.innerHTML = [
     `<b>Equator laps</b> &mdash; ${fig((totalMiles / 24901).toFixed(1) + "×")} around the Earth (${num(totalMiles)} mi flown in all)`,
     `<b>Longest hop</b> &mdash; ${fig(stops[mx].n + " → " + stops[mx + 1].n + ", " + num(legMiles[mx]) + " mi")}`,
+    `<b>The Doha detour</b> &mdash; a mid-tournament condolence visit to Qatar's Emir: Miami → Doha → Dallas, ${fig(num(detour) + " mi in ~24 h")} &mdash; his only trip off the continent`,
     `<b>Per match</b> &mdash; ${fig("~" + num(totalMiles / games) + " mi")}, ${fig("~" + (co2 / games).toFixed(1) + " t CO₂")}, ${fig("~$" + num(Math.round(cost / games / 100) * 100))}`,
     `<b>Busiest day</b> &mdash; ${fig(day.games + " games, " + num(day.mi) + " mi apart")} (${day.d}): ${day.cities.join(" → ")}`,
     `<b>Favorite hub</b> &mdash; ${fig(ranked[0][0] + " ×" + topN)} (then ${secondCities.join(", ")} ×${secondN})`,
     `<b>The trip weather saved</b> &mdash; grounded in New York, he skipped the Miami third-place &mdash; sparing ${fig("~" + num(Math.round(miamiRT / 10) * 10) + " mi")} (~${miamiCo2.toFixed(0)} t CO₂, ~$${Math.round(miamiCost / 10000) * 10}k): New York → Miami → New York`,
-  ].map(t => "<li>" + t + "</li>").join("");
+  ].map(t => "<li>" + t + "</li>").join("")
+    // The pixel font has no arrow glyph, so → falls back to a tiny system glyph; render
+    // it in a legible sans-serif at a slightly larger size instead.
+    .replace(/→/g, '<span class="arr">→</span>');
 })();
 
 // Full itinerary in the footer accordion (kept in sync with the data).
 document.getElementById("stoplist").innerHTML = stops.map(s => {
   const game = s.f1 ? s.f1 + " " + s.match + " " + s.f2 : "🏢 " + s.match;
   const where = s.v || s.note || "";
-  return "<li><span class='sl-game'>" + game + "</span>" +
+  return "<li><span class='sl-game'>" + titleLink(s, game) + "</span>" +
     "<span class='sl-meta'>" + s.date + " &middot; " + s.n + (where ? " &middot; " + where : "") + "</span></li>";
 }).join("");
 document.getElementById("stopcount").textContent = stops.length;
