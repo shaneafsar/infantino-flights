@@ -32,7 +32,7 @@ served over HTTP — opening `index.html` via `file://` won't load the modules.
 
 Every stop references its city by name; coordinates live once in the `CITIES` lookup in `data.js` (repeat visits share a coordinate and dedupe to one map marker). Non-game appearances (e.g. the FIFA summit / reception) are stops that add a flight leg but don't count as games.
 
-There's also a hidden arcade intro: the small ✈ button in the footer lazy-loads a pixel-art penalty-kick cutscene.
+There's also a hidden arcade intro: the small ✈ button in the footer lazy-loads a pixel-art penalty-kick cutscene, with a chiptune title theme (`intro-title-theme.mp3`). See [License](#license) for the music's rights status.
 
 ## Share links
 
@@ -122,3 +122,5 @@ CO₂ and cost are this site's own estimates (EPA equivalency factors; a per-mil
 ## License
 
 Released under the [MIT License](LICENSE).
+
+**Except the arcade-intro music.** The title theme (`public/intro-title-theme.mp3`) used in the hidden arcade easter egg is **not** covered by this license — we hold **no rights or license to it** and make no claim of ownership. It's included only for this non-commercial demo. If you fork, reuse, or redistribute this project, remove or replace that file with music you have the right to use. (The rest of the intro's sound effects are generated procedurally via the Web Audio API and are original.)
