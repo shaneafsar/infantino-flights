@@ -93,6 +93,32 @@ npx wrangler pages deploy public --project-name=infantino-flights
 
 The project name and asset directory are passed explicitly (same as CI). Prompts for auth if you aren't logged in (`npx wrangler login`).
 
+## How our numbers compare
+
+Two major outlets independently tallied Infantino's tour: the [AP flight-log analysis](https://apnews.com/article/gianni-infantino-private-jet-world-cup-9b299b0a1528cf687a77c0d5add3c5fc) and [ESPN's stop-by-stop tour overview](https://www.espn.com/soccer/story/_/id/49116383/infantino-fifa-presidents-epic-world-cup-tour). Here's how this site lines up against both.
+
+| Metric | AP (flight-log analysis) | ESPN (tour overview) | This site |
+| --- | --- | --- | --- |
+| **Matches attended** | 44 | stop-by-stop (not tallied) | 44 |
+| **Venues** | 16 (all) | all 16 | 16 |
+| **Total miles** | 59,281 *(excl. Qatar)* | 67,507 *("over 65,000")* | 68,663 *(incl. Qatar)* |
+| ↳ excl. Qatar detour | 59,281 | — | 53,079 |
+| **Flight hours** | 115 + 29 (Qatar) | — | not modeled |
+| **Most-visited** | Miami — 5 matches | Miami (Hard Rock) | Miami ×6 (5 + summit) |
+| **Days with 2 matches** | 13 | "two-a-day" itinerary | 13 doubles |
+| **Biggest single day** | Jun 26 — 5,772 mi (Mia→Dal→Sea→Mia) | Jun 26 | measures 2-*game* days only |
+| **Jun 26 order** | Dallas → Seattle | Dallas → Seattle | Dallas → Seattle |
+| **Airports / crossings** | 21 airports · 23 crossings | — | — |
+| **Longest / shortest flight** | Mia→Sea 5h44m · Sea→Van 28m | — | — |
+| **Doha detour** | ✅ (29 hrs) | ✅ | ✅ (15,584 mi) |
+| **Aircraft** | Gulfstream G650 (Qatari fleet) | Qatar Airways private jet | noted, not a stat |
+| **CO₂** | none published | none | 597.4 t (EPA-factor estimate) |
+| **Cost** | none published | none | $1.84M (estimate) |
+
+**Reading the mileage row** — the one place the three diverge. ESPN (67,507) and this site (68,663) are the close pair: both measure *point-to-point* distance between the places he actually appeared, including the Doha round trip (we're within ~1.7% of ESPN). AP (59,281) is a different ruler — it excludes the Qatar trip but counts *actual routed flight paths and empty repositioning legs* (hence 21 airports and 115 flight hours), so it isn't directly comparable. This site's excl-Qatar figure (53,079) is lower than AP's because we don't model deadhead legs — just straight-line great-circle arcs between attended stops.
+
+CO₂ and cost are this site's own estimates (EPA equivalency factors; a per-mile + per-landing model) — neither AP nor ESPN publishes them. Conversely, AP's flight hours and repositioning legs aren't modeled here.
+
 ## License
 
 Released under the [MIT License](LICENSE).
