@@ -85,7 +85,7 @@ describe("distances", () => {
     }
   });
 
-  test("totalMiles is the sum of legs (~68,120, incl. the Doha detour)", () => {
+  test("totalMiles is the sum of legs (~68,663, incl. the Doha detour)", () => {
     expect(totalMiles).toBe(legMiles.reduce((x, y) => x + y, 0));
     expect(totalMiles).toBeGreaterThan(66000);
     expect(totalMiles).toBeLessThan(70000);
@@ -127,7 +127,7 @@ describe("projection", () => {
 
 describe("CO2 model", () => {
   test("full tour is ~593 metric tons", () => {
-    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(592.6, 1);
+    expect(totalMiles * CO2_PER_MILE).toBeCloseTo(597.4, 1);
   });
 
   test("milestone thresholds are strictly increasing", () => {

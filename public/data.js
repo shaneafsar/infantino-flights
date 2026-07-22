@@ -2,7 +2,7 @@
 
 // When the itinerary or its evidence was last revised (ISO 8601 with offset).
 // It's surfaced in the footer as "data last updated".
-export const dataUpdated = "2026-07-22T00:35:38-04:00";
+export const dataUpdated = "2026-07-22T01:00:14-04:00";
 
 // Stadium coordinates per host city as [lon, lat]. Every stop and projected
 // fixture references its city by name, so repeat visits share one coordinate
@@ -67,8 +67,8 @@ export const stops = [
   {n:"Toronto",v:"BMO Field",date:"Jun 23",match:"Croatia 1–0 Panama",f1:"🇭🇷",f2:"🇵🇦"},
   {n:"Miami",v:"Hard Rock Stadium",date:"Jun 24",match:"Scotland 0–3 Brazil",f1:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",f2:"🇧🇷"},
   {n:"Philadelphia",v:"Lincoln Financial Field",date:"Jun 25",match:"Curaçao 0–2 Ivory Coast",f1:"🇨🇼",f2:"🇨🇮"},
-  {n:"Seattle",v:"Lumen Field",date:"Jun 26",match:"Egypt 1–1 Iran",f1:"🇪🇬",f2:"🇮🇷"},
   {n:"Dallas",date:"Jun 26",match:"Farewell to Jordan's eliminated squad",note:"a send-off before their final match — no match"},
+  {n:"Seattle",v:"Lumen Field",date:"Jun 26",match:"Egypt 1–1 Iran",f1:"🇪🇬",f2:"🇮🇷"},
   {n:"Miami",v:"Hard Rock Stadium",date:"Jun 27",match:"Colombia 0–0 Portugal",f1:"🇨🇴",f2:"🇵🇹"},
   {n:"Los Angeles",v:"SoFi Stadium",date:"Jun 28",match:"South Africa 0–1 Canada",f1:"🇿🇦",f2:"🇨🇦",note:"Round of 32"},
   {n:"Houston",v:"NRG Stadium",date:"Jun 29",match:"Brazil 2–1 Japan",f1:"🇧🇷",f2:"🇯🇵",note:"Round of 32"},
@@ -161,7 +161,7 @@ export const stopSources = {
 // The Miami→Doha (7,657) and Doha→Dallas (7,927) legs are the condolence detour —
 // a ~15,600-mile round trip in 24 h. The two 0-mile legs at the end are same-city
 // hops (the NY documentary/reception/final week, all at MetLife-area coords).
-export const legMiles = [296,1291,314,822,2804,2733,965,1366,649,755,2459,2500,254,1343,405,1101,607,1016,85,170,426,1233,1016,2375,1669,1128,2343,1375,405,525,938,1349,2112,314,1086,2804,972,755,2348,122,2419,170,1234,7657,7927,736,747,0,0];
+export const legMiles = [296,1291,314,822,2804,2733,965,1366,649,755,2459,2500,254,1343,405,1101,607,1016,85,170,426,1233,1016,1313,1669,2733,2343,1375,405,525,938,1349,2112,314,1086,2804,972,755,2348,122,2419,170,1234,7657,7927,736,747,0,0];
 export const totalMiles = legMiles.reduce((a, b) => a + b, 0);
 
 // CO2 milestones: cumulative metric tons -> relatable comparison shown as the plane flies.

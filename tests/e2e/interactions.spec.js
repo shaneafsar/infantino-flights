@@ -14,10 +14,10 @@ async function ready(page) {
 test("end-of-tour stats", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("68,120"); // final week is same-city (0-mile) NY legs
+  await expect(page.locator("#miles")).toHaveText("68,663"); // final week is same-city (0-mile) NY legs
   await expect(page.locator("#games")).toHaveText("44");     // matches only; the 6 non-game stops don't count
-  await expect(page.locator("#co2")).toHaveText("592.6");
-  await expect(page.locator("#cost")).toHaveText("$1,822,880"); // no landing fee for the 0-mile legs
+  await expect(page.locator("#co2")).toHaveText("597.4");
+  await expect(page.locator("#cost")).toHaveText("$1,835,912"); // no landing fee for the 0-mile legs
   await expect(page.locator("#leg")).toContainText("New York");
   await expect(page.locator("#leg")).toContainText("MetLife Stadium");
 });
@@ -43,18 +43,18 @@ test("slider scrubs smoothly but snaps to the nearest stop on release; arrows st
 test("mi/km flips on a tap anywhere in the control (not just the off radio)", async ({ page }) => {
   await ready(page);
   await scrubToEnd(page);
-  await expect(page.locator("#miles")).toHaveText("68,120");
+  await expect(page.locator("#miles")).toHaveText("68,663");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 
   // tapping the whole control flips mi -> km
   await page.locator("#unit").click();
-  await expect(page.locator("#miles")).toHaveText("109,628");
+  await expect(page.locator("#miles")).toHaveText("110,502");
   await expect(page.locator("#milesLabel")).toHaveText("Km flown");
   await expect(page.getByRole("radio", { name: "km" })).toBeChecked();
 
   // tapping the *already-active* "km" label still flips back to mi (whole area toggles)
   await page.locator('label[for="unit-km"]').click();
-  await expect(page.locator("#miles")).toHaveText("68,120");
+  await expect(page.locator("#miles")).toHaveText("68,663");
   await expect(page.getByRole("radio", { name: "mi" })).toBeChecked();
 });
 
