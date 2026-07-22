@@ -1,8 +1,8 @@
 // Itinerary + content data. No logic, no DOM.
 
-// When the itinerary above was last revised (ISO 8601 with offset). Bump this
-// whenever stops/scores change; it's surfaced in the footer as "data last updated".
-export const dataUpdated = "2026-07-20T13:20:00-04:00";
+// When the itinerary or its evidence was last revised (ISO 8601 with offset).
+// It's surfaced in the footer as "data last updated".
+export const dataUpdated = "2026-07-22T00:35:38-04:00";
 
 // Stadium coordinates per host city as [lon, lat]. Every stop and projected
 // fixture references its city by name, so repeat visits share one coordinate
@@ -96,66 +96,65 @@ export const stops = [
 ].map(withCoords);
 
 // Per-stop source link, keyed by the stop's date+city slug (see stopSlug in core.js).
-// Goal: link to evidence Infantino was actually THERE (not just that the match happened).
-// Priority: a Reuters wire photo of him → a named article about him at that event (FIFA /
-// AP / national press) → the Instagram post/reel of him that ESPN's tour overview embeds
-// as its own evidence for that day (extracted so we skip the ad-heavy overview page).
-// Three second-of-a-two-game-day stops (Jun 21 Atlanta, Jun 22 New York, Jun 26 Seattle)
-// have no dedicated photo/article of him we could find, so they fall back to the ESPN
-// match page. Every URL was seen in a search result, extracted
-// from the ESPN article's embeds, or provided by the user — none are invented. (The IG
-// shortcodes decode to a strictly chronological sequence, confirming they're genuine.)
+// Goal: link to evidence Infantino was actually THERE, not merely that the match happened.
+// Priority, audited 2026-07-22: an exact-caption photo/video on Reuters Connect → AP → an
+// official Instagram post/reel → an independently captioned photo → a report that expressly
+// places him at the event. Reuters
+// Connect links were checked for a caption naming Infantino, the event, city and date. The
+// Instagram links are Infantino/FIFA posts embedded as evidence in ESPN's itinerary. A
+// shared link backs two stops only when its media or text expressly covers both. The remaining
+// ESPN overview fallback says he attended the particular stop; generic match pages do not.
 export const stopSources = {
-  "jun-11-mexico-city": "https://www.instagram.com/reel/DZeOaAPo0IO/",
-  "jun-11-guadalajara": "https://www.instagram.com/reel/DZensYsAzQJ/",
-  "jun-12-los-angeles": "https://www.instagram.com/p/DZiLYF5HJ0h/",
+  "jun-11-mexico-city": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-a-mexico-v-south-africa/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkIxSDc0STI",
+  "jun-11-guadalajara": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-a-south-korea-v-czech-republic/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkMwNjVINE8",
+  "jun-12-los-angeles": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-d-united-states-v-paraguay/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkQwMzRZN0k",
   "jun-13-san-francisco": "https://www.instagram.com/reel/DZi70JaAwVV/",
-  "jun-13-vancouver": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/australia-turkiye-highlights-match-report",
-  "jun-14-miami": "https://inside.fifa.com/news/member-associations-miami-future-global-game",
-  "jun-15-seattle": "https://www.instagram.com/reel/DZoFts7gksk/",
-  "jun-15-los-angeles": "https://www.instagram.com/reel/DZpjL3dABZq/",
-  "jun-16-kansas-city": "https://www.instagram.com/reel/DZrULX9oxkW/",
-  "jun-17-houston": "https://www.instagram.com/reel/DZtCdrXoyKX/",
-  "jun-17-mexico-city": "https://www.infobae.com/colombia/deportes/2026/06/19/el-presidente-de-la-fifa-gianni-infantino-se-refirio-a-la-aficion-de-colombia-en-el-mundial-2026-un-ambiente-increible/",
-  "jun-18-vancouver": "https://www.instagram.com/reel/DZwLoi9It_X/",
+  "jun-13-vancouver": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-d-australia-v-turkey/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkUwQlcyWVI",
+  "jun-14-miami": "https://apnews.com/article/9b299b0a1528cf687a77c0d5add3c5fc",
+  "jun-15-seattle": "https://apnews.com/article/9b299b0a1528cf687a77c0d5add3c5fc",
+  "jun-15-los-angeles": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-g-iran-v-new-zealand/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkcwN1NXRUc",
+  "jun-16-kansas-city": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-j-argentina-v-algeria/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkgwMzlEVDk",
+  "jun-17-houston": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-k-portugal-v-dr-congo/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkgxRlVGVEk",
+  "jun-17-mexico-city": "https://www.gettyimages.com/detail/news-photo/colombian-football-federation-president-ramon-jesurun-fifa-news-photo/2281510658",
+  "jun-18-vancouver": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-b-canada-v-qatar/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkkxUElORE8",
   "jun-19-boston": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-c-scotland-v-morocco/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkoxUEZBNUE",
   "jun-19-philadelphia": "https://www.instagram.com/reel/DZ0WLg7Avlk/",
-  "jun-20-houston": "https://www.rte.ie/news/2026/0621/1579521-world-cup-infantino/",
-  "jun-20-monterrey": "https://www.rte.ie/news/2026/0621/1579521-world-cup-infantino/",
-  "jun-21-atlanta": "https://www.espn.com/soccer/match/_/gameId/760453/saudi-arabia-spain",
-  "jun-21-miami": "https://www.instagram.com/reel/DZ3gbt4AAEY/",
-  "jun-22-philadelphia": "https://www.instagram.com/p/DZ6elV4iEUI/",
-  "jun-22-new-york": "https://www.espn.com/soccer/match/_/gameId/760454/senegal-norway",
-  "jun-23-boston": "https://www.instagram.com/p/DZ8mmnOAUME/",
+  "jun-20-houston": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-f-netherlands-v-sweden/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNksxQkVKRDY",
+  "jun-20-monterrey": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-f-tunisia-v-japan/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkwwQk5EMFo",
+  "jun-21-atlanta": "https://www.gettyimages.com/detail/news-photo/president-gianni-infantino-interacts-with-fans-during-the-news-photo/2282124372",
+  "jun-21-miami": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-h-uruguay-v-cape-verde/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNkwxUE1RQjc",
+  "jun-22-philadelphia": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-i-france-v-iraq/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNk0xTVQwVTA",
+  "jun-22-new-york": "https://www.espn.com/soccer/story/_/id/49116383/infantino-fifa-presidents-epic-world-cup-tour",
+  "jun-23-boston": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-l-england-v-ghana/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNk4xTTdHUFU",
   "jun-23-toronto": "https://www.instagram.com/reel/DZ9NWGvgDF0/",
   "jun-24-miami": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-c-scotland-v-brazil/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNk8xUjE1UTg",
-  "jun-25-philadelphia": "https://www.voetbalprimeur.nl/nieuws/2105051/curacao-uitgeschakeld-op-het-wk.html",
-  "jun-26-seattle": "https://www.espn.com/soccer/match/_/gameId/760476/iran-egypt",
-  "jun-26-dallas": "https://petra.gov.jo/en/news/fifa-president-praises-jordans-world-cup-performance",
-  "jun-27-miami": "https://sports.yahoo.com/articles/marco-rubio-kash-patel-attend-234137500.html",
+  "jun-25-philadelphia": "https://www.instagram.com/reel/DaB7CQyMC4Z/",
+  "jun-26-seattle": "https://apnews.com/article/9b299b0a1528cf687a77c0d5add3c5fc",
+  "jun-26-dallas": "https://www.instagram.com/reel/DaEj45GsIUA/",
+  "jun-27-miami": "https://www.reutersconnect.com/item/fifa-world-cup-2026-group-k-colombia-v-portugal/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNlIxVElKUkU",
   "jun-28-los-angeles": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-south-africa-v-canada/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNlMxSEFVRko",
   "jun-29-houston": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-brazil-v-japan/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNlQxQkxWQ1A",
-  "jun-29-monterrey": "https://www.aljazeera.com/video/newsfeed/2026/7/2/fifa-president-reacts-as-morocco-win-world-cup-match",
-  "jun-30-dallas": "https://www.instagram.com/p/DaOJenBg2Jy/",
-  "jun-30-mexico-city": "https://bolavip.com/en/world-cup/what-did-gianni-infantino-and-fans-chant-before-mexico-vs-ecuador-at-2026-world-cup",
-  "jul-1-atlanta": "https://www.operationsports.com/fifa-president-gianni-infantino-believes-hydration-breaks-were-so-important-in-englands-win-against-dr-congo/",
-  "jul-1-san-francisco": "https://www.instagram.com/reel/DaRwktcg0wb/",
+  "jun-29-monterrey": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-netherlands-v-morocco/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNlUwMlhXMFY",
+  "jun-30-dallas": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-ivory-coast-v-norway/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNlUxQ0ZKT0U",
+  "jun-30-mexico-city": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-mexico-v-ecuador/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzEwNjZYU0o",
+  "jul-1-atlanta": "https://www.instagram.com/reel/DaRwktcg0wb/",
+  "jul-1-san-francisco": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-united-states-v-bosnia-and-herzegovina/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzIwNkdLNE8",
   "jul-2-los-angeles": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-spain-v-austria/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzIxR1c4MEI",
-  "jul-2-vancouver": "https://www.swissinfo.ch/eng/various/football-guy-parmelin-supports-the-swiss-team-in-vancouver/91692151",
+  "jul-2-vancouver": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-32-switzerland-v-algeria/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzMwQTVGNkI",
   "jul-3-miami": "https://www.reutersconnect.com/item/argentina-v-cape-verde-fifa-world-cup-2026-round-of-32/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX01UMUFOQURMMDAwU0FGTkpL",
   "jul-4-houston": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-16-canada-v-morocco/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzQxQkxOODQ",
   "jul-5-mexico-city": "https://www.instagram.com/reel/Dac-0-fABO0/",
   "jul-6-seattle": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-16-united-states-v-belgium/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzcwMkE1Mlc",
-  "jul-7-vancouver": "https://www.espn.com/soccer/story/_/id/49300023/switzerland-colombia-world-cup-2026-penalty-shootout-argentina",
-  "jul-9-new-york": "https://inside.fifa.com/news/final-four-world-cup-2026-matches-trionda-official-match-ball",
-  "jul-9-boston": "https://www.instagram.com/reel/Dal-JdBISKO/",
-  "jul-11-miami": "https://www.instagram.com/reel/DarWTkLIGAf/",
-  "jul-13-doha": "https://www.insideworldfootball.com/2026/07/14/infantino-jets-to-doha-for-qatari-funeral-on-eve-of-world-cup-semis/",
+  "jul-7-vancouver": "https://www.reutersconnect.com/item/fifa-world-cup-2026-round-of-16-switzerland-v-colombia/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzcxSlBHQlg",
+  "jul-9-new-york": "https://www.instagram.com/reel/Dal-JdBISKO/",
+  "jul-9-boston": "https://www.reutersconnect.com/item/fifa-world-cup-2026-quarter-final-france-v-morocco/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNNzkxTjg0R0U",
+  "jul-11-miami": "https://www.reutersconnect.com/item/fifa-world-cup-2026-quarter-final-norway-v-england/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNN0IxTVBJUzA",
+  "jul-13-doha": "https://www.reutersconnect.com/item/fifa-president-gianni-infantino-meets-qatars-emir-sheikh-tamim-bin-hamad-al-thani-at-lusail-palace-in-doha/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1JDMjNETUE1TUM0TA",
   "jul-14-dallas": "https://www.reutersconnect.com/item/fifa-world-cup-2026-semi-final-france-v-spain/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNN0UxSFAwS1c",
   "jul-15-atlanta": "https://www.reutersconnect.com/item/fifa-world-cup-2026-semi-final-england-v-argentina/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNN0YxSDJQVDM",
-  "jul-16-new-york": "https://tennistonic.com/tennis-news/1028547/the-video-tyson-zlatan-and-infantino-join-djokovic-at-the-wolf-in-winter/",
-  "jul-17-new-york": "https://apnews.com/article/gianni-infantino-fifa-world-cup-19d8d459c51e08047bfbfc60fddd9b2e",
-  "jul-19-new-york": "https://www.euronews.com/video/2026/07/20/trump-and-infantino-hand-world-cup-trophy-to-spain",
+  "jul-16-new-york": "https://www.reutersconnect.com/item/new-york-premiere-of-novak-djokovic-the-wolf-in-winter/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX01UMVNJUEEwMDBEQ0U0NlE",
+  "jul-17-new-york": "https://www.reutersconnect.com/item/us-president-donald-trump-visits-new-york-city/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1JDMlhGTUFSTThYRQ",
+  "jul-19-new-york": "https://www.reutersconnect.com/item/fifa-world-cup-2026-final-spain-v-argentina/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX1VQMUVNN0oxREc0SUk",
 };
 
 // Great-circle miles for each leg between consecutive stops (length = stops - 1).
